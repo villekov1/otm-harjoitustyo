@@ -1,3 +1,4 @@
+
 commit d6418055c74b11194e013a5fb9c7f0178afe2612
 Author: Ville Kovanen <ville.kovanen@helsinki.fi>
 Date:   Tue Mar 13 12:58:00 2018 +0200
@@ -113,3 +114,4 @@ Date:   Tue Mar 13 12:12:38 2018 +0200
 
  tiedosto.txt | 0
  1 file changed, 0 insertions(+), 0 deletions(-)
+
