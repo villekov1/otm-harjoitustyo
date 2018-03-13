@@ -1,7 +1,7 @@
 # OTM-harjoitustyö
 
 Kirjoitetaan tänne jotakin tekstiä *Markdown-notaatiolla*.
-Se mahdollistaa muun muassa **boldaukset** ja *kursivoinnit*!
+Se mahdollistaa muun muassa **boldaukset** ja *kursivoinnit*! Samalla testataan, että muutokset päivittyvät tiedostoon push-komentoa käytettäessä.
 
 ## Tehtävät
 ### Viikko1
