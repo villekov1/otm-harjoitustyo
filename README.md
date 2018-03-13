@@ -1,4 +1,4 @@
-# Markdown-notaatiolla tehty otsikko
+# OTM-harjoitustyö
 
 Kirjoitetaan tänne jotakin tekstiä *Markdown-notaatiolla*.
 Se mahdollistaa muun muassa **boldaukset** ja *kursivoinnit*!
