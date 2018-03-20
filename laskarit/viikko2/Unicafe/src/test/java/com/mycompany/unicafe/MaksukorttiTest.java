@@ -54,4 +54,15 @@ public class MaksukorttiTest {
     public void rahanOttaminenPalauttaaFalsen(){
         assertEquals(false, kortti.otaRahaa(20));
     }
+    
+    @Test
+    public void saldoNakyyOikeinAlussa(){
+        assertEquals(10, kortti.saldo());
+    }
+    
+    @Test
+    public void saldoNakyyOikeinRahanLisaamisenJalkeen(){
+        kortti.lataaRahaa(125);
+        assertEquals(135, kortti.saldo());
+    }
 }
