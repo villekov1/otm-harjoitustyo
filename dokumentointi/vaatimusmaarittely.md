@@ -10,5 +10,15 @@ Sovellus ei sisällä erilaisia käyttäjiä, mutta huipputulokset voi nimetä k
 
 
 # Perusversion tarjoama toiminnallisuus
+Pelissä kahden värikkään pallon muodostama kappale tippuu yksi 
+kerrallaan ruudukon katosta. Peli sisältää neljä eri väriä; vihreä, 
+punainen, keltainen ja violetti. Ilmassa olevaa palikkaa pystyy 
+kääntämään joko vasta- tai myötäpäivään, mutta palikan kohdattua maan 
+tai toisen maassa olevan palikan, se pysähtyy paikalleen.
+
+Mikäli pelaaja onnistuu muodostamaan vähintään neljän palikan sarjan, 
+kyseisen sarjan palikat katoavat. Sarjassa olevien palikoiden pitää olla 
+joko vierekkäin tai päällekkäin toisiinsa nähden.
+
 
 # Jatkokehitysideoita
