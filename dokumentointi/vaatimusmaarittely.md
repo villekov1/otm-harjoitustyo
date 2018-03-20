@@ -10,3 +10,5 @@ Sovellus ei sisällä erilaisia käyttäjiä, mutta huipputulokset voi nimetä k
 
 
 # Perusversion tarjoama toiminnallisuus
+
+# Jatkokehitysideoita
