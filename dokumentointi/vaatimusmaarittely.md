@@ -26,21 +26,19 @@ ei nimittäin olisi mahdollista tulla uusia Puyoja, koska ne ilmestyvät
 aina kentän keskelle.
 
 Perustoiminnallisuuksiin kuuluvat:
-  *Puyojen tippuminen, kääntö ja lukkiutuminen maahan
--Puyojen kasaantuminen päällekkäin
--Ketjujen tunnistaminen ja niiden tuhoaminen
--Pisteiden antaminen tuhotuista Puyoista
--Seuraavien Puyojen arpominen
--Huipputuloslista, joka tallentaa tulokset SQL-tietokantaan SQLiteä 
-käyttäen
+* Puyojen tippuminen, kääntö ja lukkiutuminen maahan
+* Puyojen kasaantuminen päällekkäin
+* Ketjujen tunnistaminen ja niiden tuhoaminen
+* Pisteiden antaminen tuhotuista Puyoista
+* Seuraavien Puyojen arpominen
+* Huipputuloslista, joka tallentaa tulokset SQL-tietokantaan SQLiteä käyttäen
 
 
 # Jatkokehitysideoita
 Jos aikaa jää tai sovellusta haluaa jatkokehittää, ainakin seuraavat 
 ovat mahdollisia kehitysideoita:
--Jonkinlainen combo-systeemi, joka antaa enemmän pisteitä, jos useita 
+
+* Jonkinlainen combo-systeemi, joka antaa enemmän pisteitä, jos useita 
 ketjuja tuhoaa sarjassa.
--Moninpeli. Jos moninpelin tekee, ns. "roskapuyot" voivat tehdä 
-moninpelistä kiinnostavamman. Nämä palikat syntyvät toisen pelaajan 
-tuhotessa omia puyojaan.
--Erikokoiset kentät.
+* Moninpeli. Jos moninpelin tekee, ns. "roskapuyot" voivat tehdä moninpelistä kiinnostavamman. Nämä palikat syntyvät toisen pelaajan tuhotessa omia puyojaan.
+* Erikokoiset kentät.
