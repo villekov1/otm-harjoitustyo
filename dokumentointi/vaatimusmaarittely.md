@@ -26,7 +26,7 @@ ei nimittäin olisi mahdollista tulla uusia Puyoja, koska ne ilmestyvät
 aina kentän keskelle.
 
 Perustoiminnallisuuksiin kuuluvat:
-..*Puyojen tippuminen, kääntö ja lukkiutuminen maahan
+  *Puyojen tippuminen, kääntö ja lukkiutuminen maahan
 -Puyojen kasaantuminen päällekkäin
 -Ketjujen tunnistaminen ja niiden tuhoaminen
 -Pisteiden antaminen tuhotuista Puyoista
