@@ -14,7 +14,7 @@ public class Puyo {
     }
     public Puyo(Vari vari){
         this.vari = vari;
-        this.sijaintiX = 3;
+        this.sijaintiX = 2;
         this.sijaintiY = 0;
         this.maassa = false;
     }
@@ -41,6 +41,14 @@ public class Puyo {
 
     public void setSijaintiY(int sijaintiY) {
         this.sijaintiY = sijaintiY;
+    }
+    
+    public void siirraX(int siirtyma){
+        this.sijaintiX = this.sijaintiX + siirtyma;
+    }
+    
+    public void siirraY(int siirtyma){
+        this.sijaintiY = this.sijaintiY + siirtyma;
     }
 
     public void setVari(Vari vari) {
