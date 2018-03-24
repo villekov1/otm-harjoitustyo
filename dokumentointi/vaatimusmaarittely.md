@@ -7,7 +7,7 @@ Sovellus on pulmapeli, joka mukailee Puyo Puyo -nimistä peliä. Pelissä ruuduk
 Sovellus ei sisällä erilaisia käyttäjiä, mutta huipputulokset voi nimetä käyttäjän nimen perusteella.
 
 ## Käyttöliittymäluonnos
-![alt text] (https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kayttoliittymaluonnos.jpg "Käyttöliittymän luonnos")
+![alt text](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kayttoliittymaluonnos.jpg "Käyttöliittymän luonnos")
 
 # Perusversion tarjoama toiminnallisuus
 Pelissä kahden värikkään pallon (Puyon) muodostama kappale tippuu yksi 
