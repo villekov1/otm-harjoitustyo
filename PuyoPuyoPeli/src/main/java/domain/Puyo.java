@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Random;
+
 public class Puyo {
     private int sijaintiX;
     private int sijaintiY;
@@ -59,6 +61,5 @@ public class Puyo {
     public void setMaassa(boolean maassa) {
         this.maassa = maassa;
     }
-    
     
 }

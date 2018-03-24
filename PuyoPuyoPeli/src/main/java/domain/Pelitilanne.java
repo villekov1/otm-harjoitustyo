@@ -2,6 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Pelitilanne {
     
@@ -37,24 +38,17 @@ public class Pelitilanne {
             }
         }
         
-        tippuva = this.arvoPuyo();
-        tippuvanAkseli = this.arvoPuyo();
-        tippuvanAkseli.siirraY(1);
-        
-        puyot.add(tippuva);
-        puyot.add(tippuvanAkseli);
-        
-        ruudukko.get(tippuva.getSijaintiX()).put(tippuva.getSijaintiY(), tippuva);
-        ruudukko.get(tippuvanAkseli.getSijaintiX()).put(tippuvanAkseli.getSijaintiY(), tippuvanAkseli);
-        
-        taynna.get(tippuva.getSijaintiX()).put(tippuva.getSijaintiY(), true);
-        taynna.get(tippuvanAkseli.getSijaintiX()).put(tippuvanAkseli.getSijaintiY(), true);
+        this.asetaPari();
     }
     
     public void paivita(){
-        
         this.tiputa();
         this.paivitaTyhjatPaikat();
+        
+        if(this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY()) 
+                && this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY())){
+            this.asetaPari();
+        }
         
         for(int i=0; i<leveys; i++){
             for(int j=0; j<korkeus; j++){
@@ -65,13 +59,64 @@ public class Pelitilanne {
     }
     
     public void tiputa(){
-        //Ei lopullinen
-        this.tippuva.siirraY(1);
-        this.tippuvanAkseli.siirraY(1);
-        
+        if(tippuva.getSijaintiY()>tippuvanAkseli.getSijaintiY()){
+            if(tippuva.getSijaintiY()+1<=12 && !this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY()+1)){
+                this.tippuva.siirraY(1);
+            }
+            this.paivitaTyhjatPaikat();
+            
+            if(tippuvanAkseli.getSijaintiY()+1<=12 && !this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY()+1)){
+                this.tippuvanAkseli.siirraY(1);
+            }
+            
+        }else{  
+            if(tippuvanAkseli.getSijaintiY()+1<=12 && !this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY()+1)){
+                this.tippuvanAkseli.siirraY(1);
+            }
+            this.paivitaTyhjatPaikat();
+            
+            if(tippuva.getSijaintiY()+1<=12 && !this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY()+1)){
+                this.tippuva.siirraY(1);
+            }
+        }
         ruudukko.get(tippuva.getSijaintiX()).put(tippuva.getSijaintiY(), tippuva);
         ruudukko.get(tippuvanAkseli.getSijaintiX()).put(tippuvanAkseli.getSijaintiY(), tippuvanAkseli);
         
+        //Tämän avulla varmistetaan, että tippuvat puyot tallentuvat maassa oleviksi
+        if(this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY()+1) || tippuva.getSijaintiY()==12){
+            puyot.add(new Puyo(tippuva.getSijaintiX(), tippuva.getSijaintiY(), tippuva.getVari()));
+        }
+        if(this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY()+1) || tippuvanAkseli.getSijaintiY()==12){
+            puyot.add(new Puyo(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY(), tippuvanAkseli.getVari()));
+        }
+
+    }
+    
+    public void siirraVasemmalle(){
+        if(tippuva.getSijaintiX()>0){
+            tippuva.siirraX(-1);
+        }
+        if(tippuvanAkseli.getSijaintiX()>0){
+            tippuvanAkseli.siirraX(-1);
+        }
+        
+    }
+    
+    public void siirraOikealle(){
+        if(tippuva.getSijaintiX()<5){
+            tippuva.siirraX(1);
+        }
+        if(tippuvanAkseli.getSijaintiX()<5){
+            tippuvanAkseli.siirraX(1);
+        }
+    }
+    
+    public void kaannaOikealle(){
+        
+    }
+    
+    public void kaannaVasemmalle(){
+    
     }
     
     public void paivitaTyhjatPaikat(){
@@ -83,11 +128,10 @@ public class Pelitilanne {
         }
         
         this.puyot.stream().forEach(puyo -> {
-            int x = puyo.getSijaintiX();
-            int y = puyo.getSijaintiY();
-            
-            taynna.get(x).put(y, true);
-            
+            if(puyo != tippuva && puyo != tippuvanAkseli){
+                taynna.get(puyo.getSijaintiX()).put(puyo.getSijaintiY(), true);
+            }
+
         });
         
     }
@@ -99,13 +143,39 @@ public class Pelitilanne {
     }
     
     public Puyo arvoPuyo(){
-        //Ei lopullinen
-        Puyo puyo = new Puyo(2, 0, Vari.PUNAINEN);
+        Vari vari;
+        Random arpoja = new Random();
+        int luku = arpoja.nextInt(9);
+        
+        if(luku>=0 && luku<2){
+            vari = Vari.PUNAINEN;
+        }else if(luku>=2 && luku<4){
+            vari = Vari.SININEN;
+        }else if(luku>=4 && luku<6){
+            vari = Vari.KELTAINEN;
+        }else if(luku>= 6 && luku<8){
+            vari = Vari.VIHREA;
+        }else{
+            vari = Vari.VIOLETTI;
+        }
+        
+        Puyo puyo = new Puyo(2, 0, vari);
         
         return puyo;
     }
     
+    public void asetaPari(){
+        tippuva = this.arvoPuyo();
+        tippuvanAkseli = this.arvoPuyo();
+        tippuvanAkseli.siirraY(1);
+        puyot.add(tippuva);
+        puyot.add(tippuvanAkseli);
+    }
+    
     public boolean onkoTaynna(int x, int y){
+        if(y>=13){
+            return true;
+        }
         if(this.taynna.get(x).get(y) == true){
             return true;
         }
@@ -132,4 +202,13 @@ public class Pelitilanne {
     public Puyo getTippuva(){
         return this.tippuva;
     }
+    
+    public Puyo getTippuvanAkseli(){
+        return this.tippuvanAkseli;
+    }
+    
+    public ArrayList<Puyo> getPuyot(){
+        return this.puyot;
+    }
+    
 }
