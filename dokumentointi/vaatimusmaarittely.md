@@ -42,5 +42,6 @@ ovat mahdollisia kehitysideoita:
 
 * Jonkinlainen combo-systeemi, joka antaa enemmän pisteitä, jos useita 
 ketjuja tuhoaa sarjassa.
-* Moninpeli. Jos moninpelin tekee, ns. "roskapuyot" voivat tehdä moninpelistä kiinnostavamman. Nämä palikat syntyvät toisen pelaajan tuhotessa omia puyojaan.
+* Moninpeli. Jos moninpelistä haluaa kiinnostavamman, ns. "roskapuyot" 
+voisivat olla hyvä lisäys. Nämä palikat syntyvät toisen pelaajan tuhotessa omia puyojaan.
 * Erikokoiset kentät.
