@@ -59,7 +59,7 @@ public class Pelitilanne {
     }
     
     public void tiputa(){
-        if(tippuva.getSijaintiY()>tippuvanAkseli.getSijaintiY()){
+        if(tippuva.getSijaintiY()>=tippuvanAkseli.getSijaintiY()){
             if(tippuva.getSijaintiY()+1<=12 && !this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY()+1)){
                 this.tippuva.siirraY(1);
             }
@@ -121,7 +121,26 @@ public class Pelitilanne {
     }
     
     public void kaannaOikealle(){
-        
+        if(!onkoTaynna(tippuva.getSijaintiX(),tippuva.getSijaintiY()) 
+            && !onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY())){
+            if(tippuva.getSijaintiY()<tippuvanAkseli.getSijaintiY() && tippuvanAkseli.getSijaintiX()<5
+                && !this.onkoTaynna(tippuvanAkseli.getSijaintiX()+1, tippuvanAkseli.getSijaintiY())){
+                tippuva.siirraX(1);
+                tippuva.siirraY(1);
+            }else if(tippuva.getSijaintiX()>tippuvanAkseli.getSijaintiX()
+                && !this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY()+1)){
+                tippuva.siirraX(-1);
+                tippuva.siirraY(1);
+            }else if(tippuva.getSijaintiY()>tippuvanAkseli.getSijaintiY() && tippuvanAkseli.getSijaintiX()>0
+                && !this.onkoTaynna(tippuvanAkseli.getSijaintiX()-1, tippuvanAkseli.getSijaintiY())){
+                tippuva.siirraX(-1);
+                tippuva.siirraY(-1);
+            }else if(tippuva.getSijaintiX()<tippuvanAkseli.getSijaintiX()
+                && !this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY()-1)){
+                tippuva.siirraX(1);
+                tippuva.siirraY(-1);
+            }
+        }
     }
     
     public void kaannaVasemmalle(){

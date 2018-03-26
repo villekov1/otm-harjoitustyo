@@ -55,6 +55,16 @@ public class PuyoPuyoUi extends Application{
             if(event.getCode().equals(KeyCode.RIGHT)){
                 tilanne.siirraOikealle();
             }
+            if(event.getCode().equals(KeyCode.ENTER)){
+                tilanne.kaannaOikealle();
+            }
+            if(event.getCode().equals(KeyCode.UP)){
+                while(!tilanne.onkoTaynna(tilanne.getTippuva().getSijaintiX(), tilanne.getTippuva().getSijaintiY())
+                    || !tilanne.onkoTaynna(tilanne.getTippuvanAkseli().getSijaintiX(), tilanne.getTippuvanAkseli().getSijaintiY())){
+                    tilanne.tiputa();
+                }
+                
+            }
 
         });
         
@@ -69,32 +79,6 @@ public class PuyoPuyoUi extends Application{
             public void handle(long nykyhetki){
                 piirturi.setFill(Color.WHITE);
                 piirturi.fillRect(0, 0, sade+3*sade*leveys, sade+3*sade*korkeus);
-                
-                /*
-                for(int i=0; i<leveys; i++){
-                    for(int j=0; j<korkeus; j++){
-                        if(tilanne.onkoTaynna(i, j) == true){
-                            Puyo puyo = tilanne.palautaTilanne().get(i).get(j);
-                            
-                            if(puyo.getVari() == Vari.PUNAINEN){
-                                piirturi.setFill(Color.RED);
-                            }else if(puyo.getVari() == Vari.KELTAINEN){
-                                piirturi.setFill(Color.YELLOW);
-                            }else if(puyo.getVari() == Vari.VIHREA){
-                                piirturi.setFill(Color.GREEN);
-                            }else if(puyo.getVari() == Vari.SININEN){
-                                piirturi.setFill(Color.BLUE);
-                            }else if(puyo.getVari() == Vari.VIOLETTI){
-                                piirturi.setFill(Color.PURPLE);
-                            }
-
-                            piirturi.fillOval(sade+2*sade*puyo.getSijaintiX(), sade+2*sade*puyo.getSijaintiY(), 2*sade, 2*sade);
-
-                        }
-
-
-                    }
-                }*/
                 
                 for(int i=0; i<tilanne.getPuyot().size(); i++){
                     Puyo puyo = tilanne.getPuyot().get(i);
