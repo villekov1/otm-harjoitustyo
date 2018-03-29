@@ -24,7 +24,7 @@ public class Pelitilanne {
         this.pisteet = 0;
         this.puyoja = 0;
         
-        this.ruudukko = new HashMap<>();
+        this.ruudukko = new HashMap<>(); //Tämä on tällä hetkellä turha
         this.taynna = new HashMap<>();
         this.puyot = new ArrayList<>();
         
@@ -44,18 +44,24 @@ public class Pelitilanne {
     public void paivita(){
         this.tiputa();
         this.paivitaTyhjatPaikat();
+        //this.paivitaRuudukko();
         
         if(this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY()) 
-                && this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY())){
+            && this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY())){
             this.asetaPari();
-        }
-        
-        for(int i=0; i<leveys; i++){
-            for(int j=0; j<korkeus; j++){
-                ArrayList<Puyo> ketju = this.etsiKetju(i, j);
+            
+            //Poistetaan ketjut vain silloin, kun molemmat tippuvat omat maassa
+            int i=0;
+            while(i<this.puyot.size()){
+                Puyo puyo = this.puyot.get(i);
+                ArrayList<Puyo> ketju = this.etsiKetju(puyo.getSijaintiX(), puyo.getSijaintiY());
                 this.tuhoaKetjunPuyot(ketju);
+                i++;
             }
         }
+        
+        this.paivitaTyhjatPaikat();
+        //this.paivitaRuudukko();
     }
     
     public void tiputa(){
@@ -79,8 +85,6 @@ public class Pelitilanne {
                 this.tippuva.siirraY(1);
             }
         }
-        ruudukko.get(tippuva.getSijaintiX()).put(tippuva.getSijaintiY(), tippuva);
-        ruudukko.get(tippuvanAkseli.getSijaintiX()).put(tippuvanAkseli.getSijaintiY(), tippuvanAkseli);
         
         //Tämän avulla varmistetaan, että tippuvat puyot tallentuvat maassa oleviksi
         if(this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY()+1) || tippuva.getSijaintiY()==12){
@@ -163,12 +167,17 @@ public class Pelitilanne {
         });
         
     }
-    
-    public ArrayList<Puyo> etsiKetju(int x, int y){
-        ArrayList<Puyo> lista = new ArrayList<>();
-        
-        return lista;
-    }
+    /*public void paivitaRuudukko(){
+        for(int i=0; i<leveys; i++){
+            HashMap<Integer, Puyo> rivi = new HashMap<>();
+            ruudukko.put(i, rivi);
+        }
+        this.puyot.stream().forEach(puyo -> {
+            if(puyo != tippuva && puyo != tippuvanAkseli){               
+                ruudukko.get(puyo.getSijaintiX()).put(puyo.getSijaintiY(), puyo);
+            }
+        });
+    }*/
     
     public Puyo arvoPuyo(){
         Vari vari;
@@ -211,8 +220,45 @@ public class Pelitilanne {
         return false;
     }
     
+    public ArrayList<Puyo> etsiKetju(int x, int y){
+        ArrayList<Puyo> lista = new ArrayList<>();
+        lista.add(this.etsiPuyo(x, y));
+        Vari vari = this.etsiPuyo(x, y).getVari();        
+        
+        if(x-1>= 0 && onkoTaynna(x-1, y) && this.etsiPuyo(x-1, y).getVari() == vari){
+            lista.add(this.etsiPuyo(x-1,y));
+        }
+        if(x+1<leveys && onkoTaynna(x+1, y)&& this.etsiPuyo(x+1, y).getVari() == vari){
+            lista.add(this.etsiPuyo(x+1,y));
+        }
+        if(y+1<korkeus && onkoTaynna(x, y+1) && this.etsiPuyo(x, y+1).getVari() == vari){
+            lista.add(this.etsiPuyo(x,y+1));
+        }
+        if(y-1>=0 && onkoTaynna(x, y-1) && this.etsiPuyo(x, y-1).getVari() == vari){
+            lista.add(this.etsiPuyo(x,y-1));
+        }
+        return lista;     
+    }
+    
+    public Puyo etsiPuyo(int x, int y){
+        Puyo puyo;
+        int i=0;
+        while(i<puyot.size()){
+            if(puyot.get(i).getSijaintiX()==x && puyot.get(i).getSijaintiY()==y){
+                return puyot.get(i);
+            }
+            i++;
+        }
+        return new Puyo(x, y, Vari.TYHJA);
+    }
+    
     public void tuhoaKetjunPuyot(ArrayList<Puyo> lista){
-        //Ei lopullinen
+        if(lista.size()>=4){
+            lista.stream().forEach(puyo -> {
+                //ruudukko.remove(puyo.getSijaintiX(), puyo.getSijaintiY());
+                puyot.remove(puyo);
+            });
+        }
     }
     
     public int palautaLeveys(){
@@ -237,6 +283,10 @@ public class Pelitilanne {
     
     public ArrayList<Puyo> getPuyot(){
         return this.puyot;
+    }
+    
+    public int getPisteet(){
+        return this.pisteet;
     }
     
 }

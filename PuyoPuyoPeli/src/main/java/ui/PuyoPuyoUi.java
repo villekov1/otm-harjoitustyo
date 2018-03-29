@@ -39,9 +39,11 @@ public class PuyoPuyoUi extends Application{
         GraphicsContext piirturi = ruutu.getGraphicsContext2D();
         
         Button paluunappi = new Button("Alkuvalikkoon");
+        Label pisteteksti = new Label("Pisteitä: "+tilanne.getPisteet());
         
+        komponentit.add(pisteteksti, 0, 0);
         komponentit.add(ruutu, 0, 1);
-        komponentit.add(paluunappi, 0, 0);
+        komponentit.add(paluunappi, 1, 0);
         
         Scene pelinakyma = new Scene(komponentit);
         HashMap<KeyCode, Boolean> painetutNapit = new HashMap<>();
