@@ -30,7 +30,7 @@ public class PuyoPuyoUi extends Application{
     int leveys = tilanne.palautaLeveys();
     int korkeus = tilanne.palautaKorkeus();
     int sade = 20;
-    
+    boolean paussilla = false;
     
     public void start(Stage ikkuna){
         GridPane komponentit = new GridPane();
@@ -63,9 +63,15 @@ public class PuyoPuyoUi extends Application{
             if(event.getCode().equals(KeyCode.UP)){
                 while(!tilanne.onkoTaynna(tilanne.getTippuva().getSijaintiX(), tilanne.getTippuva().getSijaintiY())
                     || !tilanne.onkoTaynna(tilanne.getTippuvanAkseli().getSijaintiX(), tilanne.getTippuvanAkseli().getSijaintiY())){
-                    tilanne.tiputa();
+                    tilanne.tiputaTippuvat();
                 }
-                
+            }
+            if(event.getCode().equals(KeyCode.P)){
+                if(paussilla==true){
+                    paussilla = false;
+                }else{
+                    paussilla = true;
+                }
             }
 
         });
@@ -82,29 +88,30 @@ public class PuyoPuyoUi extends Application{
                 piirturi.setFill(Color.WHITE);
                 piirturi.fillRect(0, 0, sade+3*sade*leveys, sade+3*sade*korkeus);
                 
-                for(int i=0; i<tilanne.getPuyot().size(); i++){
-                    Puyo puyo = tilanne.getPuyot().get(i);
-                            
-                            if(puyo.getVari() == Vari.PUNAINEN){
-                                piirturi.setFill(Color.RED);
-                            }else if(puyo.getVari() == Vari.KELTAINEN){
-                                piirturi.setFill(Color.YELLOW);
-                            }else if(puyo.getVari() == Vari.VIHREA){
-                                piirturi.setFill(Color.GREEN);
-                            }else if(puyo.getVari() == Vari.SININEN){
-                                piirturi.setFill(Color.BLUE);
-                            }else if(puyo.getVari() == Vari.VIOLETTI){
-                                piirturi.setFill(Color.PURPLE);
-                            }
+                    for(int i=0; i<tilanne.getPuyot().size(); i++){
+                        Puyo puyo = tilanne.getPuyot().get(i);
 
-                            piirturi.fillOval(sade+2*sade*puyo.getSijaintiX(), sade+2*sade*puyo.getSijaintiY(), 2*sade, 2*sade);
-                }
+                                if(puyo.getVari() == Vari.PUNAINEN){
+                                    piirturi.setFill(Color.RED);
+                                }else if(puyo.getVari() == Vari.KELTAINEN){
+                                    piirturi.setFill(Color.YELLOW);
+                                }else if(puyo.getVari() == Vari.VIHREA){
+                                    piirturi.setFill(Color.GREEN);
+                                }else if(puyo.getVari() == Vari.SININEN){
+                                    piirturi.setFill(Color.BLUE);
+                                }else if(puyo.getVari() == Vari.VIOLETTI){
+                                    piirturi.setFill(Color.PURPLE);
+                                }
+
+                                piirturi.fillOval(sade+2*sade*puyo.getSijaintiX(), sade+2*sade*puyo.getSijaintiY(), 2*sade, 2*sade);
+                    }
                 
                 if(nykyhetki - edellinen < 1000000000){
                     return;
                 }
-                tilanne.paivita();
-                
+                if(paussilla==false){
+                    tilanne.paivita();
+                }
                 /*piirturi.setFill(Color.WHITE);
                 piirturi.fillRect(0, 0, sade+3*sade*leveys, sade+3*sade*korkeus);*/ 
                 

@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Pelitilanne {
-    
-    private HashMap<Integer, HashMap<Integer, Puyo>> ruudukko;
     private HashMap<Integer, HashMap<Integer, Boolean>> taynna;
     private ArrayList<Puyo> puyot;
     
@@ -23,16 +21,11 @@ public class Pelitilanne {
         this.korkeus = 13;
         this.pisteet = 0;
         this.puyoja = 0;
-        
-        this.ruudukko = new HashMap<>(); //Tämä on tällä hetkellä turha
         this.taynna = new HashMap<>();
         this.puyot = new ArrayList<>();
         
         for(int i=0; i<leveys; i++){
-            HashMap<Integer, Puyo> rivi = new HashMap<>();
-            ruudukko.put(i, rivi);
             taynna.put(i, new HashMap<>());
-            
             for(int j=0; j<korkeus; j++){
                 taynna.get(i).put(j, false);
             }
@@ -42,9 +35,8 @@ public class Pelitilanne {
     }
     
     public void paivita(){
-        this.tiputa();
+        this.tiputaTippuvat();
         this.paivitaTyhjatPaikat();
-        //this.paivitaRuudukko();
         
         if(this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY()) 
             && this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY())){
@@ -61,10 +53,10 @@ public class Pelitilanne {
         }
         
         this.paivitaTyhjatPaikat();
-        //this.paivitaRuudukko();
+        this.tiputaKaikki();
     }
     
-    public void tiputa(){
+    public void tiputaTippuvat(){
         if(tippuva.getSijaintiY()>=tippuvanAkseli.getSijaintiY()){
             if(tippuva.getSijaintiY()+1<=12 && !this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY()+1)){
                 this.tippuva.siirraY(1);
@@ -85,15 +77,36 @@ public class Pelitilanne {
                 this.tippuva.siirraY(1);
             }
         }
+        this.paivitaTyhjatPaikat();
         
         //Tämän avulla varmistetaan, että tippuvat puyot tallentuvat maassa oleviksi
         if(this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY()+1) || tippuva.getSijaintiY()==12){
             puyot.add(new Puyo(tippuva.getSijaintiX(), tippuva.getSijaintiY(), tippuva.getVari()));
+            puyot.remove(tippuva);
         }
         if(this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY()+1) || tippuvanAkseli.getSijaintiY()==12){
             puyot.add(new Puyo(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY(), tippuvanAkseli.getVari()));
+            puyot.remove(tippuvanAkseli);
         }
 
+    }
+    
+    public void tiputaKaikki(){
+        for(int y=korkeus-1; y>=0; y--){
+            for(int x=leveys-1; x>=0; x--){
+                if(this.onkoTaynna(x, y) && !this.onkoTaynna(x, y+1)){
+                    Puyo puyo = this.etsiPuyo(x, y);
+                    while(true){
+                        puyo.siirraY(1);
+                        this.paivitaTyhjatPaikat();
+                        if(this.onkoTaynna(puyo.getSijaintiX(), puyo.getSijaintiY()+1) || puyo.getSijaintiY()==12){
+                            break;
+                        }
+                    } 
+                }
+            }
+        }
+        
     }
     
     public void siirraVasemmalle(){
@@ -152,7 +165,6 @@ public class Pelitilanne {
     }
     
     public void paivitaTyhjatPaikat(){
-        
         for(int i=0; i<leveys; i++){
             for(int j=0; j<korkeus; j++){
                 taynna.get(i).put(j, false);
@@ -163,21 +175,9 @@ public class Pelitilanne {
             if(puyo != tippuva && puyo != tippuvanAkseli){
                 taynna.get(puyo.getSijaintiX()).put(puyo.getSijaintiY(), true);
             }
-
         });
         
     }
-    /*public void paivitaRuudukko(){
-        for(int i=0; i<leveys; i++){
-            HashMap<Integer, Puyo> rivi = new HashMap<>();
-            ruudukko.put(i, rivi);
-        }
-        this.puyot.stream().forEach(puyo -> {
-            if(puyo != tippuva && puyo != tippuvanAkseli){               
-                ruudukko.get(puyo.getSijaintiX()).put(puyo.getSijaintiY(), puyo);
-            }
-        });
-    }*/
     
     public Puyo arvoPuyo(){
         Vari vari;
@@ -210,7 +210,7 @@ public class Pelitilanne {
     }
     
     public boolean onkoTaynna(int x, int y){
-        if(y>=13){
+        if(y>=13 || y<0 || x<0 || x>=6){
             return true;
         }
         if(this.taynna.get(x).get(y) == true){
@@ -223,20 +223,34 @@ public class Pelitilanne {
     public ArrayList<Puyo> etsiKetju(int x, int y){
         ArrayList<Puyo> lista = new ArrayList<>();
         lista.add(this.etsiPuyo(x, y));
-        Vari vari = this.etsiPuyo(x, y).getVari();        
         
-        if(x-1>= 0 && onkoTaynna(x-1, y) && this.etsiPuyo(x-1, y).getVari() == vari){
-            lista.add(this.etsiPuyo(x-1,y));
+        int i=0;
+        while(i<5){
+            int j=0;
+            int koko = lista.size();
+            while(j<koko){
+                Puyo puyo = lista.get(j);
+                Vari vari = puyo.getVari();        
+                int x2 = puyo.getSijaintiX();
+                int y2 = puyo.getSijaintiY();
+                
+                if(x2-1>= 0 && onkoTaynna(x2-1, y2) && this.etsiPuyo(x2-1, y2).getVari() == vari && !lista.contains(this.etsiPuyo(x2-1,y2))){
+                    lista.add(this.etsiPuyo(x2-1,y2));
+                }
+                if(x2+1<leveys && onkoTaynna(x2+1, y)&& this.etsiPuyo(x2+1, y2).getVari() == vari && !lista.contains(this.etsiPuyo(x2+1,y2))){
+                    lista.add(this.etsiPuyo(x2+1,y2));
+                }
+                if(y2+1<korkeus && onkoTaynna(x2, y2+1) && this.etsiPuyo(x2, y2+1).getVari() == vari && !lista.contains(this.etsiPuyo(x2,y2+1))){
+                    lista.add(this.etsiPuyo(x2,y2+1));
+                }
+                if(y2-1>=0 && onkoTaynna(x2, y2-1) && this.etsiPuyo(x2, y2-1).getVari() == vari && !lista.contains(this.etsiPuyo(x2,y2-1))){
+                    lista.add(this.etsiPuyo(x2,y2-1));
+                }
+                j++;
+            }
+            i++;   
         }
-        if(x+1<leveys && onkoTaynna(x+1, y)&& this.etsiPuyo(x+1, y).getVari() == vari){
-            lista.add(this.etsiPuyo(x+1,y));
-        }
-        if(y+1<korkeus && onkoTaynna(x, y+1) && this.etsiPuyo(x, y+1).getVari() == vari){
-            lista.add(this.etsiPuyo(x,y+1));
-        }
-        if(y-1>=0 && onkoTaynna(x, y-1) && this.etsiPuyo(x, y-1).getVari() == vari){
-            lista.add(this.etsiPuyo(x,y-1));
-        }
+        
         return lista;     
     }
     
@@ -244,7 +258,8 @@ public class Pelitilanne {
         Puyo puyo;
         int i=0;
         while(i<puyot.size()){
-            if(puyot.get(i).getSijaintiX()==x && puyot.get(i).getSijaintiY()==y){
+            if(puyot.get(i).getSijaintiX()==x && puyot.get(i).getSijaintiY()==y 
+                && puyot.get(i)!=tippuva && puyot.get(i)!=tippuvanAkseli){
                 return puyot.get(i);
             }
             i++;
@@ -254,8 +269,7 @@ public class Pelitilanne {
     
     public void tuhoaKetjunPuyot(ArrayList<Puyo> lista){
         if(lista.size()>=4){
-            lista.stream().forEach(puyo -> {
-                //ruudukko.remove(puyo.getSijaintiX(), puyo.getSijaintiY());
+            lista.stream().distinct().forEach(puyo -> {
                 puyot.remove(puyo);
             });
         }
@@ -267,10 +281,6 @@ public class Pelitilanne {
     
     public int palautaKorkeus(){
         return this.korkeus;
-    }
-    
-    public HashMap<Integer, HashMap<Integer, Puyo>> palautaTilanne(){
-        return this.ruudukko;
     }
     
     public Puyo getTippuva(){
