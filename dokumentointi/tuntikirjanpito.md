@@ -9,3 +9,4 @@
 | 27.3  | 2    | Lisäsin mahdollisuuden tippuvien Puyojen kääntämiseen. Lisäksi lisäsin mahdollisuuden ns. "hard droppiin", jossa tippuvat Puyot tippuvat välittömästi maahan.|
 | 29.3  | 2    | Lisäsin pistelaskurin käyttöliittymään. Aloitin ketjujen etsimisiseen ja niiden poistoon tarkoitettujen toiminnallisuuksien toteutuksen, mutta ne eivät tällä hetkellä toimi toivotulla tavalla. Lisäksi kadonneiden Puyojen jälkeen ylläolevat Puyot eivät tipu alas.|
 | 2.4   | 2    | Parantelin ohjelman toiminnallisuutta ketjujen löytämiseen. Lisäksi Puyojen katoamisen jälkeen ylläolevat Puyot tippuvat alas. Toistaiseksi ohjelmassa on kuitenkin paljon bugeja, eikä ketjujen löytäminen toimi kunnolla.
+| 7.4   | 1    | Lisäsin yksinkertaisen alkuvalikon, jossa on nappi pelinäkymään siirtymiseksi sekä nappi huipputuloksiin (ei vielä toteutettu). Lisäksi pelinäkymässä oleva nappi palauttaa takaisin aloitusnäkymään.|

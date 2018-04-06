@@ -19,6 +19,7 @@ import static javafx.application.Application.launch;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -30,11 +31,25 @@ public class PuyoPuyoUi extends Application{
     int leveys = tilanne.palautaLeveys();
     int korkeus = tilanne.palautaKorkeus();
     int sade = 20;
-    boolean paussilla = false;
+    boolean paussilla = true;
     
     public void start(Stage ikkuna){
-        GridPane komponentit = new GridPane();
+        //Alkuvalikko
+        GridPane alku = new GridPane();
+        alku.setHgap(5);
+        alku.setVgap(10);
+        alku.setMinSize(200, 300);
+        Scene alkunakyma = new Scene(alku);
         
+        Label huipputulokset = new Label("Huipputulokset: \n 1."+" \n 2."+"\n 3.");
+        Button aloita = new Button("Aloita");
+        Button huipputuloksiin = new Button("Huipputulokset");
+        alku.add(aloita, 1, 1);
+        alku.add(huipputulokset, 1, 0);
+        alku.add(huipputuloksiin, 1, 2);
+        
+        //Pelinäkymä
+        GridPane komponentit = new GridPane();
         Canvas ruutu = new Canvas(sade+3*sade*leveys, sade+3*sade*korkeus);
         GraphicsContext piirturi = ruutu.getGraphicsContext2D();
         
@@ -80,6 +95,15 @@ public class PuyoPuyoUi extends Application{
             painetutNapit.put(event.getCode(), Boolean.FALSE);
         });
         
+        aloita.setOnAction((event) -> {
+            ikkuna.setScene(pelinakyma);
+            paussilla = false;
+        });
+        paluunappi.setOnAction((event) -> {
+            ikkuna.setScene(alkunakyma);
+            paussilla = true;
+        });
+        
         new AnimationTimer(){
             long edellinen = 0;
             
@@ -122,7 +146,7 @@ public class PuyoPuyoUi extends Application{
         }.start();
         
         
-        ikkuna.setScene(pelinakyma);
+        ikkuna.setScene(alkunakyma);
         ikkuna.show();
     }
     
