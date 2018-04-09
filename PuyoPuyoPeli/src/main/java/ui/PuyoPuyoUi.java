@@ -38,7 +38,7 @@ public class PuyoPuyoUi extends Application{
         GridPane alku = new GridPane();
         alku.setHgap(5);
         alku.setVgap(10);
-        alku.setMinSize(200, 300);
+        alku.setMinSize(400, 600);
         Scene alkunakyma = new Scene(alku);
         
         Label huipputulokset = new Label("Huipputulokset: \n 1."+" \n 2."+"\n 3.");
@@ -136,9 +136,7 @@ public class PuyoPuyoUi extends Application{
                 if(paussilla==false){
                     tilanne.paivita();
                 }
-                /*piirturi.setFill(Color.WHITE);
-                piirturi.fillRect(0, 0, sade+3*sade*leveys, sade+3*sade*korkeus);*/ 
-                
+               
                 this.edellinen = nykyhetki;
             }
             

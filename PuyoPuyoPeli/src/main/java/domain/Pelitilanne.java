@@ -3,6 +3,7 @@ package domain;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Pelitilanne {
     private HashMap<Integer, HashMap<Integer, Boolean>> taynna;
@@ -78,6 +79,7 @@ public class Pelitilanne {
             }
         }
         this.paivitaTyhjatPaikat();
+        
         
         //Tämän avulla varmistetaan, että tippuvat puyot tallentuvat maassa oleviksi
         if(this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY()+1) || tippuva.getSijaintiY()==12){
@@ -165,6 +167,10 @@ public class Pelitilanne {
     }
     
     public void paivitaTyhjatPaikat(){
+        //Varmistetaan, että listassa ei ole saman Puyon kopioita.
+        ArrayList<Puyo> karsittulista = this.puyot.stream().distinct().collect(Collectors.toCollection(ArrayList::new));
+        this.puyot = karsittulista;
+        
         for(int i=0; i<leveys; i++){
             for(int j=0; j<korkeus; j++){
                 taynna.get(i).put(j, false);

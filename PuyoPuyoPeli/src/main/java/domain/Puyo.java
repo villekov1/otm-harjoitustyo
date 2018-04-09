@@ -62,4 +62,27 @@ public class Puyo {
         this.maassa = maassa;
     }
     
+    public String toString(){
+        return "("+this.getSijaintiX()+", "+this.getSijaintiY()+"), "+this.getVari();
+    }
+    public boolean equals(Object verrattava) {
+        if (this == verrattava) {
+            return true;
+        }
+
+        if (!(verrattava instanceof Puyo)) {
+            return false;
+        }
+
+        Puyo verrattavaPuyo = (Puyo) verrattava;
+
+        if (this.sijaintiX == verrattavaPuyo.sijaintiX &&
+                this.sijaintiY == verrattavaPuyo.sijaintiY &&
+                this.vari == verrattavaPuyo.vari) {
+            return true;
+        }
+
+        return false;
+    }
+    
 }
