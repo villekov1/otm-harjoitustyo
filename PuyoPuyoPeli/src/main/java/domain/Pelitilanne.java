@@ -18,12 +18,14 @@ public class Pelitilanne {
     private Puyo tippuvanAkseli;
     private Puyo seuraava;
     
-    public Pelitilanne(){
-        this.leveys = 6;
-        this.korkeus = 13;
+    public Pelitilanne(int leveys, int korkeus){
+        this.leveys = leveys;
+        this.korkeus = korkeus;
         this.pisteet = 0;
         this.puyoja = 0;
         this.taynna = new HashMap<>();
+        //Tämä sisältää tiedon siitä, mitkä ruudukon paikat ovat täynnä. Tippuvia ei lasketa
+        
         this.puyot = new ArrayList<>();
         
         for(int i=0; i<leveys; i++){

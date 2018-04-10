@@ -16,6 +16,6 @@ public class Tulos {
     
     public String toString(){
         String paivays = ""+pvm.get(Calendar.DAY_OF_MONTH)+"."+pvm.get(Calendar.MONTH)+"."+pvm.get(Calendar.YEAR);
-        return this.nimi + ": "+this.tulos+", ("+paivays+")";
+        return this.nimi + ": "+this.tulos; //+", ("+paivays+")";
     }
 }

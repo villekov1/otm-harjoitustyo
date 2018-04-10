@@ -30,7 +30,8 @@ import javafx.scene.shape.Shape;
 import javafx.scene.paint.Color;
 
 public class PuyoPuyoUi extends Application{
-    Pelitilanne tilanne = new Pelitilanne();
+
+    Pelitilanne tilanne = new Pelitilanne(6, 13);
     int leveys = tilanne.palautaLeveys();
     int korkeus = tilanne.palautaKorkeus();
     int sade = 20;
@@ -49,6 +50,12 @@ public class PuyoPuyoUi extends Application{
         alku.setMinSize(2*sade+2*sade*leveys, 2*sade+2*sade*korkeus);
         Scene alkunakyma = new Scene(alku);
         
+        Label ohjeteksti = new Label("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+                + "Ohjeet:\nYritä tehdä neljän samanvärisen Puyon sarjoja, jolloin ne katoavat ja antavat pisteitä!\n"
+                + "Nuolinäppäimillä tippuvia Puyoja voidaan siirtää sivusuunnassa ja Enterillä niitä voi kääntää myötäpäivään.\n"
+                + "Ylös-näppäin tiputtaa Puyot nopeasti maahan.\n"
+                + "Pysäytä-näppäin pysäyttää pelin, ja Aloita alusta -näppäin aloittaa pelin alusta.\n"
+                + "Voit aina palata aloitusruutuun Alkuvalikkoon-näppäimellä.");
         Label huipputulokset = new Label("Huipputulokset: \n 1. "+tulos1+" \n 2. "+tulos2+"\n 3. "+tulos3);
         Button aloita = new Button("Aloita");
         Button huipputuloksiin = new Button("Huipputulokset");
@@ -56,6 +63,7 @@ public class PuyoPuyoUi extends Application{
         alku.add(aloita, 1, 1);
         alku.add(huipputulokset, 1, 0);
         alku.add(huipputuloksiin, 1, 2);
+        alku.add(ohjeteksti, 1, 3);
         
         //Pelinäkymä
         GridPane komponentit = new GridPane();
@@ -125,7 +133,7 @@ public class PuyoPuyoUi extends Application{
             paussilla = true;
         });
         reset.setOnAction((event) -> {
-            this.tilanne = new Pelitilanne();
+            this.tilanne = new Pelitilanne(6, 13);
         });
         pysayta.setOnAction((event) -> {
             if(this.paussilla == false){

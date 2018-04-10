@@ -33,4 +33,46 @@ public class PuyoTest {
     public void getSijaintiYToimiiOikein(){
         assertEquals(10, puyo.getSijaintiY());
     }
+    
+    @Test
+    public void siirraXToimii(){
+        puyo.siirraX(-2);
+        assertEquals(3, puyo.getSijaintiX());
+    }
+    
+    @Test
+    public void siirraYToimii(){
+        puyo.siirraY(2);
+        assertEquals(12, puyo.getSijaintiY());
+    }
+    @Test
+    public void getVariToimii1(){
+        assertEquals(Vari.PUNAINEN, puyo.getVari());
+    }
+    @Test
+    public void getVariToimii2(){
+        Puyo puyo2 = new Puyo(Vari.SININEN);
+        assertEquals(Vari.SININEN, puyo2.getVari());
+    }
+    
+    @Test
+    public void equalsPalauttaaTruenJosPuyotSamanlaisia(){
+        Puyo puyo2 = new Puyo(5, 10, Vari.PUNAINEN);
+        
+        assertEquals(true, puyo.equals(puyo2));
+    }
+    
+    @Test
+    public void equalsPalauttaaFalsenJosPuyotErilaisia(){
+        Puyo puyo2 = new Puyo(5, 9, Vari.SININEN);
+        
+        assertEquals(false, puyo.equals(puyo2));
+    }
+    
+    @Test
+    public void toStringToimiiOikein(){
+        assertEquals("(5, 10), PUNAINEN", puyo.toString());
+    }
+    
+    
 }
