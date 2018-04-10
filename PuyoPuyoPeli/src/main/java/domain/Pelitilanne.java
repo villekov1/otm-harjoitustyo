@@ -3,6 +3,7 @@ package domain;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Pelitilanne {
@@ -43,18 +44,23 @@ public class Pelitilanne {
             && this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY())){
             this.asetaPari();
             
-            //Poistetaan ketjut vain silloin, kun molemmat tippuvat omat maassa
-            int i=0;
-            while(i<this.puyot.size()){
-                Puyo puyo = this.puyot.get(i);
-                ArrayList<Puyo> ketju = this.etsiKetju(puyo.getSijaintiX(), puyo.getSijaintiY());
-                this.tuhoaKetjunPuyot(ketju);
-                i++;
+            for(int j=0; j<3; j++){
+                //Poistetaan ketjut vain silloin, kun molemmat tippuvat omat maassa
+                int i=0;
+                while(i<this.puyot.size()){
+                    Puyo puyo = this.puyot.get(i);
+                    ArrayList<Puyo> ketju = this.etsiKetju(puyo.getSijaintiX(), puyo.getSijaintiY());
+                    this.tuhoaKetjunPuyot(ketju);
+                    i++;
+                }
+                
+                this.paivitaTyhjatPaikat();
+                this.tiputaKaikki();
+                
             }
         }
         
-        this.paivitaTyhjatPaikat();
-        this.tiputaKaikki();
+        
     }
     
     public void tiputaTippuvat(){
@@ -230,11 +236,9 @@ public class Pelitilanne {
         ArrayList<Puyo> lista = new ArrayList<>();
         lista.add(this.etsiPuyo(x, y));
         
-        int i=0;
-        while(i<5){
-            int j=0;
+        for(int i=0; i<5; i++){
             int koko = lista.size();
-            while(j<koko){
+            for(int j=0; j<koko; j++){
                 Puyo puyo = lista.get(j);
                 Vari vari = puyo.getVari();        
                 int x2 = puyo.getSijaintiX();
@@ -252,9 +256,7 @@ public class Pelitilanne {
                 if(y2-1>=0 && onkoTaynna(x2, y2-1) && this.etsiPuyo(x2, y2-1).getVari() == vari && !lista.contains(this.etsiPuyo(x2,y2-1))){
                     lista.add(this.etsiPuyo(x2,y2-1));
                 }
-                j++;
-            }
-            i++;   
+            }    
         }
         
         return lista;     
@@ -276,6 +278,7 @@ public class Pelitilanne {
     public void tuhoaKetjunPuyot(ArrayList<Puyo> lista){
         if(lista.size()>=4){
             lista.stream().distinct().forEach(puyo -> {
+                this.pisteet += 10;
                 puyot.remove(puyo);
             });
         }
@@ -303,6 +306,10 @@ public class Pelitilanne {
     
     public int getPisteet(){
         return this.pisteet;
+    }
+    
+    public void lisaaPisteita(int montako){
+        this.pisteet += montako;
     }
     
 }
