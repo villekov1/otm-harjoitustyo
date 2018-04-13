@@ -1,11 +1,15 @@
 package ui;
 
+import database.Database;
+import database.TulosDao;
 import domain.Pelitilanne;
 import domain.Puyo;
 import domain.Tulos;
 import domain.Vari;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import javafx.animation.AnimationTimer;
@@ -38,9 +42,10 @@ public class PuyoPuyoUi extends Application{
     boolean paussilla = true;
     int nopeusluokka=0;
     
-    Tulos tulos1 = new Tulos(100000, "Ville");
-    Tulos tulos2 = new Tulos(50000, "Jaakko");
-    Tulos tulos3 = new Tulos(10000, "Anni");
+    static File dbFile = new File("tulokset.db");
+    static Database database = new Database("jdbc:sqlite:"+dbFile.getAbsolutePath());
+    static TulosDao tulosDao = new TulosDao(database);
+    static List<Tulos> huipputulokset = new ArrayList<>();
     
     public void start(Stage ikkuna){
         //Alkuvalikko
@@ -56,12 +61,33 @@ public class PuyoPuyoUi extends Application{
                 + "Ylös-näppäin tiputtaa Puyot nopeasti maahan.\n"
                 + "Pysäytä-näppäin pysäyttää pelin, ja Aloita alusta -näppäin aloittaa pelin alusta.\n"
                 + "Voit aina palata aloitusruutuun Alkuvalikkoon-näppäimellä.");
-        Label huipputulokset = new Label("Huipputulokset: \n 1. "+tulos1+" \n 2. "+tulos2+"\n 3. "+tulos3);
+        
+        String huipputulosteksti = "Huipputulokset:\n";
+        
+        //Tämä vaatii ehkä hieman hienosäätöä...
+        Tulos tulos1 = new Tulos(0, 0, "");
+        Tulos tulos2 = new Tulos(0, 0, "");
+        Tulos tulos3 = new Tulos(0, 0, "");
+        
+        if(this.huipputulokset.size()>=1){
+            tulos1 = this.huipputulokset.get(0);
+            huipputulosteksti += "1. "+tulos1+"\n";
+        }
+        if(this.huipputulokset.size()>=2){
+            tulos2 = this.huipputulokset.get(1);
+            huipputulosteksti += "2. "+tulos2+"\n";
+        }
+        if(this.huipputulokset.size()>=3){
+            tulos3 = this.huipputulokset.get(2);
+            huipputulosteksti += "3. "+tulos3+"\n";
+        }
+        Label kolmenkarki = new Label(huipputulosteksti);
+        
         Button aloita = new Button("Aloita");
         Button huipputuloksiin = new Button("Huipputulokset");
         
         alku.add(aloita, 1, 1);
-        alku.add(huipputulokset, 1, 0);
+        alku.add(kolmenkarki, 1, 0);
         alku.add(huipputuloksiin, 1, 2);
         alku.add(ohjeteksti, 1, 3);
         
@@ -190,8 +216,8 @@ public class PuyoPuyoUi extends Application{
         ikkuna.show();
     }
     
-    public static void main(String[] args) {
-        
+    public static void main(String[] args) throws Exception{
+        huipputulokset = tulosDao.findAll();
         launch(PuyoPuyoUi.class);
     }
 }
