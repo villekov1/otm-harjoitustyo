@@ -7,6 +7,11 @@ import domain.Puyo;
 import domain.Tulos;
 import domain.Vari;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +47,7 @@ public class PuyoPuyoUi extends Application{
     boolean paussilla = true;
     int nopeusluokka=0;
     
-    static File dbFile = new File("tulokset.db");
+    static File dbFile = new File("huipputulokset.db");
     static Database database = new Database("jdbc:sqlite:"+dbFile.getAbsolutePath());
     static TulosDao tulosDao = new TulosDao(database);
     static List<Tulos> huipputulokset = new ArrayList<>();
@@ -219,5 +224,44 @@ public class PuyoPuyoUi extends Application{
     public static void main(String[] args) throws Exception{
         huipputulokset = tulosDao.findAll();
         launch(PuyoPuyoUi.class);
+    }
+    
+    public void init() throws SQLException{
+        try{
+            File dbFile = new File("huipputulokset.db");
+            if(dbFile.exists()){
+                return;
+            }
+        }catch(Exception e){
+            System.out.println("Virhe: "+e.getMessage());
+        }
+        
+        try(Connection conn = DriverManager.getConnection("jdbc:sqlite:huipputulokset.db")){
+            if (conn != null) {
+                System.out.println("Uusi tietokanta on luotu.");
+                
+                PreparedStatement stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Tulos("
+                        + "id integer PRIMARY KEY, nimi varchar(200), tulos integer)");
+                stmt.execute();
+                
+                PreparedStatement stmt2 = conn.prepareStatement("INSERT INTO Tulos(nimi, tulos)"
+                        + " VALUES('Ville', 2000)");
+                PreparedStatement stmt3 = conn.prepareStatement("INSERT INTO Tulos(nimi, tulos)"
+                        + " VALUES('Pekka', 1500)");
+                PreparedStatement stmt4 = conn.prepareStatement("INSERT INTO Tulos(nimi, tulos)"
+                        + " VALUES('Anni', 1200)");
+                stmt2.execute();
+                stmt3.execute();
+                stmt4.execute();
+                
+                stmt.close();
+                stmt2.close();
+                stmt3.close();
+                stmt4.close();
+                conn.close();
+            }
+        }catch(SQLException e){
+            System.out.println("Virhe: " + e.getMessage());
+        }
     }
 }
