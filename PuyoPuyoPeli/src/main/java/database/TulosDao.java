@@ -32,6 +32,40 @@ public class TulosDao {
         return tulokset;
     }
     
+    public List<Tulos> findAllInOrderByPoints() throws SQLException{
+        List<Tulos> tulokset = new ArrayList<>();
+        
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT id, nimi, tulos FROM Tulos ORDER BY tulos DESC");
+        
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            tulokset.add(new Tulos(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi")));
+        }
+        
+        rs.close();
+        stmt.close();
+        
+        return tulokset;
+    }
+    
+    public List<Tulos> findAllInOrderByName() throws SQLException{
+        List<Tulos> tulokset = new ArrayList<>();
+        
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT id, nimi, tulos FROM Tulos ORDER BY nimi ASC");
+        
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            tulokset.add(new Tulos(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi")));
+        }
+        
+        rs.close();
+        stmt.close();
+        
+        return tulokset;
+    }
+    
     public Tulos findById(int id) throws SQLException{
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT id, nimi, tulos FROM Tulos WHERE id = ?");

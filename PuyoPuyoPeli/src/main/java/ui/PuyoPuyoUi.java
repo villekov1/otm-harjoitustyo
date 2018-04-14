@@ -26,8 +26,13 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.BorderPane;
 import static javafx.application.Application.launch;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
@@ -50,7 +55,7 @@ public class PuyoPuyoUi extends Application{
     static File dbFile = new File("huipputulokset.db");
     static Database database = new Database("jdbc:sqlite:"+dbFile.getAbsolutePath());
     static TulosDao tulosDao = new TulosDao(database);
-    static List<Tulos> huipputulokset = new ArrayList<>();
+    static List<Tulos> huipputulokset = etsiPisteidenPerusteella();
     
     public void start(Stage ikkuna){
         //Alkuvalikko
@@ -103,6 +108,7 @@ public class PuyoPuyoUi extends Application{
         GraphicsContext piirturi = ruutu.getGraphicsContext2D();
         
         Button paluunappi = new Button("Alkuvalikkoon");
+        Button paluunappiTuloksissa = new Button("Alkuvalikkoon");
         Button reset = new Button("Aloita alusta");
         Button pysayta = new Button("Pysäytä");
         Label pisteteksti = new Label("Pisteitä: "+tilanne.getPisteet());
@@ -118,9 +124,59 @@ public class PuyoPuyoUi extends Application{
         komponentit.add(pisteteksti, 1, 0);
         
         Scene pelinakyma = new Scene(komponentit);
-        HashMap<KeyCode, Boolean> painetutNapit = new HashMap<>();
+        
+        //Huipputulosnäkymä
+        RadioButton nappi1 = new RadioButton("Pisteiden perusteella");
+        RadioButton nappi2 = new RadioButton("Nimen perusteella");
+        ToggleGroup joukko = new ToggleGroup();
+        nappi1.setToggleGroup(joukko);
+        nappi2.setToggleGroup(joukko);
+        nappi1.setSelected(true);
+        VBox nappijoukko = new VBox();
+        nappijoukko.getChildren().add(nappi1);
+        nappijoukko.getChildren().add(nappi2);
+        
+        ListView<String> list = new ListView<String>();
+        ObservableList<String> lista = FXCollections.observableArrayList();
+        if(nappi1.isSelected()){
+            etsiPisteidenPerusteella().stream().forEach(tulos -> { 
+                lista.add(tulos.toString());
+            });
+        }else{
+            etsiNimenPerusteella().stream().forEach(tulos -> { 
+                lista.add(tulos.toString());
+            });
+        }
+        
+        list.setItems(lista);
+        
+        nappi1.setOnAction((event) -> {
+            lista.clear();
+            etsiPisteidenPerusteella().stream().forEach(tulos -> { 
+                lista.add(tulos.toString());
+                list.setItems(lista);
+            });
+        });
+        nappi2.setOnAction((event) -> {
+            lista.clear();
+            etsiNimenPerusteella().stream().forEach(tulos -> { 
+                lista.add(tulos.toString());
+                list.setItems(lista);
+            });
+        });
+        
+        GridPane tulosruutu = new GridPane();
+        tulosruutu.setVgap(10);
+        tulosruutu.setHgap(10);
+        
+        tulosruutu.add(paluunappiTuloksissa, 0, 0);
+        tulosruutu.add(list, 1, 1);
+        tulosruutu.add(nappijoukko, 0, 1);
+        
+        Scene tulosnakyma = new Scene(tulosruutu);
         
         //Lisätään painetut napit HashMappiin
+        HashMap<KeyCode, Boolean> painetutNapit = new HashMap<>();
         pelinakyma.setOnKeyPressed(event -> {
             painetutNapit.put(event.getCode(), Boolean.TRUE);
             if (event.getCode().equals(KeyCode.LEFT)) {
@@ -163,6 +219,10 @@ public class PuyoPuyoUi extends Application{
             ikkuna.setScene(alkunakyma);
             paussilla = true;
         });
+        paluunappiTuloksissa.setOnAction((event) -> {
+            ikkuna.setScene(alkunakyma);
+            paussilla = true;
+        });
         reset.setOnAction((event) -> {
             this.tilanne = new Pelitilanne(6, 13);
         });
@@ -173,6 +233,10 @@ public class PuyoPuyoUi extends Application{
                 this.paussilla = false;
             }
             
+        });
+        
+        huipputuloksiin.setOnAction((event) -> {
+            ikkuna.setScene(tulosnakyma);
         });
         
         new AnimationTimer(){
@@ -222,8 +286,32 @@ public class PuyoPuyoUi extends Application{
     }
     
     public static void main(String[] args) throws Exception{
-        huipputulokset = tulosDao.findAll();
+        //huipputulokset = tulosDao.findAllInOrderByPoints();
         launch(PuyoPuyoUi.class);
+    }
+    
+    public static List<Tulos> etsiNimenPerusteella(){
+        List<Tulos> tulokset = new ArrayList<>();
+        
+        try{
+            tulokset = tulosDao.findAllInOrderByName();
+        }catch(Exception e){
+            System.out.println("Ei voitu etsiä tuloksia.");
+        }
+        
+        return tulokset;
+    }
+    
+    public static List<Tulos> etsiPisteidenPerusteella(){
+        List<Tulos> tulokset = new ArrayList<>();
+        
+        try{
+            tulokset = tulosDao.findAllInOrderByPoints();
+        }catch(Exception e){
+            System.out.println("Ei voitu etsiä tuloksia.");
+        }
+        
+        return tulokset;
     }
     
     public void init() throws SQLException{
