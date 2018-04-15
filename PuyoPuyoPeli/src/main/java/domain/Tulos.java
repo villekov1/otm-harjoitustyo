@@ -7,6 +7,7 @@ public class Tulos {
     private String name;
     
     public Tulos(int id, int score, String name) {
+        this.id = id;
         this.score = score;
         this.name = name;
     }
@@ -16,6 +17,9 @@ public class Tulos {
     }
     public int getScore() {
         return this.score;
+    }
+    public int getId(){
+        return this.id;
     }
     
     public String toString() {

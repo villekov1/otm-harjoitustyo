@@ -16,4 +16,12 @@
                 
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-putsaa</actionName>
+            <displayName>putsaa</displayName>
+            <goals>
+                <goal>clear</goal>
+                
+            </goals>
+        </action>
     </actions>

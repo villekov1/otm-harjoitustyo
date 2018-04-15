@@ -1,3 +1,5 @@
+package domain;
+
 import domain.Puyo;
 import domain.Vari;
 import org.junit.After;
@@ -72,6 +74,24 @@ public class PuyoTest {
     @Test
     public void toStringWorks() {
         assertEquals("(5, 10), RED", puyo.toString());
+    }
+    
+    @Test
+    public void setColourWorks(){
+        puyo.setColour(Vari.GREEN);
+        assertEquals(Vari.GREEN, puyo.getColour());
+    }
+    
+    @Test
+    public void setPositionXWorks(){
+        puyo.setPositionX(21);
+        assertEquals(21, puyo.getPositionX());
+    }
+    
+    @Test
+    public void setPositionYWorks(){
+        puyo.setPositionY(17);
+        assertEquals(17, puyo.getPositionY());
     }
     
     

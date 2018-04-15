@@ -305,4 +305,8 @@ public class Pelitilanne {
     public void addPoints(int amount) {
         this.points += amount;
     }
+    
+    public void addPuyo(Puyo puyo){
+        this.puyos.add(puyo);
+    }
 }
