@@ -1,5 +1,5 @@
 package domain;
 
 public enum Vari {
-    SININEN, VIHREA, PUNAINEN, KELTAINEN, VIOLETTI, TYHJA;
+    BLUE, GREEN, RED, YELLOW, PURPLE, EMPTY;
 }

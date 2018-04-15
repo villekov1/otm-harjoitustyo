@@ -7,165 +7,158 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Pelitilanne {
-    private HashMap<Integer, HashMap<Integer, Boolean>> taynna;
-    private ArrayList<Puyo> puyot;
+    private HashMap<Integer, HashMap<Integer, Boolean>> filled;
+    private ArrayList<Puyo> puyos;
     
-    private int pisteet;
-    private int puyoja;
-    private int leveys;
-    private int korkeus;
-    private Puyo tippuva;
-    private Puyo tippuvanAkseli;
-    private Puyo seuraava;
+    private int points;
+    private int puyonumber;
+    private int width;
+    private int height;
+    private Puyo falling;
+    private Puyo fallingAxis;
+    private Puyo next;
     
-    public Pelitilanne(int leveys, int korkeus) {
-        this.leveys = leveys;
-        this.korkeus = korkeus;
-        this.pisteet = 0;
-        this.puyoja = 0;
-        this.taynna = new HashMap<>();
+    public Pelitilanne(int width, int height) {
+        this.width = width;
+        this.height = height;
+        this.points = 0;
+        this.puyonumber = 0;
+        this.filled = new HashMap<>();
         //Tämä sisältää tiedon siitä, mitkä ruudukon paikat ovat täynnä. Tippuvia ei lasketa
         
-        this.puyot = new ArrayList<>();
+        this.puyos = new ArrayList<>();
         
-        for(int i = 0; i < leveys; i++) {
-            taynna.put(i, new HashMap<>());
-            for(int j = 0; j < korkeus; j++) {
-                taynna.get(i).put(j, false);
+        for (int i = 0; i < width; i++) {
+            filled.put(i, new HashMap<>());
+            for (int j = 0; j < height; j++) {
+                filled.get(i).put(j, false);
             }
         }
         
-        this.asetaPari();
+        this.setPair();
     }
     
-    public void paivita() {
-        this.tiputaTippuvat();
-        this.paivitaTyhjatPaikat();
+    public void update() {
+        this.dropFalling();
+        this.updateFilled();
         
-        if(this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY()) 
-            && this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY())) {
-            this.asetaPari();
+        if (this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY()) 
+            && this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY())) {
+            this.setPair();
             
-            for(int j = 0; j < 3; j++) {
+            for (int j = 0; j < 3; j++) {
                 //Poistetaan ketjut vain silloin, kun molemmat tippuvat omat maassa
                 int i = 0;
-                while(i < this.puyot.size()){
-                    Puyo puyo = this.puyot.get(i);
-                    ArrayList<Puyo> ketju = this.etsiKetju(puyo.getSijaintiX(), puyo.getSijaintiY());
-                    this.tuhoaKetjunPuyot(ketju);
+                while (i < this.puyos.size()) {
+                    Puyo puyo = this.puyos.get(i);
+                    ArrayList<Puyo> ketju = this.findChain(puyo.getPositionX(), puyo.getPositionY());
+                    this.destroyChain(ketju);
                     i++;
-                }
-                
-                this.paivitaTyhjatPaikat();
-                this.tiputaKaikki();
-                
+                }                
+                this.updateFilled();
+                this.dropAll();
             }
-        }
-        
-        
+        }   
     }
     
-    public void tiputaTippuvat() {
-        if(tippuva.getSijaintiY() >= tippuvanAkseli.getSijaintiY()) {
-            if(tippuva.getSijaintiY() + 1 <= 12 && !this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY() + 1)) {
-                this.tippuva.siirraY(1);
+    public void dropFalling() {
+        if (falling.getPositionY() >= fallingAxis.getPositionY()) {
+            if (falling.getPositionY() + 1 <= 12 && !this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY() + 1)) {
+                this.falling.moveY(1);
             }
-            this.paivitaTyhjatPaikat();
+            this.updateFilled();
             
-            if(tippuvanAkseli.getSijaintiY() + 1 <= 12 
-                && !this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY() + 1)) {
-                this.tippuvanAkseli.siirraY(1);
+            if (fallingAxis.getPositionY() + 1 <= 12 
+                && !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() + 1)) {
+                this.fallingAxis.moveY(1);
             }
             
-        }else{  
-            if(tippuvanAkseli.getSijaintiY() + 1 <= 12 && !this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY() + 1)) {
-                this.tippuvanAkseli.siirraY(1);
+        } else {  
+            if (fallingAxis.getPositionY() + 1 <= 12 && !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() + 1)) {
+                this.fallingAxis.moveY(1);
             }
-            this.paivitaTyhjatPaikat();
+            this.updateFilled();
             
-            if(tippuva.getSijaintiY() + 1 <= 12 && !this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY() + 1)) {
-                this.tippuva.siirraY(1);
+            if (falling.getPositionY() + 1 <= 12 && !this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY() + 1)) {
+                this.falling.moveY(1);
             }
         }
-        this.paivitaTyhjatPaikat();
+        this.updateFilled();
         
         
         //Tämän avulla varmistetaan, että tippuvat puyot tallentuvat maassa oleviksi
-        if(this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY() + 1) || tippuva.getSijaintiY() == 12) {
-            puyot.add(new Puyo(tippuva.getSijaintiX(), tippuva.getSijaintiY(), tippuva.getVari()));
-            puyot.remove(tippuva);
+        if (this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY() + 1) || falling.getPositionY() == 12) {
+            puyos.add(new Puyo(falling.getPositionX(), falling.getPositionY(), falling.getColour()));
+            puyos.remove(falling);
         }
-        if(this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY() + 1) || tippuvanAkseli.getSijaintiY() == 12) {
-            puyot.add(new Puyo(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY(), tippuvanAkseli.getVari()));
-            puyot.remove(tippuvanAkseli);
+        if (this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() + 1) || fallingAxis.getPositionY() == 12) {
+            puyos.add(new Puyo(fallingAxis.getPositionX(), fallingAxis.getPositionY(), fallingAxis.getColour()));
+            puyos.remove(fallingAxis);
         }
-
     }
     
-    public void tiputaKaikki() {
-        for(int y = korkeus - 1; y >= 0; y--) {
-            for(int x = leveys - 1; x >= 0; x--) {
-                if(this.onkoTaynna(x, y) && !this.onkoTaynna(x, y + 1)) {
-                    Puyo puyo = this.etsiPuyo(x, y);
+    public void dropAll() {
+        for (int y = height - 1; y >= 0; y--) {
+            for (int x = width - 1; x >= 0; x--) {
+                if (this.isTheSpaceFilled(x, y) && !this.isTheSpaceFilled(x, y + 1)) {
+                    Puyo puyo = this.findPuyo(x, y);
                     while(true) {
-                        puyo.siirraY(1);
-                        this.paivitaTyhjatPaikat();
-                        if(this.onkoTaynna(puyo.getSijaintiX(), puyo.getSijaintiY()+1) || puyo.getSijaintiY()==12) {
+                        puyo.moveY(1);
+                        this.updateFilled();
+                        if (this.isTheSpaceFilled(puyo.getPositionX(), puyo.getPositionY()+1) || puyo.getPositionY()==12) {
                             break;
                         }
                     } 
                 }
             }
-        }
-        
+        }  
     }
     
-    public void siirraVasemmalle() {
-        if(tippuva.getSijaintiX() > 0 && tippuvanAkseli.getSijaintiX() > 0) {
-            if(!this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY()) &&
-                !this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY())) {
-                if(!this.onkoTaynna(tippuva.getSijaintiX()-1, tippuva.getSijaintiY()) 
-                    && !this.onkoTaynna(tippuvanAkseli.getSijaintiX()-1, tippuvanAkseli.getSijaintiY())) {
-                        tippuva.siirraX(-1);
-                        tippuvanAkseli.siirraX(-1);
-
+    public void moveLeft() {
+        if (falling.getPositionX() > 0 && fallingAxis.getPositionX() > 0) {
+            if (!this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY()) &&
+                !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY())) {
+                if (!this.isTheSpaceFilled(falling.getPositionX()-1, falling.getPositionY()) 
+                    && !this.isTheSpaceFilled(fallingAxis.getPositionX()-1, fallingAxis.getPositionY())) {
+                        falling.moveX(-1);
+                        fallingAxis.moveX(-1);
                 }
             }
         }
     }
     
-    public void siirraOikealle() {
-        if(tippuva.getSijaintiX() < 5 && tippuvanAkseli.getSijaintiX() < 5) {
-            if(!this.onkoTaynna(tippuva.getSijaintiX(), tippuva.getSijaintiY()) &&
-                !this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY())) {
-                if(!this.onkoTaynna(tippuva.getSijaintiX() + 1, tippuva.getSijaintiY()) 
-                    && !this.onkoTaynna(tippuvanAkseli.getSijaintiX()+1, tippuvanAkseli.getSijaintiY())) {
-                        tippuva.siirraX(1);
-                        tippuvanAkseli.siirraX(1);
+    public void moveRight() {
+        if (falling.getPositionX() < 5 && fallingAxis.getPositionX() < width - 1) {
+            if (!this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY()) &&
+                !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY())) {
+                if (!this.isTheSpaceFilled(falling.getPositionX() + 1, falling.getPositionY()) 
+                    && !this.isTheSpaceFilled(fallingAxis.getPositionX()+1, fallingAxis.getPositionY())) {
+                        falling.moveX(1);
+                        fallingAxis.moveX(1);
                 }
             }
         }
     }
     
     public void kaannaOikealle() {
-        if(!onkoTaynna(tippuva.getSijaintiX(),tippuva.getSijaintiY()) 
-            && !onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY())) {
-            if(tippuva.getSijaintiY() < tippuvanAkseli.getSijaintiY() && tippuvanAkseli.getSijaintiX() < 5
-                && !this.onkoTaynna(tippuvanAkseli.getSijaintiX() + 1, tippuvanAkseli.getSijaintiY())){
-                tippuva.siirraX(1);
-                tippuva.siirraY(1);
-            }else if(tippuva.getSijaintiX() > tippuvanAkseli.getSijaintiX()
-                && !this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY() + 1)) {
-                tippuva.siirraX(-1);
-                tippuva.siirraY(1);
-            }else if(tippuva.getSijaintiY() > tippuvanAkseli.getSijaintiY() && tippuvanAkseli.getSijaintiX() > 0
-                && !this.onkoTaynna(tippuvanAkseli.getSijaintiX() - 1, tippuvanAkseli.getSijaintiY())) {
-                tippuva.siirraX(-1);
-                tippuva.siirraY(-1);
-            }else if(tippuva.getSijaintiX() < tippuvanAkseli.getSijaintiX()
-                && !this.onkoTaynna(tippuvanAkseli.getSijaintiX(), tippuvanAkseli.getSijaintiY() - 1)) {
-                tippuva.siirraX(1);
-                tippuva.siirraY(-1);
+        if (!isTheSpaceFilled(falling.getPositionX(),falling.getPositionY()) 
+            && !isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY())) {
+            if (falling.getPositionY() < fallingAxis.getPositionY() && fallingAxis.getPositionX() < width -1
+                && !this.isTheSpaceFilled(fallingAxis.getPositionX() + 1, fallingAxis.getPositionY())){
+                falling.moveX(1);
+                falling.moveY(1);
+            } else if (falling.getPositionX() > fallingAxis.getPositionX()
+                && !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() + 1)) {
+                falling.moveX(-1);
+                falling.moveY(1);
+            } else if (falling.getPositionY() > fallingAxis.getPositionY() && fallingAxis.getPositionX() > 0
+                && !this.isTheSpaceFilled(fallingAxis.getPositionX() - 1, fallingAxis.getPositionY())) {
+                falling.moveX(-1);
+                falling.moveY(-1);
+            } else if (falling.getPositionX() < fallingAxis.getPositionX()
+                && !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() - 1)) {
+                falling.moveX(1);
+                falling.moveY(-1);
             }
         }
     }
@@ -174,143 +167,142 @@ public class Pelitilanne {
     
     }
     
-    public void paivitaTyhjatPaikat() {
+    public void updateFilled() {
         //Varmistetaan, että listassa ei ole saman Puyon kopioita.
-        ArrayList<Puyo> karsittulista = this.puyot.stream().distinct().collect(Collectors.toCollection(ArrayList::new));
-        this.puyot = karsittulista;
+        ArrayList<Puyo> cutDownList = this.puyos.stream().distinct().collect(Collectors.toCollection(ArrayList::new));
+        this.puyos = cutDownList;
         
-        for(int i = 0; i < leveys; i++) {
-            for(int j = 0; j < korkeus; j++) {
-                taynna.get(i).put(j, false);
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                filled.get(i).put(j, false);
             }
         }
         
-        this.puyot.stream().forEach(puyo -> {
-            if(puyo != tippuva && puyo != tippuvanAkseli) {
-                taynna.get(puyo.getSijaintiX()).put(puyo.getSijaintiY(), true);
+        this.puyos.stream().forEach(puyo -> {
+            if (puyo != falling && puyo != fallingAxis) {
+                filled.get(puyo.getPositionX()).put(puyo.getPositionY(), true);
             }
         });
         
     }
     
-    public Puyo arvoPuyo() {
+    public Puyo randomPuyo() {
         Vari vari;
         Random arpoja = new Random();
         int luku = arpoja.nextInt(9);
         
-        if(luku >= 0 && luku < 2){
-            vari = Vari.PUNAINEN;
-        }else if(luku >= 2 && luku < 4){
-            vari = Vari.SININEN;
-        }else if(luku >= 4 && luku < 6){
-            vari = Vari.KELTAINEN;
-        }else if(luku >= 6 && luku < 8){
-            vari = Vari.VIHREA;
-        }else{
-            vari = Vari.VIOLETTI;
+        if (luku >= 0 && luku < 2) {
+            vari = Vari.RED;
+        } else if (luku >= 2 && luku < 4) {
+            vari = Vari.BLUE;
+        } else if (luku >= 4 && luku < 6) {
+            vari = Vari.YELLOW;
+        } else if (luku >= 6 && luku < 8) {
+            vari = Vari.GREEN;
+        } else {
+            vari = Vari.PURPLE;
         }
         
         Puyo puyo = new Puyo(2, 0, vari);
-        
         return puyo;
     }
     
-    public void asetaPari() {
-        tippuva = this.arvoPuyo();
-        tippuvanAkseli = this.arvoPuyo();
-        tippuvanAkseli.siirraY(1);
-        puyot.add(tippuva);
-        puyot.add(tippuvanAkseli);
+    public void setPair() {
+        falling = this.randomPuyo();
+        fallingAxis = this.randomPuyo();
+        fallingAxis.moveY(1);
+        puyos.add(falling);
+        puyos.add(fallingAxis);
     }
     
-    public boolean onkoTaynna(int x, int y) {
-        if(y >= 13 || y < 0 || x < 0 || x >= 6){
+    public boolean isTheSpaceFilled(int x, int y) {
+        if (y >= height || y < 0 || x < 0 || x >= width) {
             return true;
         }
-        if(this.taynna.get(x).get(y) == true){
+        if (this.filled.get(x).get(y) == true) {
             return true;
         }
         
         return false;
     }
     
-    public ArrayList<Puyo> etsiKetju(int x, int y) {
-        ArrayList<Puyo> lista = new ArrayList<>();
-        lista.add(this.etsiPuyo(x, y));
+    public ArrayList<Puyo> findChain(int x, int y) {
+        ArrayList<Puyo> list = new ArrayList<>();
+        list.add(this.findPuyo(x, y));
         
-        for(int i = 0; i < 5; i++) {
-            int koko = lista.size();
-            for(int j = 0; j < koko; j++) {
-                Puyo puyo = lista.get(j);
-                Vari vari = puyo.getVari();        
-                int x2 = puyo.getSijaintiX();
-                int y2 = puyo.getSijaintiY();
+        for (int i = 0; i < 6; i++) {
+            int size = list.size();
+            for (int j = 0; j < size; j++) {
+                Puyo puyo = list.get(j);
+                Vari vari = puyo.getColour();        
+                int x2 = puyo.getPositionX();
+                int y2 = puyo.getPositionY();
                 
-                if(x2 - 1 >= 0 && onkoTaynna(x2 - 1, y2) && this.etsiPuyo(x2 - 1, y2).getVari() == vari && !lista.contains(this.etsiPuyo(x2 - 1,y2))) {
-                    lista.add(this.etsiPuyo(x2 - 1,y2));
+                if (x2 - 1 >= 0 && isTheSpaceFilled(x2 - 1, y2) && this.findPuyo(x2 - 1, y2).getColour() == vari && !list.contains(this.findPuyo(x2 - 1,y2))) {
+                    list.add(this.findPuyo(x2 - 1,y2));
                 }
-                if(x2 + 1 < leveys && onkoTaynna(x2 + 1, y)&& this.etsiPuyo(x2 + 1, y2).getVari() == vari && !lista.contains(this.etsiPuyo(x2 + 1,y2))) {
-                    lista.add(this.etsiPuyo(x2 + 1,y2));
+                if (x2 + 1 < width && isTheSpaceFilled(x2 + 1, y)&& this.findPuyo(x2 + 1, y2).getColour() == vari && !list.contains(this.findPuyo(x2 + 1,y2))) {
+                    list.add(this.findPuyo(x2 + 1,y2));
                 }
-                if(y2 + 1 < korkeus && onkoTaynna(x2, y2 + 1) && this.etsiPuyo(x2, y2 + 1).getVari() == vari && !lista.contains(this.etsiPuyo(x2,y2 + 1))) {
-                    lista.add(this.etsiPuyo(x2,y2 + 1));
+                if (y2 + 1 < height && isTheSpaceFilled(x2, y2 + 1) && this.findPuyo(x2, y2 + 1).getColour() == vari && !list.contains(this.findPuyo(x2,y2 + 1))) {
+                    list.add(this.findPuyo(x2,y2 + 1));
                 }
-                if(y2 - 1>=0 && onkoTaynna(x2, y2 - 1) && this.etsiPuyo(x2, y2 - 1).getVari() == vari && !lista.contains(this.etsiPuyo(x2,y2 - 1))) {
-                    lista.add(this.etsiPuyo(x2,y2 - 1));
+                if (y2 - 1>=0 && isTheSpaceFilled(x2, y2 - 1) && this.findPuyo(x2, y2 - 1).getColour() == vari && !list.contains(this.findPuyo(x2,y2 - 1))) {
+                    list.add(this.findPuyo(x2,y2 - 1));
                 }
             }    
         }
         
-        return lista;     
+        return list;     
     }
     
-    public Puyo etsiPuyo(int x, int y) {
+    public Puyo findPuyo(int x, int y) {
         Puyo puyo;
         int i = 0;
-        while(i < puyot.size()) {
-            if(puyot.get(i).getSijaintiX() == x && puyot.get(i).getSijaintiY() == y 
-                && puyot.get(i) != tippuva && puyot.get(i) != tippuvanAkseli) {
-                return puyot.get(i);
+        while (i < puyos.size()) {
+            if (puyos.get(i).getPositionX() == x && puyos.get(i).getPositionY() == y 
+                && puyos.get(i) != falling && puyos.get(i) != fallingAxis) {
+                return puyos.get(i);
             }
             i++;
         }
-        return new Puyo(x, y, Vari.TYHJA);
+        return new Puyo(x, y, Vari.EMPTY);
     }
     
-    public void tuhoaKetjunPuyot(ArrayList<Puyo> lista) {
-        if(lista.size() >= 4) {
-            lista.stream().distinct().forEach(puyo -> {
-                this.pisteet += 10;
-                puyot.remove(puyo);
+    public void destroyChain(ArrayList<Puyo> list) {
+        if (list.size() >= 4) {
+            list.stream().distinct().forEach(puyo -> {
+                this.points += 10;
+                puyos.remove(puyo);
             });
         }
     }
     
-    public int palautaLeveys() {
-        return this.leveys;
+    public int getWidth() {
+        return this.width;
     }
     
-    public int palautaKorkeus() {
-        return this.korkeus;
+    public int getHeight() {
+        return this.height;
     }
     
-    public Puyo getTippuva() {
-        return this.tippuva;
+    public Puyo getFalling() {
+        return this.falling;
     }
     
-    public Puyo getTippuvanAkseli() {
-        return this.tippuvanAkseli;
+    public Puyo getFallingAxis() {
+        return this.fallingAxis;
     }
     
-    public ArrayList<Puyo> getPuyot() {
-        return this.puyot;
+    public ArrayList<Puyo> getPuyos() {
+        return this.puyos;
     }
     
-    public int getPisteet() {
-        return this.pisteet;
+    public int getPoints() {
+        return this.points;
     }
     
-    public void lisaaPisteita(int montako) {
-        this.pisteet += montako;
+    public void addPoints(int amount) {
+        this.points += amount;
     }
 }

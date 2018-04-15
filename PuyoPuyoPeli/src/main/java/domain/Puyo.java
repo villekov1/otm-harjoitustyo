@@ -3,71 +3,71 @@ package domain;
 import java.util.Random;
 
 public class Puyo {
-    private int sijaintiX;
-    private int sijaintiY;
-    private Vari vari;
+    private int positionX;
+    private int positionY;
+    private Vari colour;
     
-    public Puyo(int sijaintiX, int sijaintiY, Vari vari){
-        this.sijaintiX = sijaintiX;
-        this.sijaintiY = sijaintiY;
-        this.vari = vari;
+    public Puyo(int positionX, int positionY, Vari colour) {
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.colour = colour;
     }
-    public Puyo(Vari vari){
-        this.vari = vari;
-        this.sijaintiX = 2;
-        this.sijaintiY = 0;
-    }
-
-    public int getSijaintiX() {
-        return sijaintiX;
+    public Puyo(Vari colour) {
+        this.colour = colour;
+        this.positionX = 2;
+        this.positionY = 0;
     }
 
-    public int getSijaintiY() {
-        return sijaintiY;
+    public int getPositionX() {
+        return positionX;
     }
 
-    public Vari getVari() {
-        return vari;
+    public int getPositionY() {
+        return positionY;
     }
 
-    public void setSijaintiX(int sijaintiX) {
-        this.sijaintiX = sijaintiX;
+    public Vari getColour() {
+        return colour;
     }
 
-    public void setSijaintiY(int sijaintiY) {
-        this.sijaintiY = sijaintiY;
+    public void setPositionX(int positionX) {
+        this.positionX = positionX;
     }
-    
-    public void siirraX(int siirtyma){
-        this.sijaintiX = this.sijaintiX + siirtyma;
+
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
     }
     
-    public void siirraY(int siirtyma){
-        this.sijaintiY = this.sijaintiY + siirtyma;
+    public void moveX(int transition) {
+        this.positionX += transition;
+    }
+    
+    public void moveY(int transition) {
+        this.positionY += transition;
     }
 
-    public void setVari(Vari vari) {
+    public void setColour(Vari colour) {
         //Tälle ei pitäisi olla mitään tarvetta, mutta tehdään se kuitenkin varmuuden vuoksi
-        this.vari = vari;
+        this.colour = colour;
     }
     
-    public String toString(){
-        return "("+this.getSijaintiX()+", "+this.getSijaintiY()+"), "+this.getVari();
+    public String toString() {
+        return "(" + this.getPositionX() + ", " + this.getPositionY() + "), " + this.getColour();
     }
-    public boolean equals(Object verrattava) {
-        if (this == verrattava) {
+    public boolean equals(Object comparable) {
+        if (this == comparable) {
             return true;
         }
 
-        if (!(verrattava instanceof Puyo)) {
+        if (!(comparable instanceof Puyo)) {
             return false;
         }
 
-        Puyo verrattavaPuyo = (Puyo) verrattava;
+        Puyo comparedPuyo = (Puyo) comparable;
 
-        if (this.sijaintiX == verrattavaPuyo.sijaintiX &&
-                this.sijaintiY == verrattavaPuyo.sijaintiY &&
-                this.vari == verrattavaPuyo.vari) {
+        if (this.positionX == comparedPuyo.positionX &&
+                this.positionY == comparedPuyo.positionY &&
+                this.colour == comparedPuyo.colour) {
             return true;
         }
 

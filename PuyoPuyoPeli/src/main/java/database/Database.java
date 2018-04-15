@@ -8,7 +8,7 @@ public class Database {
 
     private String databaseAddress;
 
-    public Database(String databaseAddress){
+    public Database(String databaseAddress) {
         this.databaseAddress = databaseAddress;
     }
 

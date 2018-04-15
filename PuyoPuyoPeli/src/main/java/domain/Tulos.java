@@ -3,22 +3,22 @@ package domain;
 
 public class Tulos {
     private int id;
-    private int tulos;
-    private String nimi;
+    private int score;
+    private String name;
     
-    public Tulos(int id, int tulos, String nimi){
-        this.tulos = tulos;
-        this.nimi = nimi;
+    public Tulos(int id, int score, String name) {
+        this.score = score;
+        this.name = name;
     }
     
-    public String getNimi(){
-        return this.nimi;
+    public String getName() {
+        return this.name;
     }
-    public int getTulos(){
-        return this.tulos;
+    public int getScore() {
+        return this.score;
     }
     
-    public String toString(){
-        return this.nimi + ": "+this.tulos;
+    public String toString() {
+        return this.name + ": " + this.score;
     }
 }

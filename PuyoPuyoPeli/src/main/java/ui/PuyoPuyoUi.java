@@ -43,27 +43,27 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.paint.Color;
 
-public class PuyoPuyoUi extends Application{
+public class PuyoPuyoUi extends Application {
 
-    Pelitilanne tilanne = new Pelitilanne(6, 13);
-    int leveys = tilanne.palautaLeveys();
-    int korkeus = tilanne.palautaKorkeus();
-    int sade = 20;
-    boolean paussilla = true;
-    int nopeusluokka=0;
+    Pelitilanne situation = new Pelitilanne(6, 13);
+    int width = situation.getWidth();
+    int height = situation.getHeight();
+    int radius = 20;
+    boolean pause = true;
+    int speed = 0;
     
     static File dbFile = new File("huipputulokset.db");
     static Database database = new Database("jdbc:sqlite:"+dbFile.getAbsolutePath());
     static TulosDao tulosDao = new TulosDao(database);
-    static List<Tulos> huipputulokset = etsiPisteidenPerusteella();
+    static List<Tulos> huipputulokset = findByPoints();
     
-    public void start(Stage ikkuna){
+    public void start(Stage ikkuna) {
         //Alkuvalikko
-        GridPane alku = new GridPane();
-        alku.setHgap(5);
-        alku.setVgap(10);
-        alku.setMinSize(2*sade+2*sade*leveys, 2*sade+2*sade*korkeus);
-        Scene alkunakyma = new Scene(alku);
+        GridPane start = new GridPane();
+        start.setHgap(5);
+        start.setVgap(10);
+        start.setMinSize(2*radius + 2*radius*width, 2*radius + 2*radius*height);
+        Scene startView = new Scene(start);
         
         Label ohjeteksti = new Label("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
                 + "Ohjeet:\nYritä tehdä neljän samanvärisen Puyon sarjoja, jolloin ne katoavat ja antavat pisteitä!\n"
@@ -79,15 +79,15 @@ public class PuyoPuyoUi extends Application{
         Tulos tulos2 = new Tulos(0, 0, "");
         Tulos tulos3 = new Tulos(0, 0, "");
         
-        if(this.huipputulokset.size()>=1){
+        if(this.huipputulokset.size()>=1) {
             tulos1 = this.huipputulokset.get(0);
             huipputulosteksti += "1. "+tulos1+"\n";
         }
-        if(this.huipputulokset.size()>=2){
+        if(this.huipputulokset.size()>=2) {
             tulos2 = this.huipputulokset.get(1);
             huipputulosteksti += "2. "+tulos2+"\n";
         }
-        if(this.huipputulokset.size()>=3){
+        if(this.huipputulokset.size()>=3) {
             tulos3 = this.huipputulokset.get(2);
             huipputulosteksti += "3. "+tulos3+"\n";
         }
@@ -96,22 +96,22 @@ public class PuyoPuyoUi extends Application{
         Button aloita = new Button("Aloita");
         Button huipputuloksiin = new Button("Huipputulokset");
         
-        alku.add(aloita, 1, 1);
-        alku.add(kolmenkarki, 1, 0);
-        alku.add(huipputuloksiin, 1, 2);
-        alku.add(ohjeteksti, 1, 3);
+        start.add(aloita, 1, 1);
+        start.add(kolmenkarki, 1, 0);
+        start.add(huipputuloksiin, 1, 2);
+        start.add(ohjeteksti, 1, 3);
         
         //Pelinäkymä
         GridPane komponentit = new GridPane();
-        Canvas ruutu = new Canvas(2*sade+2*sade*leveys, 2*sade+2*sade*korkeus);
-        komponentit.setMinSize(2*sade+2*sade*leveys +100, 2*sade+2*sade*korkeus);
+        Canvas ruutu = new Canvas(2*radius + 2*radius*width, 2*radius + 2*radius*height);
+        komponentit.setMinSize(2*radius + 2*radius*width + 100, 2*radius + 2*radius*height);
         GraphicsContext piirturi = ruutu.getGraphicsContext2D();
         
         Button paluunappi = new Button("Alkuvalikkoon");
         Button paluunappiTuloksissa = new Button("Alkuvalikkoon");
         Button reset = new Button("Aloita alusta");
         Button pysayta = new Button("Pysäytä");
-        Label pisteteksti = new Label("Pisteitä: "+tilanne.getPisteet());
+        Label pisteteksti = new Label("Pisteitä: "+situation.getPoints());
         
         HBox ylapalkki = new HBox();
         ylapalkki.setSpacing(15);
@@ -138,12 +138,12 @@ public class PuyoPuyoUi extends Application{
         
         ListView<String> list = new ListView<String>();
         ObservableList<String> lista = FXCollections.observableArrayList();
-        if(nappi1.isSelected()){
-            etsiPisteidenPerusteella().stream().forEach(tulos -> { 
+        if(nappi1.isSelected()) {
+            findByPoints().stream().forEach(tulos -> { 
                 lista.add(tulos.toString());
             });
-        }else{
-            etsiNimenPerusteella().stream().forEach(tulos -> { 
+        }else {
+            findByName().stream().forEach(tulos -> { 
                 lista.add(tulos.toString());
             });
         }
@@ -152,14 +152,14 @@ public class PuyoPuyoUi extends Application{
         
         nappi1.setOnAction((event) -> {
             lista.clear();
-            etsiPisteidenPerusteella().stream().forEach(tulos -> { 
+            findByPoints().stream().forEach(tulos -> { 
                 lista.add(tulos.toString());
                 list.setItems(lista);
             });
         });
         nappi2.setOnAction((event) -> {
             lista.clear();
-            etsiNimenPerusteella().stream().forEach(tulos -> { 
+            findByName().stream().forEach(tulos -> { 
                 lista.add(tulos.toString());
                 list.setItems(lista);
             });
@@ -180,28 +180,29 @@ public class PuyoPuyoUi extends Application{
         pelinakyma.setOnKeyPressed(event -> {
             painetutNapit.put(event.getCode(), Boolean.TRUE);
             if (event.getCode().equals(KeyCode.LEFT)) {
-                tilanne.siirraVasemmalle();
+                situation.moveLeft();
             } 
-            if(event.getCode().equals(KeyCode.RIGHT)){
-                tilanne.siirraOikealle();
+            if(event.getCode().equals(KeyCode.RIGHT)) {
+                situation.moveRight();
             }
-            if(event.getCode().equals(KeyCode.ENTER)){
-                tilanne.kaannaOikealle();
+            if(event.getCode().equals(KeyCode.ENTER)) {
+                situation.kaannaOikealle();
             }
-            if(event.getCode().equals(KeyCode.W)){
-                tilanne.lisaaPisteita(1000);
+            if(event.getCode().equals(KeyCode.W)) {
+                situation.addPoints(1000);
             }
-            if(event.getCode().equals(KeyCode.UP)){
-                while(!tilanne.onkoTaynna(tilanne.getTippuva().getSijaintiX(), tilanne.getTippuva().getSijaintiY())
-                    || !tilanne.onkoTaynna(tilanne.getTippuvanAkseli().getSijaintiX(), tilanne.getTippuvanAkseli().getSijaintiY())){
-                    tilanne.tiputaTippuvat();
+            //ns. "hard drop"
+            if(event.getCode().equals(KeyCode.UP)) {
+                while(!situation.isTheSpaceFilled(situation.getFalling().getPositionX(), situation.getFalling().getPositionY())
+                    || !situation.isTheSpaceFilled(situation.getFallingAxis().getPositionX(), situation.getFallingAxis().getPositionY())) {
+                    situation.dropFalling();
                 }
             }
-            if(event.getCode().equals(KeyCode.P)){
-                if(paussilla==true){
-                    paussilla = false;
-                }else{
-                    paussilla = true;
+            if(event.getCode().equals(KeyCode.P)) {
+                if(pause == true) {
+                    pause = false;
+                }else {
+                    pause = true;
                 }
             }
 
@@ -213,24 +214,24 @@ public class PuyoPuyoUi extends Application{
         
         aloita.setOnAction((event) -> {
             ikkuna.setScene(pelinakyma);
-            paussilla = false;
+            pause = false;
         });
         paluunappi.setOnAction((event) -> {
-            ikkuna.setScene(alkunakyma);
-            paussilla = true;
+            ikkuna.setScene(startView);
+            pause = true;
         });
         paluunappiTuloksissa.setOnAction((event) -> {
-            ikkuna.setScene(alkunakyma);
-            paussilla = true;
+            ikkuna.setScene(startView);
+            pause = true;
         });
         reset.setOnAction((event) -> {
-            this.tilanne = new Pelitilanne(6, 13);
+            this.situation = new Pelitilanne(6, 13);
         });
         pysayta.setOnAction((event) -> {
-            if(this.paussilla == false){
-                this.paussilla = true;
-            }else{
-                this.paussilla = false;
+            if(this.pause == false) {
+                this.pause = true;
+            }else {
+                this.pause = false;
             }
             
         });
@@ -243,35 +244,35 @@ public class PuyoPuyoUi extends Application{
             long edellinen = 0;
             
             @Override
-            public void handle(long nykyhetki){
-                nopeusluokka = (int)tilanne.getPisteet()/1000;
+            public void handle(long nykyhetki) {
+                speed = (int)situation.getPoints()/1000;
                 piirturi.setFill(Color.WHITE);
-                piirturi.fillRect(0, 0, 2*(sade+2)*leveys, 2*(sade+2)*korkeus);
+                piirturi.fillRect(0, 0, 2*(radius + 2)*width, 2*(radius + 2)*height);
                 
-                for(int i=0; i<tilanne.getPuyot().size(); i++){
-                    Puyo puyo = tilanne.getPuyot().get(i);
+                for(int i=0; i<situation.getPuyos().size(); i++) {
+                    Puyo puyo = situation.getPuyos().get(i);
 
-                    if(puyo.getVari() == Vari.PUNAINEN){
+                    if(puyo.getColour() == Vari.RED) {
                         piirturi.setFill(Color.RED);
-                    }else if(puyo.getVari() == Vari.KELTAINEN){
+                    }else if(puyo.getColour() == Vari.YELLOW) {
                         piirturi.setFill(Color.YELLOW);
-                    }else if(puyo.getVari() == Vari.VIHREA){
-                        piirturi.setFill(Color.GREEN);
-                    }else if(puyo.getVari() == Vari.SININEN){
+                    }else if(puyo.getColour() == Vari.GREEN) {
+                        piirturi.setFill(Color.LIMEGREEN);
+                    }else if(puyo.getColour() == Vari.BLUE) {
                         piirturi.setFill(Color.BLUE);
-                    }else if(puyo.getVari() == Vari.VIOLETTI){
-                        piirturi.setFill(Color.PURPLE);
+                    }else if(puyo.getColour() == Vari.PURPLE) {
+                        piirturi.setFill(Color.BLUEVIOLET);
                     }
 
-                    piirturi.fillOval(0.5*sade + 2*sade*puyo.getSijaintiX(), sade+2*sade*puyo.getSijaintiY(), 2*sade, 2*sade);
+                    piirturi.fillOval(0.5*radius + 2*radius*puyo.getPositionX(), radius+2*radius*puyo.getPositionY(), 2*radius, 2*radius);
                 }
                 
-                if(nykyhetki - edellinen < 1000000000-nopeusluokka*100000000){
+                if(nykyhetki - edellinen < 1000000000 - speed*100000000) {
                     return;
                 }
-                if(paussilla==false){
-                    tilanne.paivita();
-                    pisteteksti.setText("Pisteitä: "+tilanne.getPisteet());
+                if(pause == false) {
+                    situation.update();
+                    pisteteksti.setText("Pisteitä: "+situation.getPoints());
                 }
                
                 this.edellinen = nykyhetki;
@@ -281,50 +282,50 @@ public class PuyoPuyoUi extends Application{
         }.start();
         
         
-        ikkuna.setScene(alkunakyma);
+        ikkuna.setScene(startView);
         ikkuna.show();
     }
     
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         //huipputulokset = tulosDao.findAllInOrderByPoints();
         launch(PuyoPuyoUi.class);
     }
     
-    public static List<Tulos> etsiNimenPerusteella(){
+    public static List<Tulos> findByName() {
         List<Tulos> tulokset = new ArrayList<>();
         
         try{
             tulokset = tulosDao.findAllInOrderByName();
-        }catch(Exception e){
+        }catch(Exception e) {
             System.out.println("Ei voitu etsiä tuloksia.");
         }
         
         return tulokset;
     }
     
-    public static List<Tulos> etsiPisteidenPerusteella(){
+    public static List<Tulos> findByPoints() {
         List<Tulos> tulokset = new ArrayList<>();
         
         try{
             tulokset = tulosDao.findAllInOrderByPoints();
-        }catch(Exception e){
+        }catch(Exception e) {
             System.out.println("Ei voitu etsiä tuloksia.");
         }
         
         return tulokset;
     }
     
-    public void init() throws SQLException{
+    public void init() throws SQLException {
         try{
             File dbFile = new File("huipputulokset.db");
             if(dbFile.exists()){
                 return;
             }
-        }catch(Exception e){
+        }catch(Exception e) {
             System.out.println("Virhe: "+e.getMessage());
         }
         
-        try(Connection conn = DriverManager.getConnection("jdbc:sqlite:huipputulokset.db")){
+        try(Connection conn = DriverManager.getConnection("jdbc:sqlite:huipputulokset.db")) {
             if (conn != null) {
                 System.out.println("Uusi tietokanta on luotu.");
                 
@@ -348,7 +349,7 @@ public class PuyoPuyoUi extends Application{
                 stmt4.close();
                 conn.close();
             }
-        }catch(SQLException e){
+        }catch(SQLException e) {
             System.out.println("Virhe: " + e.getMessage());
         }
     }

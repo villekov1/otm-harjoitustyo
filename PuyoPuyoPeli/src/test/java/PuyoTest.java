@@ -17,7 +17,7 @@ public class PuyoTest {
     
     @Before
     public void setUp() {
-        puyo = new Puyo(5, 10, Vari.PUNAINEN);
+        puyo = new Puyo(5, 10, Vari.RED);
     }
     
     @After
@@ -25,53 +25,53 @@ public class PuyoTest {
     }
 
     @Test
-    public void getSijaintiXToimiiOikein() {      
-        assertEquals(5, puyo.getSijaintiX());
+    public void getPositionXWorks() {      
+        assertEquals(5, puyo.getPositionX());
     }
     
     @Test
-    public void getSijaintiYToimiiOikein(){
-        assertEquals(10, puyo.getSijaintiY());
+    public void getPositionYWorks() {
+        assertEquals(10, puyo.getPositionY());
     }
     
     @Test
-    public void siirraXToimii(){
-        puyo.siirraX(-2);
-        assertEquals(3, puyo.getSijaintiX());
+    public void moveXWorks() {
+        puyo.moveX(-2);
+        assertEquals(3, puyo.getPositionX());
     }
     
     @Test
-    public void siirraYToimii(){
-        puyo.siirraY(2);
-        assertEquals(12, puyo.getSijaintiY());
+    public void moveYWorks() {
+        puyo.moveY(2);
+        assertEquals(12, puyo.getPositionY());
     }
     @Test
-    public void getVariToimii1(){
-        assertEquals(Vari.PUNAINEN, puyo.getVari());
+    public void getColourWorks1() {
+        assertEquals(Vari.RED, puyo.getColour());
     }
     @Test
-    public void getVariToimii2(){
-        Puyo puyo2 = new Puyo(Vari.SININEN);
-        assertEquals(Vari.SININEN, puyo2.getVari());
+    public void getColoursWorks2() {
+        Puyo puyo2 = new Puyo(Vari.BLUE);
+        assertEquals(Vari.BLUE, puyo2.getColour());
     }
     
     @Test
-    public void equalsPalauttaaTruenJosPuyotSamanlaisia(){
-        Puyo puyo2 = new Puyo(5, 10, Vari.PUNAINEN);
+    public void equalsReturnsTrueIfObjectsAreTheSame() {
+        Puyo puyo2 = new Puyo(5, 10, Vari.RED);
         
         assertEquals(true, puyo.equals(puyo2));
     }
     
     @Test
-    public void equalsPalauttaaFalsenJosPuyotErilaisia(){
-        Puyo puyo2 = new Puyo(5, 9, Vari.SININEN);
+    public void equalsReturnsFalseIfObjectsDifferent() {
+        Puyo puyo2 = new Puyo(5, 9, Vari.BLUE);
         
         assertEquals(false, puyo.equals(puyo2));
     }
     
     @Test
-    public void toStringToimiiOikein(){
-        assertEquals("(5, 10), PUNAINEN", puyo.toString());
+    public void toStringWorks() {
+        assertEquals("(5, 10), RED", puyo.toString());
     }
     
     

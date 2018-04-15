@@ -33,17 +33,17 @@ public class PelitilanneTest {
     //HUOM. Tällä hetkellä lähinnä PuyoTest-luokassa on testejä!
     
     @Test
-    public void pisteetAlussaNolla(){
-        assertEquals(0, tilanne.getPisteet());
+    public void pointsInTheBeginningZero() {
+        assertEquals(0, tilanne.getPoints());
     }
     
     @Test
-    public void leveysOikein(){
-        assertEquals(6, tilanne.palautaLeveys());
+    public void WidthIsRight() {
+        assertEquals(6, tilanne.getWidth());
     }
     
     @Test
-    public void korkeusOikein(){
-        assertEquals(13, tilanne.palautaKorkeus());
+    public void heightIsRight() {
+        assertEquals(13, tilanne.getHeight());
     }
 }
