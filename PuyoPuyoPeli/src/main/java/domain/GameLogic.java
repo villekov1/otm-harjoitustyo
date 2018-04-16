@@ -273,6 +273,14 @@ public class GameLogic {
         }
     }
     
+    public boolean gameOver() {
+        if (this.isTheSpaceFilled(2, 0)) {
+            return true;
+        } else {
+            return false;
+        }      
+    }
+    
     public int getWidth() {
         return this.width;
     }

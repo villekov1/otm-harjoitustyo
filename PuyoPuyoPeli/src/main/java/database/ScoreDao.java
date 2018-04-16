@@ -28,6 +28,7 @@ public class ScoreDao {
         
         rs.close();
         stmt.close();
+        conn.close();
         
         return tulokset;
     }
@@ -45,6 +46,7 @@ public class ScoreDao {
         
         rs.close();
         stmt.close();
+        conn.close();
         
         return tulokset;
     }
@@ -62,6 +64,7 @@ public class ScoreDao {
         
         rs.close();
         stmt.close();
+        conn.close();
         
         return tulokset;
     }
@@ -78,27 +81,73 @@ public class ScoreDao {
             tulos = new Score(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi"));
             rs.close();
             stmt.close();
-
+            conn.close();
+            
             return tulos;
         } else {
             rs.close();
             stmt.close();
+            conn.close();
+            
             return null;
         }
     }
     
-    public void delete(int id) throws SQLException {
+    public void delete(Integer key) throws SQLException {
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("DELETE FROM Tulos WHERE id = ?");
 
-        stmt.setInt(1, id);
+        stmt.setInt(1, key);
         stmt.executeUpdate();
 
         stmt.close();
         conn.close();
     }
     
-    private Score save(Score tulos) throws SQLException {
+    public int findId(Score tulos) throws SQLException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Tulos WHERE nimi = ? AND tulos = ?");
+        stmt.setString(1, tulos.getName());
+        stmt.setInt(2, tulos.getScore());
+
+        ResultSet rs = stmt.executeQuery();
+        int id;
+        
+        if (rs.next()) {
+            id = rs.getInt("id");
+            stmt.close();
+            rs.close();
+            conn.close();
+            return id;
+        }
+        
+        stmt.close();
+        rs.close();
+        conn.close();
+        return -1;
+        
+        
+        
+    }
+    
+    public void saveIfNotInTheDatabase(Score tulos) throws SQLException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Tulos WHERE nimi = ? AND tulos = ?");
+        stmt.setString(1, tulos.getName());
+        stmt.setInt(2, tulos.getScore());
+
+        ResultSet rs = stmt.executeQuery();
+        
+        if (!rs.next()) {
+            save(tulos);
+        }
+        
+        stmt.close();
+        rs.close();
+        conn.close();
+    }
+    
+    public Score save(Score tulos) throws SQLException {
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO Tulos(tulos, nimi) VALUES (?, ?)");
         stmt.setInt(1, tulos.getScore());
