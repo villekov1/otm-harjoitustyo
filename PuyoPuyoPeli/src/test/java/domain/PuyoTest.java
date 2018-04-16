@@ -1,7 +1,7 @@
 package domain;
 
 import domain.Puyo;
-import domain.Vari;
+import domain.Colour;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -19,7 +19,7 @@ public class PuyoTest {
     
     @Before
     public void setUp() {
-        puyo = new Puyo(5, 10, Vari.RED);
+        puyo = new Puyo(5, 10, Colour.RED);
     }
     
     @After
@@ -49,24 +49,24 @@ public class PuyoTest {
     }
     @Test
     public void getColourWorks1() {
-        assertEquals(Vari.RED, puyo.getColour());
+        assertEquals(Colour.RED, puyo.getColour());
     }
     @Test
     public void getColoursWorks2() {
-        Puyo puyo2 = new Puyo(Vari.BLUE);
-        assertEquals(Vari.BLUE, puyo2.getColour());
+        Puyo puyo2 = new Puyo(Colour.BLUE);
+        assertEquals(Colour.BLUE, puyo2.getColour());
     }
     
     @Test
     public void equalsReturnsTrueIfObjectsAreTheSame() {
-        Puyo puyo2 = new Puyo(5, 10, Vari.RED);
+        Puyo puyo2 = new Puyo(5, 10, Colour.RED);
         
         assertEquals(true, puyo.equals(puyo2));
     }
     
     @Test
     public void equalsReturnsFalseIfObjectsDifferent() {
-        Puyo puyo2 = new Puyo(5, 9, Vari.BLUE);
+        Puyo puyo2 = new Puyo(5, 9, Colour.BLUE);
         
         assertEquals(false, puyo.equals(puyo2));
     }
@@ -78,8 +78,8 @@ public class PuyoTest {
     
     @Test
     public void setColourWorks(){
-        puyo.setColour(Vari.GREEN);
-        assertEquals(Vari.GREEN, puyo.getColour());
+        puyo.setColour(Colour.GREEN);
+        assertEquals(Colour.GREEN, puyo.getColour());
     }
     
     @Test

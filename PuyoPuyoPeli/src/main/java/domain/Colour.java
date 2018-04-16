@@ -1,5 +1,5 @@
 package domain;
 
-public enum Vari {
+public enum Colour {
     BLUE, GREEN, RED, YELLOW, PURPLE, EMPTY;
 }

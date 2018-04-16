@@ -1,6 +1,6 @@
 package domain;
 
-import domain.Pelitilanne;
+import domain.GameLogic;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
@@ -10,11 +10,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class PelitilanneTest {
+public class GameLogicTest {
     
-    Pelitilanne situation;
+    GameLogic situation;
     
-    public PelitilanneTest() {
+    public GameLogicTest() {
     }
     
     @BeforeClass
@@ -27,7 +27,7 @@ public class PelitilanneTest {
     
     @Before
     public void setUp() {
-        situation = new Pelitilanne(6, 13);
+        situation = new GameLogic(6, 13);
     }
     
     @After
@@ -72,13 +72,13 @@ public class PelitilanneTest {
     
     @Test
     public void addPuyoWorks(){
-        situation.addPuyo(new Puyo(5, 12, Vari.YELLOW));
+        situation.addPuyo(new Puyo(5, 12, Colour.YELLOW));
         
         assertEquals(3, situation.getPuyos().size());
     }
     @Test
     public void updateFilledWorks(){
-        situation.addPuyo(new Puyo(2, 10, Vari.BLUE));
+        situation.addPuyo(new Puyo(2, 10, Colour.BLUE));
         situation.updateFilled();
         
         assertEquals(true, situation.isTheSpaceFilled(2, 10));
@@ -87,14 +87,14 @@ public class PelitilanneTest {
     
     @Test
     public void updateFilledWorks2(){
-        situation.addPuyo(new Puyo(3, 11, Vari.GREEN));
+        situation.addPuyo(new Puyo(3, 11, Colour.GREEN));
         situation.updateFilled();
         
         assertEquals(true, situation.isTheSpaceFilled(3, 11));
     }
     @Test
     public void updateFilledWorks3(){
-        situation.addPuyo(new Puyo(3, 11, Vari.GREEN));
+        situation.addPuyo(new Puyo(3, 11, Colour.GREEN));
         situation.updateFilled();
         
         assertEquals(false, situation.isTheSpaceFilled(1, 10));
@@ -102,10 +102,10 @@ public class PelitilanneTest {
     
     @Test
     public void findChainReturnsCorrectChain(){
-        situation.addPuyo(new Puyo(3, 12, Vari.YELLOW));
-        situation.addPuyo(new Puyo(3, 11, Vari.YELLOW));
-        situation.addPuyo(new Puyo(3, 10, Vari.YELLOW));
-        situation.addPuyo(new Puyo(3, 9, Vari.YELLOW));
+        situation.addPuyo(new Puyo(3, 12, Colour.YELLOW));
+        situation.addPuyo(new Puyo(3, 11, Colour.YELLOW));
+        situation.addPuyo(new Puyo(3, 10, Colour.YELLOW));
+        situation.addPuyo(new Puyo(3, 9, Colour.YELLOW));
         situation.updateFilled();
         
         List<Puyo> list = situation.findChain(3, 10);
@@ -115,10 +115,10 @@ public class PelitilanneTest {
     
     @Test
     public void findChainReturnsCorrectChain2(){
-        situation.addPuyo(new Puyo(2, 12, Vari.RED));
-        situation.addPuyo(new Puyo(3, 12, Vari.RED));
-        situation.addPuyo(new Puyo(4, 12, Vari.RED));
-        situation.addPuyo(new Puyo(5, 12, Vari.RED));
+        situation.addPuyo(new Puyo(2, 12, Colour.RED));
+        situation.addPuyo(new Puyo(3, 12, Colour.RED));
+        situation.addPuyo(new Puyo(4, 12, Colour.RED));
+        situation.addPuyo(new Puyo(5, 12, Colour.RED));
         situation.updateFilled();
         
         List<Puyo> list = situation.findChain(3, 12);
@@ -128,11 +128,11 @@ public class PelitilanneTest {
     
     @Test
     public void findChainReturnsCorrectChain3(){
-        situation.addPuyo(new Puyo(2, 12, Vari.PURPLE));
-        situation.addPuyo(new Puyo(3, 12, Vari.PURPLE));
-        situation.addPuyo(new Puyo(4, 12, Vari.PURPLE));
-        situation.addPuyo(new Puyo(4, 11, Vari.PURPLE));
-        situation.addPuyo(new Puyo(5, 12, Vari.PURPLE));
+        situation.addPuyo(new Puyo(2, 12, Colour.PURPLE));
+        situation.addPuyo(new Puyo(3, 12, Colour.PURPLE));
+        situation.addPuyo(new Puyo(4, 12, Colour.PURPLE));
+        situation.addPuyo(new Puyo(4, 11, Colour.PURPLE));
+        situation.addPuyo(new Puyo(5, 12, Colour.PURPLE));
         situation.updateFilled();
         
         List<Puyo> list = situation.findChain(3, 12);
@@ -142,10 +142,10 @@ public class PelitilanneTest {
     
     @Test
     public void destroyChainWorksIfChainIsLongEnough(){
-        situation.addPuyo(new Puyo(2, 12, Vari.PURPLE));
-        situation.addPuyo(new Puyo(3, 12, Vari.PURPLE));
-        situation.addPuyo(new Puyo(4, 12, Vari.PURPLE));
-        situation.addPuyo(new Puyo(4, 11, Vari.PURPLE));
+        situation.addPuyo(new Puyo(2, 12, Colour.PURPLE));
+        situation.addPuyo(new Puyo(3, 12, Colour.PURPLE));
+        situation.addPuyo(new Puyo(4, 12, Colour.PURPLE));
+        situation.addPuyo(new Puyo(4, 11, Colour.PURPLE));
         situation.updateFilled();
         
         ArrayList<Puyo> list = situation.findChain(3, 12);
@@ -158,9 +158,9 @@ public class PelitilanneTest {
     
     @Test
     public void destroyChainDoesNotWorkIfChainIsNotLongEnough(){
-        situation.addPuyo(new Puyo(2, 12, Vari.PURPLE));
-        situation.addPuyo(new Puyo(3, 12, Vari.PURPLE));
-        situation.addPuyo(new Puyo(4, 12, Vari.PURPLE));
+        situation.addPuyo(new Puyo(2, 12, Colour.PURPLE));
+        situation.addPuyo(new Puyo(3, 12, Colour.PURPLE));
+        situation.addPuyo(new Puyo(4, 12, Colour.PURPLE));
         situation.updateFilled();
         
         ArrayList<Puyo> list = situation.findChain(3, 12);

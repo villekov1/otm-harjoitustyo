@@ -16,12 +16,12 @@ import static org.junit.Assert.*;
  *
  * @author Ville
  */
-public class TulosTest {
+public class ScoreTest {
     
-    Tulos tulos;
-    Tulos tulos2;
+    Score tulos;
+    Score tulos2;
     
-    public TulosTest() {
+    public ScoreTest() {
     }
     
     @BeforeClass
@@ -34,8 +34,8 @@ public class TulosTest {
     
     @Before
     public void setUp() {
-        tulos = new Tulos(1, 1900, "Ville");
-        tulos2 = new Tulos(2, 980, "Tuomas");
+        tulos = new Score(1, 1900, "Ville");
+        tulos2 = new Score(2, 980, "Tuomas");
     }
     
     @After

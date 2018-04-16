@@ -1,11 +1,11 @@
 package ui;
 
 import database.Database;
-import database.TulosDao;
-import domain.Pelitilanne;
+import database.ScoreDao;
+import domain.GameLogic;
 import domain.Puyo;
-import domain.Tulos;
-import domain.Vari;
+import domain.Score;
+import domain.Colour;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -45,7 +45,7 @@ import javafx.scene.paint.Color;
 
 public class PuyoPuyoUi extends Application {
 
-    Pelitilanne situation = new Pelitilanne(6, 13);
+    GameLogic situation = new GameLogic(6, 13);
     int width = situation.getWidth();
     int height = situation.getHeight();
     int radius = 20;
@@ -54,8 +54,8 @@ public class PuyoPuyoUi extends Application {
     
     static File dbFile = new File("huipputulokset.db");
     static Database database = new Database("jdbc:sqlite:"+dbFile.getAbsolutePath());
-    static TulosDao tulosDao = new TulosDao(database);
-    static List<Tulos> huipputulokset = findByPoints();
+    static ScoreDao tulosDao = new ScoreDao(database);
+    static List<Score> huipputulokset = findByPoints();
     
     public void start(Stage ikkuna) {
         //Alkuvalikko
@@ -75,9 +75,9 @@ public class PuyoPuyoUi extends Application {
         String huipputulosteksti = "Huipputulokset:\n";
         
         //Tämä vaatii ehkä hieman hienosäätöä...
-        Tulos tulos1 = new Tulos(0, 0, "");
-        Tulos tulos2 = new Tulos(0, 0, "");
-        Tulos tulos3 = new Tulos(0, 0, "");
+        Score tulos1 = new Score(0, 0, "");
+        Score tulos2 = new Score(0, 0, "");
+        Score tulos3 = new Score(0, 0, "");
         
         if(this.huipputulokset.size()>=1) {
             tulos1 = this.huipputulokset.get(0);
@@ -225,7 +225,7 @@ public class PuyoPuyoUi extends Application {
             pause = true;
         });
         reset.setOnAction((event) -> {
-            this.situation = new Pelitilanne(6, 13);
+            this.situation = new GameLogic(6, 13);
         });
         pysayta.setOnAction((event) -> {
             if(this.pause == false) {
@@ -252,15 +252,15 @@ public class PuyoPuyoUi extends Application {
                 for(int i=0; i<situation.getPuyos().size(); i++) {
                     Puyo puyo = situation.getPuyos().get(i);
 
-                    if(puyo.getColour() == Vari.RED) {
+                    if(puyo.getColour() == Colour.RED) {
                         piirturi.setFill(Color.RED);
-                    }else if(puyo.getColour() == Vari.YELLOW) {
+                    }else if(puyo.getColour() == Colour.YELLOW) {
                         piirturi.setFill(Color.YELLOW);
-                    }else if(puyo.getColour() == Vari.GREEN) {
+                    }else if(puyo.getColour() == Colour.GREEN) {
                         piirturi.setFill(Color.LIMEGREEN);
-                    }else if(puyo.getColour() == Vari.BLUE) {
+                    }else if(puyo.getColour() == Colour.BLUE) {
                         piirturi.setFill(Color.BLUE);
-                    }else if(puyo.getColour() == Vari.PURPLE) {
+                    }else if(puyo.getColour() == Colour.PURPLE) {
                         piirturi.setFill(Color.BLUEVIOLET);
                     }
 
@@ -291,8 +291,8 @@ public class PuyoPuyoUi extends Application {
         launch(PuyoPuyoUi.class);
     }
     
-    public static List<Tulos> findByName() {
-        List<Tulos> tulokset = new ArrayList<>();
+    public static List<Score> findByName() {
+        List<Score> tulokset = new ArrayList<>();
         
         try{
             tulokset = tulosDao.findAllInOrderByName();
@@ -303,8 +303,8 @@ public class PuyoPuyoUi extends Application {
         return tulokset;
     }
     
-    public static List<Tulos> findByPoints() {
-        List<Tulos> tulokset = new ArrayList<>();
+    public static List<Score> findByPoints() {
+        List<Score> tulokset = new ArrayList<>();
         
         try{
             tulokset = tulosDao.findAllInOrderByPoints();

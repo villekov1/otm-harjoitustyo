@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public class Pelitilanne {
+public class GameLogic {
     private HashMap<Integer, HashMap<Integer, Boolean>> filled;
     private ArrayList<Puyo> puyos;
     
@@ -18,7 +18,7 @@ public class Pelitilanne {
     private Puyo fallingAxis;
     private Puyo next;
     
-    public Pelitilanne(int width, int height) {
+    public GameLogic(int width, int height) {
         this.width = width;
         this.height = height;
         this.points = 0;
@@ -102,10 +102,10 @@ public class Pelitilanne {
             for (int x = width - 1; x >= 0; x--) {
                 if (this.isTheSpaceFilled(x, y) && !this.isTheSpaceFilled(x, y + 1)) {
                     Puyo puyo = this.findPuyo(x, y);
-                    while(true) {
+                    while (true) {
                         puyo.moveY(1);
                         this.updateFilled();
-                        if (this.isTheSpaceFilled(puyo.getPositionX(), puyo.getPositionY()+1) || puyo.getPositionY()==12) {
+                        if (this.isTheSpaceFilled(puyo.getPositionX(), puyo.getPositionY() + 1) || puyo.getPositionY() == 12) {
                             break;
                         }
                     } 
@@ -118,10 +118,10 @@ public class Pelitilanne {
         if (falling.getPositionX() > 0 && fallingAxis.getPositionX() > 0) {
             if (!this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY()) &&
                 !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY())) {
-                if (!this.isTheSpaceFilled(falling.getPositionX()-1, falling.getPositionY()) 
-                    && !this.isTheSpaceFilled(fallingAxis.getPositionX()-1, fallingAxis.getPositionY())) {
-                        falling.moveX(-1);
-                        fallingAxis.moveX(-1);
+                if (!this.isTheSpaceFilled(falling.getPositionX() - 1, falling.getPositionY()) 
+                    && !this.isTheSpaceFilled(fallingAxis.getPositionX() - 1, fallingAxis.getPositionY())) {
+                    falling.moveX(-1);
+                    fallingAxis.moveX(-1);
                 }
             }
         }
@@ -132,33 +132,29 @@ public class Pelitilanne {
             if (!this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY()) &&
                 !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY())) {
                 if (!this.isTheSpaceFilled(falling.getPositionX() + 1, falling.getPositionY()) 
-                    && !this.isTheSpaceFilled(fallingAxis.getPositionX()+1, fallingAxis.getPositionY())) {
-                        falling.moveX(1);
-                        fallingAxis.moveX(1);
+                    && !this.isTheSpaceFilled(fallingAxis.getPositionX() + 1, fallingAxis.getPositionY())) {
+                    falling.moveX(1);
+                    fallingAxis.moveX(1);
                 }
             }
         }
     }
     
     public void kaannaOikealle() {
-        if (!isTheSpaceFilled(falling.getPositionX(),falling.getPositionY()) 
+        if (!isTheSpaceFilled(falling.getPositionX(), falling.getPositionY()) 
             && !isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY())) {
-            if (falling.getPositionY() < fallingAxis.getPositionY() && fallingAxis.getPositionX() < width -1
-                && !this.isTheSpaceFilled(fallingAxis.getPositionX() + 1, fallingAxis.getPositionY())){
-                falling.moveX(1);
-                falling.moveY(1);
+            if (falling.getPositionY() < fallingAxis.getPositionY() && fallingAxis.getPositionX() < width - 1
+                && !this.isTheSpaceFilled(fallingAxis.getPositionX() + 1, fallingAxis.getPositionY())) {
+                falling.moveXY(1, 1);
             } else if (falling.getPositionX() > fallingAxis.getPositionX()
                 && !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() + 1)) {
-                falling.moveX(-1);
-                falling.moveY(1);
+                falling.moveXY(-1, 1);
             } else if (falling.getPositionY() > fallingAxis.getPositionY() && fallingAxis.getPositionX() > 0
                 && !this.isTheSpaceFilled(fallingAxis.getPositionX() - 1, fallingAxis.getPositionY())) {
-                falling.moveX(-1);
-                falling.moveY(-1);
+                falling.moveXY(-1, -1);
             } else if (falling.getPositionX() < fallingAxis.getPositionX()
                 && !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() - 1)) {
-                falling.moveX(1);
-                falling.moveY(-1);
+                falling.moveXY(1, -1);
             }
         }
     }
@@ -187,20 +183,20 @@ public class Pelitilanne {
     }
     
     public Puyo randomPuyo() {
-        Vari vari;
+        Colour vari;
         Random arpoja = new Random();
         int luku = arpoja.nextInt(9);
         
         if (luku >= 0 && luku < 2) {
-            vari = Vari.RED;
+            vari = Colour.RED;
         } else if (luku >= 2 && luku < 4) {
-            vari = Vari.BLUE;
+            vari = Colour.BLUE;
         } else if (luku >= 4 && luku < 6) {
-            vari = Vari.YELLOW;
+            vari = Colour.YELLOW;
         } else if (luku >= 6 && luku < 8) {
-            vari = Vari.GREEN;
+            vari = Colour.GREEN;
         } else {
-            vari = Vari.PURPLE;
+            vari = Colour.PURPLE;
         }
         
         Puyo puyo = new Puyo(2, 0, vari);
@@ -234,25 +230,24 @@ public class Pelitilanne {
             int size = list.size();
             for (int j = 0; j < size; j++) {
                 Puyo puyo = list.get(j);
-                Vari vari = puyo.getColour();        
+                Colour vari = puyo.getColour();        
                 int x2 = puyo.getPositionX();
                 int y2 = puyo.getPositionY();
                 
-                if (x2 - 1 >= 0 && isTheSpaceFilled(x2 - 1, y2) && this.findPuyo(x2 - 1, y2).getColour() == vari && !list.contains(this.findPuyo(x2 - 1,y2))) {
-                    list.add(this.findPuyo(x2 - 1,y2));
+                if (x2 - 1 >= 0 && isTheSpaceFilled(x2 - 1, y2) && this.findPuyo(x2 - 1, y2).getColour() == vari && !list.contains(this.findPuyo(x2 - 1, y2))) {
+                    list.add(this.findPuyo(x2 - 1, y2));
                 }
-                if (x2 + 1 < width && isTheSpaceFilled(x2 + 1, y)&& this.findPuyo(x2 + 1, y2).getColour() == vari && !list.contains(this.findPuyo(x2 + 1,y2))) {
-                    list.add(this.findPuyo(x2 + 1,y2));
+                if (x2 + 1 < width && isTheSpaceFilled(x2 + 1, y) && this.findPuyo(x2 + 1, y2).getColour() == vari && !list.contains(this.findPuyo(x2 + 1, y2))) {
+                    list.add(this.findPuyo(x2 + 1, y2));
                 }
-                if (y2 + 1 < height && isTheSpaceFilled(x2, y2 + 1) && this.findPuyo(x2, y2 + 1).getColour() == vari && !list.contains(this.findPuyo(x2,y2 + 1))) {
-                    list.add(this.findPuyo(x2,y2 + 1));
+                if (y2 + 1 < height && isTheSpaceFilled(x2, y2 + 1) && this.findPuyo(x2, y2 + 1).getColour() == vari && !list.contains(this.findPuyo(x2, y2 + 1))) {
+                    list.add(this.findPuyo(x2, y2 + 1));
                 }
-                if (y2 - 1>=0 && isTheSpaceFilled(x2, y2 - 1) && this.findPuyo(x2, y2 - 1).getColour() == vari && !list.contains(this.findPuyo(x2,y2 - 1))) {
-                    list.add(this.findPuyo(x2,y2 - 1));
+                if (y2 - 1 >= 0 && isTheSpaceFilled(x2, y2 - 1) && this.findPuyo(x2, y2 - 1).getColour() == vari && !list.contains(this.findPuyo(x2, y2 - 1))) {
+                    list.add(this.findPuyo(x2, y2 - 1));
                 }
             }    
         }
-        
         return list;     
     }
     
@@ -266,7 +261,7 @@ public class Pelitilanne {
             }
             i++;
         }
-        return new Puyo(x, y, Vari.EMPTY);
+        return new Puyo(x, y, Colour.EMPTY);
     }
     
     public void destroyChain(ArrayList<Puyo> list) {
@@ -306,7 +301,7 @@ public class Pelitilanne {
         this.points += amount;
     }
     
-    public void addPuyo(Puyo puyo){
+    public void addPuyo(Puyo puyo) {
         this.puyos.add(puyo);
     }
 }

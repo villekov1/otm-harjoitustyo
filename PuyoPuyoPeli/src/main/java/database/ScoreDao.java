@@ -1,6 +1,6 @@
 package database;
 
-import domain.Tulos;
+import domain.Score;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,22 +8,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TulosDao {
+public class ScoreDao {
     private Database database;
     
-    public TulosDao(Database database) {
+    public ScoreDao(Database database) {
         this.database = database;
     }
     
-    public List<Tulos> findAll() throws SQLException {
-        List<Tulos> tulokset = new ArrayList<>();
+    public List<Score> findAll() throws SQLException {
+        List<Score> tulokset = new ArrayList<>();
         
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT id, nimi, tulos FROM Tulos");
         
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            tulokset.add(new Tulos(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi")));
+            tulokset.add(new Score(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi")));
         }
         
         rs.close();
@@ -32,15 +32,15 @@ public class TulosDao {
         return tulokset;
     }
     
-    public List<Tulos> findAllInOrderByPoints() throws SQLException {
-        List<Tulos> tulokset = new ArrayList<>();
+    public List<Score> findAllInOrderByPoints() throws SQLException {
+        List<Score> tulokset = new ArrayList<>();
         
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT id, nimi, tulos FROM Tulos ORDER BY tulos DESC");
         
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            tulokset.add(new Tulos(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi")));
+            tulokset.add(new Score(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi")));
         }
         
         rs.close();
@@ -49,15 +49,15 @@ public class TulosDao {
         return tulokset;
     }
     
-    public List<Tulos> findAllInOrderByName() throws SQLException {
-        List<Tulos> tulokset = new ArrayList<>();
+    public List<Score> findAllInOrderByName() throws SQLException {
+        List<Score> tulokset = new ArrayList<>();
         
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT id, nimi, tulos FROM Tulos ORDER BY nimi ASC");
         
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            tulokset.add(new Tulos(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi")));
+            tulokset.add(new Score(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi")));
         }
         
         rs.close();
@@ -66,16 +66,16 @@ public class TulosDao {
         return tulokset;
     }
     
-    public Tulos findById(int id) throws SQLException {
+    public Score findById(int id) throws SQLException {
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT id, nimi, tulos FROM Tulos WHERE id = ?");
         stmt.setInt(1, id);
         
         ResultSet rs = stmt.executeQuery();
-        Tulos tulos;
+        Score tulos;
         
         if (rs.next()) {
-            tulos = new Tulos(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi"));
+            tulos = new Score(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi"));
             rs.close();
             stmt.close();
 
@@ -98,7 +98,7 @@ public class TulosDao {
         conn.close();
     }
     
-    private Tulos save(Tulos tulos) throws SQLException {
+    private Score save(Score tulos) throws SQLException {
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO Tulos(tulos, nimi) VALUES (?, ?)");
         stmt.setInt(1, tulos.getScore());
@@ -111,7 +111,7 @@ public class TulosDao {
         stmt.setInt(2, tulos.getScore());        
         ResultSet rs = stmt.executeQuery();
         rs.next(); // vain 1 tulos
-        Tulos t = new Tulos(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi"));
+        Score t = new Score(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi"));
 
         stmt.close();
         rs.close();

@@ -5,14 +5,14 @@ import java.util.Random;
 public class Puyo {
     private int positionX;
     private int positionY;
-    private Vari colour;
+    private Colour colour;
     
-    public Puyo(int positionX, int positionY, Vari colour) {
+    public Puyo(int positionX, int positionY, Colour colour) {
         this.positionX = positionX;
         this.positionY = positionY;
         this.colour = colour;
     }
-    public Puyo(Vari colour) {
+    public Puyo(Colour colour) {
         this.colour = colour;
         this.positionX = 2;
         this.positionY = 0;
@@ -26,7 +26,7 @@ public class Puyo {
         return positionY;
     }
 
-    public Vari getColour() {
+    public Colour getColour() {
         return colour;
     }
 
@@ -45,8 +45,13 @@ public class Puyo {
     public void moveY(int transition) {
         this.positionY += transition;
     }
+    
+    public void moveXY(int transitionX, int transitionY) {
+        this.positionX += transitionX;
+        this.positionY += transitionY;
+    }
 
-    public void setColour(Vari colour) {
+    public void setColour(Colour colour) {
         //Tälle ei pitäisi olla mitään tarvetta, mutta tehdään se kuitenkin varmuuden vuoksi
         this.colour = colour;
     }
