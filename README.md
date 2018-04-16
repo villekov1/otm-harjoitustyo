@@ -8,3 +8,5 @@ muodostamat ketjut katoavat, jolloin pelaaja saa pisteitä.
 [tuntikirjanpito.md](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/tuntikirjanpito.md)
 
 [vaatimusmaarittely.md](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/vaatimusmaarittely.md)
+
+[arkkitehtuuri.md](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/arkkitehtuuri.md)
