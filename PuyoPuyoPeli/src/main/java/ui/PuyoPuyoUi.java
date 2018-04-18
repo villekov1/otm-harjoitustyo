@@ -350,7 +350,7 @@ public class PuyoPuyoUi extends Application {
         try {
             tulokset = scoreDao.findAllInOrderByName();
         } catch(Exception e) {
-            System.out.println("Ei voitu etsiä tuloksia.");
+            System.out.println("Ei voitu etsiä tuloksia tai niitä ei ole.");
         }
         
         return tulokset;
@@ -362,7 +362,7 @@ public class PuyoPuyoUi extends Application {
         try{
             tulokset = scoreDao.findAllInOrderByPoints();
         } catch(Exception e) {
-            System.out.println("Ei voitu etsiä tuloksia.");
+            System.out.println("Ei voitu etsiä tuloksia tai niitä ei ole.");
         }
         
         return tulokset;
@@ -390,6 +390,12 @@ public class PuyoPuyoUi extends Application {
         try {
             File dbFile = new File("huipputulokset.db");
             if(dbFile.exists()){
+                Connection conn = DriverManager.getConnection("jdbc:sqlite:huipputulokset.db");
+                PreparedStatement stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Tulos("
+                    + "id integer PRIMARY KEY, nimi varchar(200), tulos integer)");
+                stmt.execute();
+                stmt.close();
+                conn.close();
                 return;
             }
         } catch(Exception e) {
