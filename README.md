@@ -15,22 +15,21 @@ muodostamat ketjut katoavat, jolloin pelaaja saa pisteitä.
 Ohjelma on kirjoitettu Java-kielellä, joten se hyödyntää Mavenia, 
 Jacocoa, checkstylea ja niiden komentoja.
 
-# Testaus
+### Testaus
 Testit suoritetaan joko Netbeansin kautta tai komennolla: *mvn test* 
 
-Testikattavuusraportin voi luoda komennolla: *mvn jacoco:report*
+Testikattavuusraportin voi luoda komennolla: *mvn jacoco:report*.
 Raportti syntyy index.html -nimellä kansioon target/site/jacoco, ja sen 
 voi avata selaimella.
 
 
-
-## Jar-tiedoston luominen
+### Jar-tiedoston luominen
 Komento *mvn package* luo target-kansioon suoritettavan jar-tiedoston 
-PuyoPuyoPeli-1.0-SNAPSHOT. Jar-tiedoston voi suorittaa komennolla java 
--jar PuyoPuyoPeli-1.0-SNAPSHOT.jar.
+PuyoPuyoPeli-1.0-SNAPSHOT. Jar-tiedoston voi suorittaa komennolla *java 
+-jar PuyoPuyoPeli-1.0-SNAPSHOT.jar*.
 
 
-## Checkstyle
+### Checkstyle
 Checkstyle-raportin voi luoda komennolla *mvn jxr:jxr 
 checkstyle:checkstyle*. Tämä luo checkstyle.html -tiedoston kansioon 
 target/site.
