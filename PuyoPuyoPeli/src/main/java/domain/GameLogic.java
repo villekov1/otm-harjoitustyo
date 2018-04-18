@@ -63,23 +63,23 @@ public class GameLogic {
     
     public void dropFalling() {
         if (falling.getPositionY() >= fallingAxis.getPositionY()) {
-            if (falling.getPositionY() + 1 <= 12 && !this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY() + 1)) {
+            if (falling.getPositionY() + 1 <= height - 1 && !this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY() + 1)) {
                 this.falling.moveY(1);
             }
             this.updateFilled();
             
-            if (fallingAxis.getPositionY() + 1 <= 12 
+            if (fallingAxis.getPositionY() + 1 <= height - 1 
                 && !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() + 1)) {
                 this.fallingAxis.moveY(1);
             }
             
         } else {  
-            if (fallingAxis.getPositionY() + 1 <= 12 && !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() + 1)) {
+            if (fallingAxis.getPositionY() + 1 <= height - 1  && !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() + 1)) {
                 this.fallingAxis.moveY(1);
             }
             this.updateFilled();
             
-            if (falling.getPositionY() + 1 <= 12 && !this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY() + 1)) {
+            if (falling.getPositionY() + 1 <= height - 1 && !this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY() + 1)) {
                 this.falling.moveY(1);
             }
         }
@@ -87,11 +87,11 @@ public class GameLogic {
         
         
         //Tämän avulla varmistetaan, että tippuvat puyot tallentuvat maassa oleviksi
-        if (this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY() + 1) || falling.getPositionY() == 12) {
+        if (this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY() + 1) || falling.getPositionY() == height - 1) {
             puyos.add(new Puyo(falling.getPositionX(), falling.getPositionY(), falling.getColour()));
             puyos.remove(falling);
         }
-        if (this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() + 1) || fallingAxis.getPositionY() == 12) {
+        if (this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() + 1) || fallingAxis.getPositionY() == height - 1) {
             puyos.add(new Puyo(fallingAxis.getPositionX(), fallingAxis.getPositionY(), fallingAxis.getColour()));
             puyos.remove(fallingAxis);
         }
@@ -105,7 +105,7 @@ public class GameLogic {
                     while (true) {
                         puyo.moveY(1);
                         this.updateFilled();
-                        if (this.isTheSpaceFilled(puyo.getPositionX(), puyo.getPositionY() + 1) || puyo.getPositionY() == 12) {
+                        if (this.isTheSpaceFilled(puyo.getPositionX(), puyo.getPositionY() + 1) || puyo.getPositionY() == height - 1) {
                             break;
                         }
                     } 
@@ -128,7 +128,7 @@ public class GameLogic {
     }
     
     public void moveRight() {
-        if (falling.getPositionX() < 5 && fallingAxis.getPositionX() < width - 1) {
+        if (falling.getPositionX() < width - 1 && fallingAxis.getPositionX() < width - 1) {
             if (!this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY()) &&
                 !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY())) {
                 if (!this.isTheSpaceFilled(falling.getPositionX() + 1, falling.getPositionY()) 
@@ -146,12 +146,19 @@ public class GameLogic {
             if (falling.getPositionY() < fallingAxis.getPositionY() && fallingAxis.getPositionX() < width - 1
                 && !this.isTheSpaceFilled(fallingAxis.getPositionX() + 1, fallingAxis.getPositionY())) {
                 falling.moveXY(1, 1);
+            } else if (falling.getPositionY() < fallingAxis.getPositionY() && !this.isTheSpaceFilled(fallingAxis.getPositionX() - 1, fallingAxis.getPositionY())
+                && this.isTheSpaceFilled(fallingAxis.getPositionX() + 1, fallingAxis.getPositionY())) {
+                fallingAxis.moveXY(-1, 0);
+                falling.moveXY(0, 1);
             } else if (falling.getPositionX() > fallingAxis.getPositionX()
                 && !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() + 1)) {
                 falling.moveXY(-1, 1);
             } else if (falling.getPositionY() > fallingAxis.getPositionY() && fallingAxis.getPositionX() > 0
                 && !this.isTheSpaceFilled(fallingAxis.getPositionX() - 1, fallingAxis.getPositionY())) {
                 falling.moveXY(-1, -1);
+            } else if (falling.getPositionY() > fallingAxis.getPositionY() && !this.isTheSpaceFilled(falling.getPositionX() + 1, falling.getPositionY())
+                && this.isTheSpaceFilled(fallingAxis.getPositionX() - 1, fallingAxis.getPositionY())) {
+                fallingAxis.moveXY(1, 1);
             } else if (falling.getPositionX() < fallingAxis.getPositionX()
                 && !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() - 1)) {
                 falling.moveXY(1, -1);
@@ -230,25 +237,37 @@ public class GameLogic {
             int size = list.size();
             for (int j = 0; j < size; j++) {
                 Puyo puyo = list.get(j);
-                Colour vari = puyo.getColour();        
-                int x2 = puyo.getPositionX();
-                int y2 = puyo.getPositionY();
                 
-                if (x2 - 1 >= 0 && isTheSpaceFilled(x2 - 1, y2) && this.findPuyo(x2 - 1, y2).getColour() == vari && !list.contains(this.findPuyo(x2 - 1, y2))) {
-                    list.add(this.findPuyo(x2 - 1, y2));
-                }
-                if (x2 + 1 < width && isTheSpaceFilled(x2 + 1, y) && this.findPuyo(x2 + 1, y2).getColour() == vari && !list.contains(this.findPuyo(x2 + 1, y2))) {
-                    list.add(this.findPuyo(x2 + 1, y2));
-                }
-                if (y2 + 1 < height && isTheSpaceFilled(x2, y2 + 1) && this.findPuyo(x2, y2 + 1).getColour() == vari && !list.contains(this.findPuyo(x2, y2 + 1))) {
-                    list.add(this.findPuyo(x2, y2 + 1));
-                }
-                if (y2 - 1 >= 0 && isTheSpaceFilled(x2, y2 - 1) && this.findPuyo(x2, y2 - 1).getColour() == vari && !list.contains(this.findPuyo(x2, y2 - 1))) {
-                    list.add(this.findPuyo(x2, y2 - 1));
-                }
+                ArrayList<Puyo> adjacent = this.getAdjacentSameColorPuyos(puyo);
+                adjacent.stream().forEach(p -> {
+                    if (!list.contains(p)) {
+                        list.add(p);
+                    }
+                });
             }    
         }
         return list;     
+    }
+    
+    public ArrayList<Puyo> getAdjacentSameColorPuyos(Puyo puyo) {
+        ArrayList<Puyo> list = new ArrayList<>();
+        Colour colour = puyo.getColour();        
+        int x2 = puyo.getPositionX();
+        int y2 = puyo.getPositionY();
+
+        if (x2 - 1 >= 0 && isTheSpaceFilled(x2 - 1, y2) && this.findPuyo(x2 - 1, y2).getColour() == colour && !list.contains(this.findPuyo(x2 - 1, y2))) {
+            list.add(this.findPuyo(x2 - 1, y2));
+        }
+        if (x2 + 1 < width && isTheSpaceFilled(x2 + 1, y2) && this.findPuyo(x2 + 1, y2).getColour() == colour && !list.contains(this.findPuyo(x2 + 1, y2))) {
+            list.add(this.findPuyo(x2 + 1, y2));
+        }
+        if (y2 + 1 < height && isTheSpaceFilled(x2, y2 + 1) && this.findPuyo(x2, y2 + 1).getColour() == colour && !list.contains(this.findPuyo(x2, y2 + 1))) {
+            list.add(this.findPuyo(x2, y2 + 1));
+        }
+        if (y2 - 1 >= 0 && isTheSpaceFilled(x2, y2 - 1) && this.findPuyo(x2, y2 - 1).getColour() == colour && !list.contains(this.findPuyo(x2, y2 - 1))) {
+            list.add(this.findPuyo(x2, y2 - 1));
+        }
+        return list;
     }
     
     public Puyo findPuyo(int x, int y) {
@@ -266,6 +285,8 @@ public class GameLogic {
     
     public void destroyChain(ArrayList<Puyo> list) {
         if (list.size() >= 4) {
+            //It's convenient for testing if you can see the Puyos that were destroyed
+            System.out.println("Tuhotut: " + list);
             list.stream().distinct().forEach(puyo -> {
                 this.points += 10;
                 puyos.remove(puyo);

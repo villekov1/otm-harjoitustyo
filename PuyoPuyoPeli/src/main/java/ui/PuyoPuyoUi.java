@@ -26,12 +26,16 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.BorderPane;
 import static javafx.application.Application.launch;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Orientation;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -68,10 +72,9 @@ public class PuyoPuyoUi extends Application {
         start.setVgap(10);
         start.setMinSize(2*radius + 2*radius*width, 2*radius + 2*radius*height);
         Scene startView = new Scene(start);
-        
-        //Label ohjeteksti = new Label();
                 
-        String ohje = "Ohjeet:\nAnna nimesi tekstikenttään ja paina Aloita-näppäintä.\n"
+        String ohje = "Ohjeet:\nAnna nimesi tekstikenttään ja paina Aloita-näppäintä. "
+            + "Voit halutessasi säätää pelikentän kokoa, mutta suosituskoko on 6x13.\n"
             + "\n"
             + "Yritä tehdä neljän samanvärisen Puyon sarjoja, jolloin ne katoavat ja antavat pisteitä!\n"
             + "Voit siirtää nuolinäppäimillä tippuvia Puyoja sivusuunnassa, ja Enterillä voit kääntää niitä myötäpäivään.\n"
@@ -93,13 +96,33 @@ public class PuyoPuyoUi extends Application {
         Button aloita = new Button("Aloita");
         Button huipputuloksiin = new Button("Huipputulokset");
         
+        VBox sliderbar = new VBox();
+        Slider sliderX = new Slider();
+        sliderX.setMin(3);
+        sliderX.setMax(12);
+        sliderX.setValue(6);
+        Slider sliderY = new Slider();
+        sliderY.setMin(6);
+        sliderY.setMax(16);
+        sliderY.setValue(13);
+        
+        Label widthText = new Label("Leveys: " + (int)sliderX.getValue());
+        Label heightText = new Label("Korkeus: " + (int)sliderY.getValue());
+        
+        sliderbar.getChildren().add(widthText);
+        sliderbar.getChildren().add(sliderX);
+        sliderbar.getChildren().add(heightText);
+        sliderbar.getChildren().add(sliderY);
+        
         start.add(kolmenkarki, 1, 0);
+        start.add(sliderbar, 2, 1);
         start.add(field, 1, 1);
         start.add(aloita, 1, 2);
         start.add(huipputuloksiin, 1, 3);
         start.add(ta, 1, 4);
         
-        //Pelinäkymä
+        
+        //Gameview
         GridPane komponentit = new GridPane();
         Canvas ruutu = new Canvas(2*radius + 2*radius*width, 2*radius + 2*radius*height);
         komponentit.setMinSize(2*radius + 2*radius*width + 100, 2*radius + 2*radius*height);
@@ -117,13 +140,14 @@ public class PuyoPuyoUi extends Application {
         ylapalkki.getChildren().add(reset);
         ylapalkki.getChildren().add(pysayta);
         
+        komponentit.setHgap(10);
         komponentit.add(ylapalkki, 0, 0);
         komponentit.add(ruutu, 0, 1);
         komponentit.add(pisteteksti, 1, 0);
         
         Scene pelinakyma = new Scene(komponentit);
         
-        //Huipputulosnäkymä
+        //Highscore view
         Button delete = new Button("Poista");
         RadioButton nappi1 = new RadioButton("Pisteiden perusteella");
         RadioButton nappi2 = new RadioButton("Nimen perusteella");
@@ -139,6 +163,21 @@ public class PuyoPuyoUi extends Application {
         
         ListView<String> list = new ListView<String>();
         ObservableList<String> lista = FXCollections.observableArrayList();
+        
+        sliderX.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val) {
+                width = new_val.intValue();
+                widthText.setText("Leveys: "+new_val.intValue());  
+            }
+        });
+        sliderY.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val) {
+                height = new_val.intValue();
+                heightText.setText("Korkeus: "+new_val.intValue());
+            }
+        });
         
         nappi1.setOnAction((event) -> {
             lista.clear();
@@ -188,7 +227,7 @@ public class PuyoPuyoUi extends Application {
         
         Scene tulosnakyma = new Scene(tulosruutu);
         
-        //Lisätään painetut napit HashMappiin
+        //Let's add the pressed buttons to the HashMap
         HashMap<KeyCode, Boolean> painetutNapit = new HashMap<>();
         pelinakyma.setOnKeyPressed(event -> {
             painetutNapit.put(event.getCode(), Boolean.TRUE);
@@ -202,9 +241,10 @@ public class PuyoPuyoUi extends Application {
                 situation.kaannaOikealle();
             }
             if (event.getCode().equals(KeyCode.W)) {
+                //This is only for testing purposes
                 situation.addPoints(1000);
             }
-            //ns. "hard drop"
+            //so called "hard drop"
             if (event.getCode().equals(KeyCode.UP)) {
                 while(!situation.isTheSpaceFilled(situation.getFalling().getPositionX(), situation.getFalling().getPositionY())
                     || !situation.isTheSpaceFilled(situation.getFallingAxis().getPositionX(), situation.getFallingAxis().getPositionY())) {
@@ -228,6 +268,10 @@ public class PuyoPuyoUi extends Application {
         aloita.setOnAction((event) -> {
             if(!field.getText().isEmpty() && !field.getText().matches("( )*")){
                 this.name = field.getText();
+                situation = new GameLogic(width, height);
+                //2*(radius + 2)*width, 2*(radius + 2)*height
+                ruutu.setWidth(2*(radius + 2)*width);
+                ruutu.setHeight(2*(radius + 2)*height);
                 window.setScene(pelinakyma);
                 pause = false;
             }
@@ -279,7 +323,8 @@ public class PuyoPuyoUi extends Application {
             @Override
             public void handle(long nykyhetki) {
                 speed = (int)situation.getPoints()/1000;
-                piirturi.setFill(Color.WHITE);
+                piirturi.setFill(Color.FLORALWHITE);
+                //Canvas ruutu = new Canvas(2*radius + 2*radius*width, 2*radius + 2*radius*height);
                 piirturi.fillRect(0, 0, 2*(radius + 2)*width, 2*(radius + 2)*height);
                 
                 for (int i=0; i<situation.getPuyos().size(); i++) {
@@ -308,6 +353,7 @@ public class PuyoPuyoUi extends Application {
                     pisteteksti.setText("Pisteitä: "+situation.getPoints());
                     
                     if (situation.gameOver()) {
+                        pause = true;
                         Score score = new Score(-1, situation.getPoints(), name);
                         
                         try {

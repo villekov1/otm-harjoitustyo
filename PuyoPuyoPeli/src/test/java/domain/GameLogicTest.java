@@ -57,27 +57,27 @@ public class GameLogicTest {
     }
     
     @Test
-    public void updateDropsTheFallingPuyo(){
+    public void updateDropsTheFallingPuyo() {
         situation.update();
         
         assertEquals(1, situation.getFalling().getPositionY());
     }
     
     @Test
-    public void updateDropsTheFallingAxis(){
+    public void updateDropsTheFallingAxis() {
         situation.update();
         
         assertEquals(2, situation.getFallingAxis().getPositionY());
     }
     
     @Test
-    public void addPuyoWorks(){
+    public void addPuyoWorks() {
         situation.addPuyo(new Puyo(5, 12, Colour.YELLOW));
         
         assertEquals(3, situation.getPuyos().size());
     }
     @Test
-    public void updateFilledWorks(){
+    public void updateFilledWorks() {
         situation.addPuyo(new Puyo(2, 10, Colour.BLUE));
         situation.updateFilled();
         
@@ -86,14 +86,14 @@ public class GameLogicTest {
     }
     
     @Test
-    public void updateFilledWorks2(){
+    public void updateFilledWorks2() {
         situation.addPuyo(new Puyo(3, 11, Colour.GREEN));
         situation.updateFilled();
         
         assertEquals(true, situation.isTheSpaceFilled(3, 11));
     }
     @Test
-    public void updateFilledWorks3(){
+    public void updateFilledWorks3() {
         situation.addPuyo(new Puyo(3, 11, Colour.GREEN));
         situation.updateFilled();
         
@@ -101,7 +101,7 @@ public class GameLogicTest {
     }
     
     @Test
-    public void findChainReturnsCorrectChain(){
+    public void findChainReturnsCorrectChain() {
         situation.addPuyo(new Puyo(3, 12, Colour.YELLOW));
         situation.addPuyo(new Puyo(3, 11, Colour.YELLOW));
         situation.addPuyo(new Puyo(3, 10, Colour.YELLOW));
@@ -114,7 +114,36 @@ public class GameLogicTest {
     }
     
     @Test
-    public void findChainReturnsCorrectChain2(){
+    public void isTheSpaceFilledReturnsTrueIfTheSpaceIsFilled() {
+        situation.addPuyo(new Puyo(5, 11, Colour.YELLOW));
+        situation.updateFilled();
+        
+        assertEquals(true, situation.isTheSpaceFilled(5, 11));
+        
+    }
+    @Test
+    public void isTheSpaceFilledReturnsTrueIfOutOfBounds(){
+        assertEquals(true, situation.isTheSpaceFilled(-1, 0));
+    }
+    
+    @Test
+    public void isTheSpaceFilledReturnsTrueIfOutOfBounds2() {
+        assertEquals(true, situation.isTheSpaceFilled(3, 14));
+    }
+    
+    @Test
+    public void findPuyoReturnsEmptyPuyoIfNotInTheListPuyos() {
+        Puyo puyo1 = new Puyo(5, 11, Colour.RED);
+        Puyo puyo2 = new Puyo(2, 8, Colour.BLUE);
+        
+        situation.addPuyo(puyo1);
+        situation.addPuyo(puyo2);
+        
+        assertEquals(Colour.EMPTY, situation.findPuyo(3, 7).getColour());
+    }
+    
+    @Test
+    public void findChainReturnsCorrectChain2() {
         situation.addPuyo(new Puyo(2, 12, Colour.RED));
         situation.addPuyo(new Puyo(3, 12, Colour.RED));
         situation.addPuyo(new Puyo(4, 12, Colour.RED));
@@ -127,7 +156,7 @@ public class GameLogicTest {
     }
     
     @Test
-    public void findChainReturnsCorrectChain3(){
+    public void findChainReturnsCorrectChain3() {
         situation.addPuyo(new Puyo(2, 12, Colour.PURPLE));
         situation.addPuyo(new Puyo(3, 12, Colour.PURPLE));
         situation.addPuyo(new Puyo(4, 12, Colour.PURPLE));
@@ -141,7 +170,7 @@ public class GameLogicTest {
     }
     
     @Test
-    public void destroyChainWorksIfChainIsLongEnough(){
+    public void destroyChainWorksIfChainIsLongEnough() {
         situation.addPuyo(new Puyo(2, 12, Colour.PURPLE));
         situation.addPuyo(new Puyo(3, 12, Colour.PURPLE));
         situation.addPuyo(new Puyo(4, 12, Colour.PURPLE));
@@ -157,7 +186,7 @@ public class GameLogicTest {
     }
     
     @Test
-    public void destroyChainDoesNotWorkIfChainIsNotLongEnough(){
+    public void destroyChainDoesNotWorkIfChainIsNotLongEnough() {
         situation.addPuyo(new Puyo(2, 12, Colour.PURPLE));
         situation.addPuyo(new Puyo(3, 12, Colour.PURPLE));
         situation.addPuyo(new Puyo(4, 12, Colour.PURPLE));
@@ -168,5 +197,28 @@ public class GameLogicTest {
         situation.updateFilled();
         
         assertEquals(true, situation.isTheSpaceFilled(3, 12));        
+    }
+    
+    @Test
+    public void gameOverReturnsTrueIfGameIsOver() {
+        situation.addPuyo(new Puyo(2, 0, Colour.BLUE));
+        situation.updateFilled();
+        
+        assertEquals(true, situation.gameOver());
+    }
+    
+    @Test
+    public void gameOverReturnsFalseIfGameIsNotOver() {
+        situation.addPuyo(new Puyo(1, 0, Colour.BLUE));
+        situation.updateFilled();
+        
+        assertEquals(false, situation.gameOver());
+    }
+    
+    @Test
+    public void addPointsWorks(){
+        situation.addPoints(55);
+        
+        assertEquals(55, situation.getPoints());
     }
 }
