@@ -31,6 +31,8 @@ Komento *mvn package* luo target-kansioon suoritettavan jar-tiedoston
 PuyoPuyoPeli-1.0-SNAPSHOT. Jar-tiedoston voi suorittaa komennolla *java 
 -jar PuyoPuyoPeli-1.0-SNAPSHOT.jar*.
 
+Jar-tiedosto on saatavilla myös viikon 5 julkaisussa.
+
 
 ### Checkstyle
 Checkstyle-raportin voi luoda komennolla *mvn jxr:jxr 
