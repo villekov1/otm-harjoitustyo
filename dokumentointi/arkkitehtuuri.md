@@ -8,4 +8,5 @@
 ![pakkauskuva](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/Pakkauskuva.JPG "Sovelluksen pakkausrakenne")
 
 ## Sekvenssikaavio tilanteesta, jossa käyttäjä siirtää tippuvia Puyoja oikealle
+Alla olevassa kuvassa luokan sisäiset metodikutsut on esitetty väliaikaisina palkkeina, jotka tuhotaan suorituksen jälkeen.
 ![sekvenssikaavio](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/sekvenssikaavioMoveRight.png "Sekvenssikaavio")
