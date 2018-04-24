@@ -11,6 +11,9 @@ muodostamat ketjut katoavat, jolloin pelaaja saa pisteitä.
 
 [arkkitehtuuri.md](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/arkkitehtuuri.md)
 
+## Releaset
+[Viikko 5](https://github.com/villekov1/otm-harjoitustyo/releases/tag/Release1)
+
 ## Komentorivitoiminnot:
 Ohjelma on kirjoitettu Java-kielellä, joten se hyödyntää Mavenia, 
 Jacocoa, checkstylea ja niiden komentoja.
