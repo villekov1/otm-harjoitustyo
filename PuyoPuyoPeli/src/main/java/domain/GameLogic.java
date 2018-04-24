@@ -115,8 +115,7 @@ public class GameLogic {
     
     public void moveLeft() {
         if (falling.getPositionX() > 0 && fallingAxis.getPositionX() > 0) {
-            if (!this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY()) &&
-                !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY())) {
+            if (!this.areFallingPuyosOnTheGround()) {
                 if (!this.isTheSpaceFilled(falling.getPositionX() - 1, falling.getPositionY()) 
                     && !this.isTheSpaceFilled(fallingAxis.getPositionX() - 1, fallingAxis.getPositionY())) {
                     falling.moveX(-1);
@@ -128,8 +127,7 @@ public class GameLogic {
     
     public void moveRight() {
         if (falling.getPositionX() < width - 1 && fallingAxis.getPositionX() < width - 1) {
-            if (!this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY()) &&
-                !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY())) {
+            if (!this.areFallingPuyosOnTheGround()) {
                 if (!this.isTheSpaceFilled(falling.getPositionX() + 1, falling.getPositionY()) 
                     && !this.isTheSpaceFilled(fallingAxis.getPositionX() + 1, fallingAxis.getPositionY())) {
                     falling.moveX(1);
