@@ -77,7 +77,8 @@ public class PuyoPuyoUi extends Application {
             + "Voit halutessasi säätää pelikentän kokoa, mutta suosituskoko on 6x13.\n"
             + "\n"
             + "Yritä tehdä neljän samanvärisen Puyon sarjoja, jolloin ne katoavat ja antavat pisteitä!\n"
-            + "Voit siirtää nuolinäppäimillä tippuvia Puyoja sivusuunnassa, ja Enterillä voit kääntää niitä myötäpäivään.\n"
+            + "Voit siirtää nuolinäppäimillä tippuvia Puyoja sivusuunnassa.\n"
+            + "Enterillä tai S-näppäimellä voit kääntää niitä myötäpäivään, ja Backspace- tai A-näppäimellä vastapäivään.\n"
             + "Ylös-näppäin tiputtaa Puyot nopeasti maahan.\n"
             + "Pysäytä-näppäin pysäyttää pelin, ja Aloita alusta -näppäin aloittaa pelin alusta.\n"
             + "Voit aina palata aloitusruutuun Alkuvalikkoon-näppäimellä.\n"
@@ -237,8 +238,11 @@ public class PuyoPuyoUi extends Application {
             if (event.getCode().equals(KeyCode.RIGHT)) {
                 situation.moveRight();
             }
-            if (event.getCode().equals(KeyCode.ENTER)) {
-                situation.kaannaOikealle();
+            if (event.getCode().equals(KeyCode.ENTER) || event.getCode().equals(KeyCode.S)) {
+                situation.turnRight();
+            }
+            if (event.getCode().equals(KeyCode.BACK_SPACE) || event.getCode().equals(KeyCode.A)) {
+                situation.turnLeft();
             }
             if (event.getCode().equals(KeyCode.W)) {
                 //This is only for testing purposes

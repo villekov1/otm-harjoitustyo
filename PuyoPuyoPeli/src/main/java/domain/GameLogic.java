@@ -48,12 +48,10 @@ public class GameLogic {
             
             for (int j = 0; j < 3; j++) {
                 //Poistetaan ketjut vain silloin, kun molemmat tippuvat omat maassa
-                int i = 0;
-                while (i < this.puyos.size()) {
+                for (int i = 0; i < this.puyos.size(); i++) {
                     Puyo puyo = this.puyos.get(i);
                     ArrayList<Puyo> ketju = this.findChain(puyo.getPositionX(), puyo.getPositionY());
                     this.destroyChain(ketju);
-                    i++;
                 }                
                 this.updateFilled();
                 this.dropAll();
@@ -71,8 +69,7 @@ public class GameLogic {
             if (fallingAxis.getPositionY() + 1 <= height - 1 
                 && !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() + 1)) {
                 this.fallingAxis.moveY(1);
-            }
-            
+            }  
         } else {  
             if (fallingAxis.getPositionY() + 1 <= height - 1  && !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() + 1)) {
                 this.fallingAxis.moveY(1);
@@ -84,9 +81,11 @@ public class GameLogic {
             }
         }
         this.updateFilled();
-        
-        
-        //Tämän avulla varmistetaan, että tippuvat puyot tallentuvat maassa oleviksi
+        this.addFallingPuyosToTheList();
+    }
+    
+    public void addFallingPuyosToTheList() {
+        //This puts falling Puyos to the list as new Puyos
         if (this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY() + 1) || falling.getPositionY() == height - 1) {
             puyos.add(new Puyo(falling.getPositionX(), falling.getPositionY(), falling.getColour()));
             puyos.remove(falling);
@@ -140,9 +139,8 @@ public class GameLogic {
         }
     }
     
-    public void kaannaOikealle() {
-        if (!isTheSpaceFilled(falling.getPositionX(), falling.getPositionY()) 
-            && !isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY())) {
+    public void turnRight() {
+        if (!this.areFallingPuyosOnTheGround()) {
             if (falling.getPositionY() < fallingAxis.getPositionY() && fallingAxis.getPositionX() < width - 1
                 && !this.isTheSpaceFilled(fallingAxis.getPositionX() + 1, fallingAxis.getPositionY())) {
                 falling.moveXY(1, 1);
@@ -166,12 +164,42 @@ public class GameLogic {
         }
     }
     
-    public void kaannaVasemmalle() {
-    
+    public void turnLeft() {
+        if (!this.areFallingPuyosOnTheGround()) {
+            if (falling.getPositionY() < fallingAxis.getPositionY() && fallingAxis.getPositionX() > 0
+                && !this.isTheSpaceFilled(fallingAxis.getPositionX() - 1, fallingAxis.getPositionY())) {
+                falling.moveXY(-1, 1);
+            } else if (falling.getPositionY() < fallingAxis.getPositionY() && !this.isTheSpaceFilled(fallingAxis.getPositionX() + 1, fallingAxis.getPositionY())
+                && this.isTheSpaceFilled(fallingAxis.getPositionX() - 1, fallingAxis.getPositionY())) {
+                fallingAxis.moveXY(1, 0);
+                falling.moveXY(0, 1);
+            } else if (falling.getPositionX() > fallingAxis.getPositionX()
+                && !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() - 1)) {
+                falling.moveXY(-1, -1);
+            } else if (falling.getPositionY() > fallingAxis.getPositionY() && fallingAxis.getPositionX() < width - 1
+                && !this.isTheSpaceFilled(fallingAxis.getPositionX() + 1, fallingAxis.getPositionY())) {
+                falling.moveXY(1, -1);
+            } else if (falling.getPositionY() > fallingAxis.getPositionY() && !this.isTheSpaceFilled(falling.getPositionX() - 1, falling.getPositionY())
+                && this.isTheSpaceFilled(fallingAxis.getPositionX() + 1, fallingAxis.getPositionY())) {
+                fallingAxis.moveXY(-1, 1);
+            } else if (falling.getPositionX() < fallingAxis.getPositionX()
+                && !this.isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY() + 1)) {
+                falling.moveXY(1, 1);
+            }
+        }
     }
     
+    public boolean areFallingPuyosOnTheGround() {
+        if (isTheSpaceFilled(falling.getPositionX(), falling.getPositionY()) 
+            || isTheSpaceFilled(fallingAxis.getPositionX(), fallingAxis.getPositionY())) {
+            return true;
+        }
+        return false;
+    }
+    
+    
     public void updateFilled() {
-        //Varmistetaan, että listassa ei ole saman Puyon kopioita.
+        //Let's make sure there aren't any duplicates
         ArrayList<Puyo> cutDownList = this.puyos.stream().distinct().collect(Collectors.toCollection(ArrayList::new));
         this.puyos = cutDownList;
         

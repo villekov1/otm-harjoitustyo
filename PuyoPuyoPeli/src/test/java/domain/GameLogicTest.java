@@ -200,6 +200,56 @@ public class GameLogicTest {
     }
     
     @Test
+    public void turnRightWorksCorrectly() {
+        situation.getFalling().moveXY(0, 2);
+        situation.getFallingAxis().moveXY(0, 2);
+        
+        situation.turnRight();
+        assertEquals(3, situation.getFalling().getPositionY());
+    }
+    
+    @Test
+    public void turnRightWorksCorrectly2() {
+        situation.getFalling().moveXY(0, 2);
+        situation.getFallingAxis().moveXY(0, 2);
+        
+        situation.turnRight();
+        assertEquals(3, situation.getFalling().getPositionX());
+    }
+    
+    @Test
+    public void turnLeftWorksCorrectly() {
+        situation.getFalling().moveXY(0, 2);
+        situation.getFallingAxis().moveXY(0, 2);
+        
+        situation.turnLeft();
+        assertEquals(3, situation.getFalling().getPositionY());
+    }
+    
+    @Test
+    public void turnLeftWorksCorrectly2() {
+        situation.getFalling().moveXY(0, 2);
+        situation.getFallingAxis().moveXY(0, 2);
+        
+        situation.turnLeft();
+        assertEquals(1, situation.getFalling().getPositionX());
+    }
+    
+    @Test
+    public void moveRightWorksCorrectly() {
+        situation.moveRight();
+        
+        assertEquals(3, situation.getFallingAxis().getPositionX());
+    }
+    
+    @Test
+    public void moveLeftWorksCorrectly() {
+        situation.moveLeft();
+        
+        assertEquals(1, situation.getFallingAxis().getPositionX());
+    }
+    
+    @Test
     public void gameOverReturnsTrueIfGameIsOver() {
         situation.addPuyo(new Puyo(2, 0, Colour.BLUE));
         situation.updateFilled();
