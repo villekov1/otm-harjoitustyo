@@ -6,3 +6,6 @@
 
 ## Netbeansin kautta otettu kuva pakkausrakenteesta:
 ![pakkauskuva](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/Pakkauskuva.JPG "Sovelluksen pakkausrakenne")
+
+## Sekvenssikaavio tilanteesta, jossa käyttäjä siirtää tippuvia Puyoja oikealle
+![sekvenssikaavio](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/sekvenssikaavioMoveRight.png "Sekvenssikaavio")
