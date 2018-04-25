@@ -11,6 +11,10 @@ public class Database {
     public Database(String databaseAddress) {
         this.databaseAddress = databaseAddress;
     }
+    
+    public String getDatabaseAddress() {
+        return this.databaseAddress;
+    }
 
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(databaseAddress);

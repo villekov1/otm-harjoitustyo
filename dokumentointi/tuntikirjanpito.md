@@ -19,4 +19,5 @@
 | 18.4  | 3    | Lisäsin pom.xml:ään koodinpätkän, jonka avulla jar-tiedoston voi luoda mvn package -komennolla komentoriviltä. Muokkasin tietokannan alustusta siten, että se toimii myös tilanteissa, joissa tietokanta on olemassa, mutta siinä ei ole tietokantatauluja. Lisäsin alkuvalikkoon kaksi slideria, joilla voi säätää pelikentän kokoa. Lisäksi muutin kääntö-ominaisuutta siten, että se toimii myös tilanteissa, joissa tippuvat Puyot ovat seinää vasten siten, että kääntö ei aikaisemmin onnistunut.
 | 23.4  | 2    | Lisäsin peliin mahdollisuuden tippuvien Puyojen kääntämiseen vastapäivään. Refaktoroin TurnRight- ja TurnLeft -metodeja hieman lyhyemmiksi tekemällä apumetodin areFallingPuyosOnTheGround. Jatkoin testien tekemistä.
 | 24.4  | 1    | Tein ensimmäisen github-releasen. Lisäksi tein sekvenssikaavion Puyojen siirtämisestä oikealle.|
-| summa | 38   |   |
+| 25.5  | 1    | Aloitin Database- ja ScoreDao -luokan testaamisen. Databasen testit on jo tehty, mutta ScoreDaon testejä vasta aloittelin.
+| summa | 39   |   |
