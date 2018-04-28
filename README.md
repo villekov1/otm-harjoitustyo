@@ -38,3 +38,8 @@ Jar-tiedosto on saatavilla myös viikon 5 julkaisussa.
 Checkstyle-raportin voi luoda komennolla *mvn jxr:jxr 
 checkstyle:checkstyle*. Tämä luo checkstyle.html -tiedoston kansioon 
 target/site.
+
+### JavaDoc
+JavaDoc-dokumentoinnin saa luotua projektin kansiossa komennolla *mvn 
+javadoc:javadoc*. Tämä luo index.html -tiedoston kansioon 
+target/site/apidocs.

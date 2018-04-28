@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A Dao class that is used to modify database containing the scores.
+ */
 public class ScoreDao {
     private Database database;
     

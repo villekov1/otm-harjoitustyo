@@ -1,6 +1,9 @@
 package domain;
 
-
+/**
+ * A class that represents a score in the game.
+ * It contains the information about the id, the score and the name of the player.
+ */
 public class Score {
     private int id;
     private int score;

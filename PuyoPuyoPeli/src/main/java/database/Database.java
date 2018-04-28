@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * A class that represents a database.
+ * It contains the address of a database in addition to methods for creating a new Connection.
+ */
 public class Database {
 
     private String databaseAddress;

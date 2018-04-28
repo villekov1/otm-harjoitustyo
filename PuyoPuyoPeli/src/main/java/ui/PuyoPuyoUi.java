@@ -49,6 +49,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.paint.Color;
 
+/**
+ * A class that draws the user interface of the game. This class doesn't contain any game logic.
+ */
 public class PuyoPuyoUi extends Application {
     int width = 6;
     int height = 13;

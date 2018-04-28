@@ -19,5 +19,6 @@
 | 18.4  | 3    | Lisäsin pom.xml:ään koodinpätkän, jonka avulla jar-tiedoston voi luoda mvn package -komennolla komentoriviltä. Muokkasin tietokannan alustusta siten, että se toimii myös tilanteissa, joissa tietokanta on olemassa, mutta siinä ei ole tietokantatauluja. Lisäsin alkuvalikkoon kaksi slideria, joilla voi säätää pelikentän kokoa. Lisäksi muutin kääntö-ominaisuutta siten, että se toimii myös tilanteissa, joissa tippuvat Puyot ovat seinää vasten siten, että kääntö ei aikaisemmin onnistunut.
 | 23.4  | 2    | Lisäsin peliin mahdollisuuden tippuvien Puyojen kääntämiseen vastapäivään. Refaktoroin TurnRight- ja TurnLeft -metodeja hieman lyhyemmiksi tekemällä apumetodin areFallingPuyosOnTheGround. Jatkoin testien tekemistä.
 | 24.4  | 1    | Tein ensimmäisen github-releasen. Lisäksi tein sekvenssikaavion Puyojen siirtämisestä oikealle.|
-| 25.5  | 1    | Aloitin Database- ja ScoreDao -luokan testaamisen. Databasen testit on jo tehty, mutta ScoreDaon testejä vasta aloittelin.
-| summa | 39   |   |
+| 25.4  | 1    | Aloitin Database- ja ScoreDao -luokan testaamisen. Databasen testit on jo tehty, mutta ScoreDaon testejä vasta aloittelin.
+| 28.4  | 3    | Refaktoroin sovellusta. Laitoin GameLogic-luokan filled-nimisen HashMapin omaksi luokakseen FilledMap, joka sisältää tiedon täysistä ruuduista. Aloitin JavaDocin kirjoittamisen sekä jatkoin ohjelman testaamista. Muokkasin sovelluslogiikkaa siten, että uudet Puyot ilmestyvät ruudun keskelle myös isommissa ja pienemmissä kentissä kuin standardikoossa. Myös pelin päättymisehto pätee nyt ruudun keskellä eikä vain (2, 0) ruudussa.
+| summa | 41   |   |

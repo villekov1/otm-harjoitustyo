@@ -2,6 +2,9 @@ package domain;
 
 import java.util.Random;
 
+/**
+ * A class that represent a Puyo that has a position and a colour.
+ */
 public class Puyo {
     private int positionX;
     private int positionY;
