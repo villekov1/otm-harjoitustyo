@@ -11,6 +11,8 @@ muodostamat ketjut katoavat, jolloin pelaaja saa pisteitä.
 
 [arkkitehtuuri.md](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/arkkitehtuuri.md)
 
+[kayttoohje.md](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kayttoohje.md)
+
 ## Releaset
 [Viikko 5](https://github.com/villekov1/otm-harjoitustyo/releases/tag/Release1)
 
