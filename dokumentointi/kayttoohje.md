@@ -1,4 +1,4 @@
-### Käyttöohje
+# Käyttöohje
 
 Sovelluksen suorittaminen on helpointa lataamalla sovelluksen 
 GitHub-release.
@@ -15,7 +15,7 @@ Sovellus on pulmapeli, jossa katosta tippuvia kahden värillisen pallon
 sisältävät vähintään neljä samanväristä Puyoa.
 
 
-# Alkuvalikko
+### Alkuvalikko
 Pelin aloittamiseksi kirjoita nimesi tekstikenttään ja paina 
 "Aloita"-näppäintä. Tekstikentän vieressä olevilla slidereilla voit 
 säätää kentän leveyttä ja korkeutta. 
@@ -25,7 +25,7 @@ Huipputulokset-näppäimellä pääset tarkastelemaan kaikkia huipputuloksia.
 Pelin käyttöohjeet ovat esillä myös alkuvalikon alalaidassa olevassa 
 tekstikentässä.
 
-# Pelinäyttö
+### Pelinäyttö
 Voit siirtää tippuvia Puyoja sivusuunnassa nuolinäppäimillä. Voit 
 kääntää Puyoa myötäpäivään joko Enter- tai S-näppäimellä, ja 
 vastapäivään joko BackSpace- tai A-näppäimellä.
@@ -42,7 +42,7 @@ kertyessä Puyot lisäksi tippuvat yhä nopeammin alas.
 Pelinäkymän yläpalkin napeista voit joko pysäyttää pelin, aloittaa sen 
 alusta tai palata alkuvalikkoon.
 
-# Huipputulosnäkymä
+### Huipputulosnäkymä
 Huipputulosnäkymässä voit järjestää huipputulokset joko nimen tai 
 pisteiden perusteella vasemmalla sivulla olevista näppäimistä. Voit 
 lisäksi poistaa tuloksen tietokannasta klikkaamalla tulosta ja sen 
