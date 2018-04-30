@@ -21,4 +21,5 @@
 | 24.4  | 1    | Tein ensimmäisen github-releasen. Lisäksi tein sekvenssikaavion Puyojen siirtämisestä oikealle.|
 | 25.4  | 1    | Aloitin Database- ja ScoreDao -luokan testaamisen. Databasen testit on jo tehty, mutta ScoreDaon testejä vasta aloittelin.
 | 28.4  | 3    | Refaktoroin sovellusta. Laitoin GameLogic-luokan filled-nimisen HashMapin omaksi luokakseen FilledMap, joka sisältää tiedon täysistä ruuduista. Aloitin JavaDocin kirjoittamisen sekä jatkoin ohjelman testaamista. Muokkasin sovelluslogiikkaa siten, että uudet Puyot ilmestyvät ruudun keskelle myös isommissa ja pienemmissä kentissä kuin standardikoossa. Myös pelin päättymisehto pätee nyt ruudun keskellä eikä vain (2, 0) ruudussa.
-| summa | 41   |   |
+| 30.4  | 2    | Kirjoitin JavaDoc-dokumentaatiota. Lisäksi kirjoitin sovellukselle käyttöohjeen.
+| summa | 43   |   |

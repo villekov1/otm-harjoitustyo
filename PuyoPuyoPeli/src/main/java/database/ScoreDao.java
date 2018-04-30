@@ -14,10 +14,18 @@ import java.util.List;
 public class ScoreDao {
     private Database database;
     
+    /**
+    * A constructor of the class ScoreDao
+    * @param   database   The database that the ScoreDao uses
+    */
     public ScoreDao(Database database) {
         this.database = database;
     }
     
+    /**
+    * The method finds all of the Scores that are stored in the database.
+    * @return   List that contains all of the scores.
+    */
     public List<Score> findAll() throws SQLException {
         List<Score> tulokset = new ArrayList<>();
         
@@ -36,6 +44,10 @@ public class ScoreDao {
         return tulokset;
     }
     
+    /**
+    * The method finds all of the Scores stored in the database ordered by the points.
+    * @return   List that contains all of the scores ordered by points.
+    */
     public List<Score> findAllInOrderByPoints() throws SQLException {
         List<Score> tulokset = new ArrayList<>();
         
@@ -54,6 +66,10 @@ public class ScoreDao {
         return tulokset;
     }
     
+    /**
+    * The method finds all of the Scores stored in the database ordered by name.
+    * @return   List that contains all of the scores ordered by name.
+    */
     public List<Score> findAllInOrderByName() throws SQLException {
         List<Score> tulokset = new ArrayList<>();
         
@@ -72,6 +88,12 @@ public class ScoreDao {
         return tulokset;
     }
     
+    /**
+    * The method finds a Score that has the id given by the parameter.
+    * It may return null if such an id is not found.
+    * @param   id   The id of the Score
+    * @return   Score that has the id given by the parameter.
+    */
     public Score findById(int id) throws SQLException {
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT id, nimi, tulos FROM Tulos WHERE id = ?");
@@ -96,6 +118,10 @@ public class ScoreDao {
         }
     }
     
+    /**
+    * The method deletes a Score in the database that has the id given by the parameter.
+    * @param   key   The id of the Score
+    */
     public void delete(Integer key) throws SQLException {
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("DELETE FROM Tulos WHERE id = ?");
@@ -107,11 +133,17 @@ public class ScoreDao {
         conn.close();
     }
     
-    public int findId(Score tulos) throws SQLException {
+    /**
+    * The method finds the id of a Score given by the parameter.
+    * It returns -1 if such a Score is not found on the database.
+    * @param   score   The score whose id is looked for.
+    * @return   The integer-valued id of the Score.
+    */
+    public int findId(Score score) throws SQLException {
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Tulos WHERE nimi = ? AND tulos = ?");
-        stmt.setString(1, tulos.getName());
-        stmt.setInt(2, tulos.getScore());
+        stmt.setString(1, score.getName());
+        stmt.setInt(2, score.getScore());
 
         ResultSet rs = stmt.executeQuery();
         int id;
@@ -133,16 +165,21 @@ public class ScoreDao {
         
     }
     
-    public void saveIfNotInTheDatabase(Score tulos) throws SQLException {
+    /**
+    * The method saves the Score to the database if there isn't a score
+    * with the same name and points as the Score given by the parameter.
+    * @param   score   The Score that is saved to the database
+    */
+    public void saveIfNotInTheDatabase(Score score) throws SQLException {
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Tulos WHERE nimi = ? AND tulos = ?");
-        stmt.setString(1, tulos.getName());
-        stmt.setInt(2, tulos.getScore());
+        stmt.setString(1, score.getName());
+        stmt.setInt(2, score.getScore());
 
         ResultSet rs = stmt.executeQuery();
         
         if (!rs.next()) {
-            save(tulos);
+            save(score);
         }
         
         stmt.close();
@@ -150,17 +187,22 @@ public class ScoreDao {
         conn.close();
     }
     
-    public Score save(Score tulos) throws SQLException {
+    /**
+    * The method saves the Score given by the parameter to the database.
+    * @param   Score   The Score that is saved to the database
+    * @return   The Score that is saved to the database
+    */
+    public Score save(Score score) throws SQLException {
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO Tulos(tulos, nimi) VALUES (?, ?)");
-        stmt.setInt(1, tulos.getScore());
-        stmt.setString(2, tulos.getName());
+        stmt.setInt(1, score.getScore());
+        stmt.setString(2, score.getName());
         stmt.executeUpdate();
         stmt.close();
 
         stmt = conn.prepareStatement("SELECT * FROM Tulos WHERE nimi = ? AND tulos = ?");
-        stmt.setString(1, tulos.getName());
-        stmt.setInt(2, tulos.getScore());        
+        stmt.setString(1, score.getName());
+        stmt.setInt(2, score.getScore());        
         ResultSet rs = stmt.executeQuery();
         rs.next(); // vain 1 tulos
         Score t = new Score(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi"));

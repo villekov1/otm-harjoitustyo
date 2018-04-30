@@ -397,6 +397,10 @@ public class PuyoPuyoUi extends Application {
         launch(PuyoPuyoUi.class);
     }
     
+    /**
+    * The method calls scoreDao and finds all of the scores ordered by name
+    * @return   List that contains all of the scores ordered by name
+    */
     public static List<Score> findByName() {
         List<Score> tulokset = new ArrayList<>();
         
@@ -409,6 +413,10 @@ public class PuyoPuyoUi extends Application {
         return tulokset;
     }
     
+    /**
+    * The method that calls scoreDao and finds all of the scores ordered by points.
+    * @return   List that contains all of the scores ordered by points.
+    */
     public static List<Score> findByPoints() {
         List<Score> tulokset = new ArrayList<>();
         
@@ -421,6 +429,9 @@ public class PuyoPuyoUi extends Application {
         return tulokset;
     }
     
+    /**
+    * The method updates the Highscoretext that is shown on the main menu.
+    */
     public void updateHighScoreText(){
         huipputulokset = findByPoints();
         huipputulosteksti = "Huipputulokset:\n\n";
@@ -439,6 +450,7 @@ public class PuyoPuyoUi extends Application {
         
     }
     
+    @Override
     public void init() throws SQLException {
         try {
             File dbFile = new File("huipputulokset.db");

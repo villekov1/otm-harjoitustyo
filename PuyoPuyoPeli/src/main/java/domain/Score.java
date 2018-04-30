@@ -9,6 +9,12 @@ public class Score {
     private int score;
     private String name;
     
+    /**
+    * A constructor of the class Score.
+    * @param   id      The id of the Score
+    * @param   score   The amount points
+    * @param   name    The name of the Score
+    */
     public Score(int id, int score, String name) {
         this.id = id;
         this.score = score;
@@ -25,6 +31,7 @@ public class Score {
         return this.id;
     }
     
+    @Override
     public String toString() {
         return this.name + ": " + this.score;
     }

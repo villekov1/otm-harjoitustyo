@@ -22,6 +22,11 @@ public class GameLogic {
     private Puyo fallingAxis;
     private Puyo next;
     
+    /**
+    * A constructor of the class GameLogic.
+    * @param   width   The width of the game grid
+    * @param   height   The height of the game grid
+    */
     public GameLogic(int width, int height) {
         this.width = width;
         this.height = height;
