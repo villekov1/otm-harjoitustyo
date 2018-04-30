@@ -31,7 +31,7 @@ kääntää Puyoa myötäpäivään joko Enter- tai S-näppäimellä, ja
 vastapäivään joko BackSpace- tai A-näppäimellä.
 
 Kun tippuva Puyo kohtaa alimman rivin tai sen alapuolella on Puyo, se 
-lukkiutuu paikalle. Tällöin et enää voi siirtää tai kääntää sitä. Jos  
+lukkiutuu paikalle. Tällöin et enää voi siirtää tai kääntää sitä. Jos 
 muodostuu vähintään neljän samanvärisen Puyon sarja, se katoaa ja saat 
 pisteitä. Tämän jälkeen kadonneiden Puyojen yllä olevat Puyot tippuvat 
 alas, jolloin voi edelleen muodostua uusia ketjuja.
