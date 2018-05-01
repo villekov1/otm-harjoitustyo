@@ -92,7 +92,15 @@ public class GameLogic {
         this.updateFilled();
         this.addFallingPuyosToTheList();
     }
-    
+    /**
+     * The methods drops the falling Puyos until they meet the ground or other Puyos.
+     */
+    public void hardDrop() {
+        while (!this.isTheSpaceFilled(this.getFalling().getPositionX(), this.getFalling().getPositionY())
+            || !this.isTheSpaceFilled(this.getFallingAxis().getPositionX(), this.getFallingAxis().getPositionY())) {
+            this.dropFalling();
+        }
+    }
     /**
     * The method adds falling Puyos called falling and fallingAxis to the list called puyos.
     * This is necessary after both Puyos are on the ground.

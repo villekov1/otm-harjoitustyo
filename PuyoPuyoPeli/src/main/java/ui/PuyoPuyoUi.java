@@ -251,12 +251,8 @@ public class PuyoPuyoUi extends Application {
                 //This is only for testing purposes
                 situation.addPoints(1000);
             }
-            //so called "hard drop"
             if (event.getCode().equals(KeyCode.UP)) {
-                while(!situation.isTheSpaceFilled(situation.getFalling().getPositionX(), situation.getFalling().getPositionY())
-                    || !situation.isTheSpaceFilled(situation.getFallingAxis().getPositionX(), situation.getFallingAxis().getPositionY())) {
-                    situation.dropFalling();
-                }
+                situation.hardDrop();
             }
             if (event.getCode().equals(KeyCode.P)) {
                 if (pause == true) {

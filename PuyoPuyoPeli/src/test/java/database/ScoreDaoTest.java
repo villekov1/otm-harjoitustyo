@@ -7,6 +7,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -14,10 +16,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Ville
- */
 public class ScoreDaoTest {
     
     Database database;
@@ -46,6 +44,7 @@ public class ScoreDaoTest {
                 stmt.close();
                 conn.close();
                 database = new Database("jdbc:sqlite:testit.db");
+                scoreDao = new ScoreDao(database);
                 return;
             }
         } catch(Exception e) {
@@ -56,13 +55,9 @@ public class ScoreDaoTest {
             if (conn != null) {
                 System.out.println("Uusi tietokanta on luotu.");
                 
-                PreparedStatement stmt = conn.prepareStatement("DROP TABLE IF EXISTS Tulos");
-                stmt.execute();
-                
                 PreparedStatement stmt2 = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Tulos("
                     + "id integer PRIMARY KEY, nimi varchar(200), tulos integer)");
                 stmt2.execute();
-                stmt.close();
                 stmt2.close();
                 conn.close();
             }
@@ -76,42 +71,53 @@ public class ScoreDaoTest {
     
     @After
     public void tearDown() {
+        try{
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:testit.db");
+            PreparedStatement stmt = conn.prepareStatement("DROP TABLE IF EXISTS Tulos");
+            stmt.execute();
+            stmt.close();
+        } catch (Exception e){
+            System.out.println("Jotain meni pieleen tietokantaan tallentamisessa: " + e.getMessage());
+        }
     }
     
     @Test
     public void saveWorksProperly() {
-        Score tulos = new Score(-1, 2000, "Ville");
-        Score tulos2 = new Score(-1, 0, "");
+        Score replacable = new Score(3, 0, "");
+        Score score = new Score(2, 2000, "Ville");
+        
+        try { 
+            replacable = scoreDao.save(score);
+        } catch (Exception e) {
+            System.out.println("Tallentaminen tietokantaan ei onnistunut: " + e.getMessage());
+        }
+        
+        
+        assertEquals("Ville: 2000", replacable.toString());
+        
+    }
+    
+    @Test
+    public void findAllReturnsEverything() {
+        Score score1 = new Score(1, 1000, "Pekka");
+        Score score2 = new Score(5, 2012, "Anni");
+        Score score3 = new Score(-1, 1921, "Matias");
+        List<Score> lista = new ArrayList<>();
         
         try {
-            scoreDao.save(tulos);
+            scoreDao.save(score1);
+            scoreDao.save(score2);
+            scoreDao.save(score3);
         } catch (Exception e) {
-            System.out.println("Tallentaminen tietokantaan ei onnistunut");
-        }
-        /*
-        try{
-            Connection conn = database.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Tulos WHERE nimi = 'Ville'");
-        
-            ResultSet rs = stmt.executeQuery();
-            
-            if (rs.next()) {
-                tulos2 = new Score(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi"));
-                rs.close();
-                stmt.close();
-                conn.close();
-            
-            } else {
-                rs.close();
-                stmt.close();
-                conn.close();
-            }
-            
-        } catch (Exception e) {
-            System.out.println("Yhteyttä ei voitu muodostaa.");
+            System.out.println("Jokin meni vikaan tietokantaan tallentamisessa: " + e.getMessage());
         }
         
-        assertEquals("Ville: 2000", tulos2.toString());
-        */
+        try {
+            lista = scoreDao.findAll();
+        } catch (Exception e) {
+            System.out.println("Jotain meni pieleen tiedon hakemisessa: " + e.getMessage());
+        }
+        
+        assertEquals(3, lista.size());
     }
 }

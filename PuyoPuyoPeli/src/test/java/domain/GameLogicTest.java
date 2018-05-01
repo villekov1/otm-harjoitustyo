@@ -266,9 +266,110 @@ public class GameLogicTest {
     }
     
     @Test
-    public void addPointsWorks(){
+    public void addPointsWorks() {
         situation.addPoints(55);
         
         assertEquals(55, situation.getPoints());
+    }
+    
+    @Test
+    public void hardDropWorks() {
+        situation.hardDrop();
+        
+        boolean onTheGround = (situation.getFalling().getPositionY() == 11 && situation.getFallingAxis().getPositionY() == 12);
+        assertEquals(true, onTheGround);
+    }
+    
+    @Test
+    public void dropAllWorks1() {
+        situation.addPuyo(new Puyo(1, 5, Colour.RED));
+        situation.addPuyo(new Puyo(4, 2, Colour.PURPLE));
+        situation.updateFilled();
+        situation.dropAll();
+        
+        boolean bothOnTheGround = (situation.isTheSpaceFilled(1, 12) && situation.isTheSpaceFilled(4, 12));
+        assertEquals(true, bothOnTheGround);
+    }
+    
+    @Test
+    public void dropAllWorks2() {
+        situation.addPuyo(new Puyo(1, 5, Colour.RED));
+        situation.addPuyo(new Puyo(1, 8, Colour.PURPLE));
+        situation.updateFilled();
+        situation.dropAll();
+        
+        boolean bothOnTheGround = (situation.isTheSpaceFilled(1, 12) && situation.isTheSpaceFilled(1, 11));
+        assertEquals(true, bothOnTheGround);
+    }
+    
+    @Test
+    public void dropAllWorks3() {
+        situation.addPuyo(new Puyo(5, 11, Colour.GREEN));
+        situation.addPuyo(new Puyo(5, 12, Colour.YELLOW));
+        situation.updateFilled();
+        situation.dropAll();
+        
+        boolean bothOnTheGround = (situation.isTheSpaceFilled(5, 12) && situation.isTheSpaceFilled(5, 11));
+        assertEquals(true, bothOnTheGround);
+    }
+    
+    @Test
+    public void areFallingPuyosOnTheGroundReturnsTrue() {
+        situation.getFallingAxis().moveY(11);
+        situation.getFallingAxis().moveY(11);
+        situation.updateFilled();
+        
+        assertEquals(true, situation.areFallingPuyosOnTheGround());
+    }
+    
+    @Test
+    public void turnLeftReturnsToTheOriginalPositionEventually() {
+        situation.update();
+        
+        int fallingX = situation.getFalling().getPositionX();
+        int fallingY = situation.getFalling().getPositionY();
+        int fallingAxisX = situation.getFallingAxis().getPositionX();
+        int fallingAxisY = situation.getFallingAxis().getPositionY();
+        
+        situation.turnLeft();
+        situation.turnLeft();
+        situation.turnLeft();
+        situation.turnLeft();
+        
+        boolean onTheOriginalPositions = (situation.getFalling().getPositionX() == fallingX)
+                && (situation.getFalling().getPositionY() == fallingY)
+                && (situation.getFallingAxis().getPositionX() == fallingAxisX)
+                && (situation.getFallingAxis().getPositionY() == fallingAxisY);
+    }
+    
+    @Test
+    public void turnRightReturnsToTheOriginalPositionEventually() {
+        situation.update();
+        
+        int fallingX = situation.getFalling().getPositionX();
+        int fallingY = situation.getFalling().getPositionY();
+        int fallingAxisX = situation.getFallingAxis().getPositionX();
+        int fallingAxisY = situation.getFallingAxis().getPositionY();
+        
+        situation.turnRight();
+        situation.turnRight();
+        situation.turnRight();
+        situation.turnRight();
+        
+        boolean onTheOriginalPositions = (situation.getFalling().getPositionX() == fallingX)
+            && (situation.getFalling().getPositionY() == fallingY)
+            && (situation.getFallingAxis().getPositionX() == fallingAxisX)
+            && (situation.getFallingAxis().getPositionY() == fallingAxisY);
+    }
+    
+    @Test
+    public void turnLeftCancelsTurnRight() {
+        situation.turnRight();
+        situation.turnLeft();
+        
+        boolean onTheOriginalPositions = (situation.getFalling().getPositionX() == 2)
+            && (situation.getFalling().getPositionY() == 0);
+        
+        assertEquals(true, onTheOriginalPositions);
     }
 }

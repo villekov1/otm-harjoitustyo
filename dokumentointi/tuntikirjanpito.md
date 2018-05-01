@@ -22,4 +22,5 @@
 | 25.4  | 1    | Aloitin Database- ja ScoreDao -luokan testaamisen. Databasen testit on jo tehty, mutta ScoreDaon testejä vasta aloittelin.
 | 28.4  | 3    | Refaktoroin sovellusta. Laitoin GameLogic-luokan filled-nimisen HashMapin omaksi luokakseen FilledMap, joka sisältää tiedon täysistä ruuduista. Aloitin JavaDocin kirjoittamisen sekä jatkoin ohjelman testaamista. Muokkasin sovelluslogiikkaa siten, että uudet Puyot ilmestyvät ruudun keskelle myös isommissa ja pienemmissä kentissä kuin standardikoossa. Myös pelin päättymisehto pätee nyt ruudun keskellä eikä vain (2, 0) ruudussa.
 | 30.4  | 2    | Kirjoitin JavaDoc-dokumentaatiota. Lisäksi kirjoitin sovellukselle käyttöohjeen. Päivitin luokka- ja pakkauskaavion vastaamaan nykyistä luokkakokoonpanoa.
-| summa | 43   |   |
+| 1.5   | 2    | Eriytin hard-dropin käyttöliittymästä osaksi pelilogiikkaa. Jatkoin testien kirjoittamista. Erityisesti sain tietokantaluokkien testit toimimaan.|
+| summa | 46   |   |
