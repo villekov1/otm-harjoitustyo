@@ -5,16 +5,20 @@ joita voi liikuttaa ja kääntää. Vähintään neljän samanvärisen Puyon
 muodostamat ketjut katoavat, jolloin pelaaja saa pisteitä.
 
 ## Dokumentaatio
-[tuntikirjanpito.md](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/tuntikirjanpito.md)
+[Tuntikirjanpito](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/tuntikirjanpito.md)
 
-[vaatimusmaarittely.md](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/vaatimusmaarittely.md)
+[Vaatimusmäärittely](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/vaatimusmaarittely.md)
 
-[arkkitehtuuri.md](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/arkkitehtuuri.md)
+[Arkkitehtuurikuvaus](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/arkkitehtuuri.md)
 
-[kayttoohje.md](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kayttoohje.md)
+[Käyttöohje](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kayttoohje.md)
 
 ## Releaset
 [Viikko 5](https://github.com/villekov1/otm-harjoitustyo/releases/tag/Release1)
+[Viikko 6](https://github.com/villekov1/otm-harjoitustyo/releases/tag/viikko6)
+
+## Huomioitavaa
+Sovellus hyödyntää SQLite-tietokantoja, joten SQLiten on oltava asennettuna tietokoneelle.
 
 ## Komentorivitoiminnot:
 Ohjelma on kirjoitettu Java-kielellä, joten se hyödyntää Mavenia, 
@@ -27,14 +31,12 @@ Testikattavuusraportin voi luoda komennolla: *mvn jacoco:report*.
 Raportti syntyy index.html -nimellä kansioon target/site/jacoco, ja sen 
 voi avata selaimella.
 
-
 ### Jar-tiedoston luominen
 Komento *mvn package* luo target-kansioon suoritettavan jar-tiedoston 
 PuyoPuyoPeli-1.0-SNAPSHOT. Jar-tiedoston voi suorittaa komennolla *java 
 -jar PuyoPuyoPeli-1.0-SNAPSHOT.jar*.
 
-Jar-tiedosto on saatavilla myös viikon 5 julkaisussa.
-
+Jar-tiedosto on saatavilla myös viikon 5 ja 6 julkaisuissa nimellä *PuyoPuyoPeli.jar*.
 
 ### Checkstyle
 Checkstyle-raportin voi luoda komennolla *mvn jxr:jxr 
