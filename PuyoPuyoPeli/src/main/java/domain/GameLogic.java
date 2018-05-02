@@ -20,7 +20,8 @@ public class GameLogic {
     private int height;
     private Puyo falling;
     private Puyo fallingAxis;
-    private Puyo next;
+    public Puyo nextFalling;
+    public Puyo nextAxis;
     
     /**
     * A constructor of the class GameLogic.
@@ -33,8 +34,10 @@ public class GameLogic {
         this.points = 0;
         this.puyonumber = 0;
         this.filledMap = new FilledMap(width, height);
-        this.puyos = new ArrayList<>();
-        
+        this.puyos = new ArrayList<>();  
+        this.nextFalling = randomPuyo();
+        this.nextAxis = randomPuyo();
+        this.nextAxis.moveY(1);
         this.setPair();
     }
     
@@ -68,7 +71,6 @@ public class GameLogic {
     * It checks if the space under the Puyos are free and moves them if the spaces are free.
     */
     public void dropFalling() {
-        
         if (falling.getPositionY() >= fallingAxis.getPositionY()) {
             if (falling.getPositionY() + 1 <= height - 1 && !this.isTheSpaceFilled(falling.getPositionX(), falling.getPositionY() + 1)) {
                 this.falling.moveY(1);
@@ -226,7 +228,6 @@ public class GameLogic {
     
     /**
     * The method tells if both of the falling Puyos are on the ground.
-
     * @return boolean value that tells if Puyos are on the ground or not.
     */
     public boolean areFallingPuyosOnTheGround() {
@@ -241,18 +242,32 @@ public class GameLogic {
     * The method updates the FilledMap according to the current list puyos.
     */
     public void updateFilled() {
-        // This is more convenient than just calling filledMap's method,
-        // because you don't have to input parameters 
+        // This is more convenient than just calling filledMap's method
         filledMap.updateFilled(this.puyos, this.falling, this.fallingAxis);
     }
     
     /**
     * The method returns a Puyo that is horizontally in the center of the screen.
     * The colour is random.
-    * 
     * @return Puyo that is randomly coloured
     */
     public Puyo randomPuyo() {
+        Puyo puyo;
+        Colour vari = this.randomColour();
+        
+        if (width % 2 == 0) {
+            puyo = new Puyo((int) ((width / 2) - 1) , 0, vari);
+        } else {
+            puyo = new Puyo((int) (width / 2) , 0, vari);
+        }
+        return puyo;
+    }
+    
+    /**
+     * The method returns a random Colour
+     * @return A random colour
+     */
+    public Colour randomColour() {
         Colour vari;
         Random arpoja = new Random();
         int luku = arpoja.nextInt(9);
@@ -268,25 +283,24 @@ public class GameLogic {
         } else {
             vari = Colour.PURPLE;
         }
-        
-        Puyo puyo = new Puyo((int) (width / 2) - 1, 0, vari);
-        return puyo;
+        return vari;
     }
     
     /**
     * The method sets random Puyos to both falling and fallingAxis.
     */
     public void setPair() {
-        falling = this.randomPuyo();
-        fallingAxis = this.randomPuyo();
-        fallingAxis.moveY(1);
+        falling = nextFalling;
+        fallingAxis = nextAxis;
+        nextFalling = this.randomPuyo();
+        nextAxis = this.randomPuyo();
+        nextAxis.moveY(1);
         puyos.add(falling);
         puyos.add(fallingAxis);
     }
     
     /**
     * The method checks if a space (x, y) is filled.
-    * 
     * @param   x   The x coordinate
     * @param   y   The y coordinate   
     * @return boolean that tells if the space is filled
@@ -325,7 +339,6 @@ public class GameLogic {
     /**
     * The method finds the adjacent Puyos of a specific Puyo given by the parameter.
     * @param   puyo   The Puyo of which the adjacent Puyos are found.
-    * 
     * @return ArrayList that contains the adjacent Puyos
     */
     public ArrayList<Puyo> getAdjacentSameColorPuyos(Puyo puyo) {
@@ -389,7 +402,9 @@ public class GameLogic {
     * @return boolean that tells if the game is over
     */
     public boolean gameOver() {
-        if (this.isTheSpaceFilled((int) (width / 2) - 1, 0)) {
+        if (width % 2 == 0 && this.isTheSpaceFilled((int) (width / 2) - 1, 0)) {
+            return true;
+        } else if (width % 2 != 0 && this.isTheSpaceFilled((int) (width / 2), 0)) {
             return true;
         } else {
             return false;
@@ -415,26 +430,33 @@ public class GameLogic {
     public ArrayList<Puyo> getPuyos() {
         return this.puyos;
     }
+    public int getPoints() {
+        return this.points;
+    }
     /**
     * The method adds a Puyo to the list puyos. The main use of this method is in testing.
     * @param   puyo   The Puyo that is added to the list
-
     */
     public void addPuyo(Puyo puyo) {
         this.puyos.add(puyo);
     }
-    public int getPoints() {
-        return this.points;
-    }
-    
+
     /**
     * The method adds points to the current score.
     * @param   amount   The amount of points to be added
-
     */
     public void addPoints(int amount) {
         this.points += amount;
     }
     
-    
+    /**
+     * The method returns a list that contains the next Puyos
+     * @return ArrayList that contains the next Puyos
+     */
+    public ArrayList<Puyo> nextPuyos() {
+        ArrayList<Puyo> next = new ArrayList<>();
+        next.add(nextFalling);
+        next.add(nextAxis);
+        return next;
+    }
 }

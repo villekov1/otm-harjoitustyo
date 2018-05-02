@@ -126,18 +126,19 @@ public class PuyoPuyoUi extends Application {
         start.add(highScoreButton, 1, 3);
         start.add(ta, 1, 4);
         
-        
         //Gameview
         GridPane components = new GridPane();
-        Canvas ruutu = new Canvas(2*radius + 2*radius*width, 2*radius + 2*radius*height);
+        Canvas ruutu = new Canvas(4*radius + 2*radius*width, 2*radius + 2*radius*height);
+        Canvas nextPuyos = new Canvas(3*radius, 5*radius);
         components.setMinSize(2*radius + 2*radius*width + 100, 2*radius + 2*radius*height);
         GraphicsContext piirturi = ruutu.getGraphicsContext2D();
+        GraphicsContext nextDrawer = nextPuyos.getGraphicsContext2D();
         
         Button paluunappi = new Button("Alkuvalikkoon");
         Button paluunappiTuloksissa = new Button("Alkuvalikkoon");
         Button reset = new Button("Aloita alusta");
         Button pysayta = new Button("Pysäytä");
-        Label pisteteksti = new Label("Pisteitä: "+situation.getPoints());
+        Label pisteteksti = new Label("Pisteitä: " + situation.getPoints());
         
         HBox ylapalkki = new HBox();
         ylapalkki.setSpacing(15);
@@ -149,6 +150,7 @@ public class PuyoPuyoUi extends Application {
         components.add(ylapalkki, 0, 0);
         components.add(ruutu, 0, 1);
         components.add(pisteteksti, 1, 0);
+        components.add(nextPuyos, 1, 1);
         
         Scene gameView = new Scene(components);
         
@@ -183,7 +185,6 @@ public class PuyoPuyoUi extends Application {
                 heightText.setText("Korkeus: "+new_val.intValue());
             }
         });
-        
         nappi1.setOnAction((event) -> {
             lista.clear();
             int i = 0;
@@ -199,7 +200,6 @@ public class PuyoPuyoUi extends Application {
                 list.setItems(lista);
             });
         });
-        
         delete.setOnAction((event) -> {
             String teksti = list.getSelectionModel().getSelectedItem();
             int index0 = teksti.indexOf(".");
@@ -264,7 +264,6 @@ public class PuyoPuyoUi extends Application {
                     pause = true;
                 }
             }
-
         });
         
         gameView.setOnKeyReleased(event -> {
@@ -276,8 +275,8 @@ public class PuyoPuyoUi extends Application {
                 this.name = field.getText();
                 situation = new GameLogic(width, height);
                 //2*(radius + 2)*width, 2*(radius + 2)*height
-                ruutu.setWidth(2 * (radius + 2) * width);
-                ruutu.setHeight(2 * (radius + 2) * height);
+                ruutu.setWidth(2 * radius + 2 * (radius + 2) * width);
+                ruutu.setHeight(2 * radius + 2 * (radius + 2) * height);
                 window.setScene(gameView);
                 window.setMinWidth(2 * (radius + 2) * width + 150);
                 window.setMinHeight(2 * (radius + 2) * height + 100);
@@ -325,8 +324,6 @@ public class PuyoPuyoUi extends Application {
             window.setScene(highScoreView);
         });
         
-        
-        
         new AnimationTimer(){
             long edellinen = 0;
             
@@ -334,14 +331,21 @@ public class PuyoPuyoUi extends Application {
             public void handle(long nykyhetki) {
                 speed = (int)situation.getPoints()/1000;
                 piirturi.setFill(Color.FLORALWHITE);
-                //Canvas ruutu = new Canvas(2*radius + 2*radius*width, 2*radius + 2*radius*height);
-                piirturi.fillRect(0, 0, 2 * (radius + 2) * width, 2 * (radius + 2) * height);
+                piirturi.fillRect(0, 0, 2 * radius + 2 * (radius + 2) * width, 2 * (radius + 2) * height);
                 
-                for (int i = 0; i < situation.getPuyos().size(); i++) {
-                    Puyo puyo = situation.getPuyos().get(i);
+                ArrayList<Puyo> drawablePuyos = new ArrayList<>();
+                situation.getPuyos().stream().forEach(puyo -> { 
+                    drawablePuyos.add(puyo);
+                });
+                drawablePuyos.addAll(situation.nextPuyos());
+                
+                for (int i = 0; i < drawablePuyos.size(); i++) {
+                    Puyo puyo = drawablePuyos.get(i);
                     
                     piirturi.setFill(Color.GRAY);
-                    piirturi.fillOval(0.5*radius + 2*radius*puyo.getPositionX(), radius+2*radius*puyo.getPositionY(), 2*radius, 2*radius);
+                    if(puyo != situation.nextAxis && puyo != situation.nextFalling){
+                        piirturi.fillOval(0.5*radius + 2*radius*puyo.getPositionX(), radius+2*radius*puyo.getPositionY(), 2*radius, 2*radius);
+                    }
                     
                     if (puyo.getColour() == Colour.RED) {
                         piirturi.setFill(Color.TOMATO);
@@ -354,13 +358,16 @@ public class PuyoPuyoUi extends Application {
                     } else if (puyo.getColour() == Colour.PURPLE) {
                         piirturi.setFill(Color.BLUEVIOLET);
                     }
-                    
-                    
-                    
-                    piirturi.fillOval(0.5*radius + 2*radius*puyo.getPositionX() -1 , radius+2*radius*puyo.getPositionY() - 1, 2*radius - 1, 2*radius - 1);
-                    
+
+                    if (puyo == situation.nextFalling) {
+                        piirturi.fillOval(2 * (radius + 1.5) * width, radius, 2*radius, 2*radius);
+                    } else if (puyo == situation.nextAxis) {
+                        piirturi.fillOval(2 * (radius + 1.5) * width, 3*radius, 2*radius, 2*radius);
+                    } else {
+                        piirturi.fillOval(0.5*radius + 2*radius*puyo.getPositionX() -1 , radius+2*radius*puyo.getPositionY() - 1, 2*radius - 1, 2*radius - 1);
+                    }
                 }
-                
+
                 if (nykyhetki - edellinen < 1000000000 - speed*100000000) {
                     return;
                 }
@@ -389,13 +396,9 @@ public class PuyoPuyoUi extends Application {
                         pause = true;
                     }
                 }
-               
                 this.edellinen = nykyhetki;
-            }
-            
-            
+            }             
         }.start();
-        
         
         window.setScene(startView);
         window.show();
@@ -412,13 +415,11 @@ public class PuyoPuyoUi extends Application {
     */
     public static List<Score> findByName() {
         List<Score> tulokset = new ArrayList<>();
-        
         try {
             tulokset = scoreDao.findAllInOrderByName();
         } catch(Exception e) {
             System.out.println("Ei voitu etsiä tuloksia tai niitä ei ole.");
         }
-        
         return tulokset;
     }
     
@@ -427,14 +428,12 @@ public class PuyoPuyoUi extends Application {
     * @return   List that contains all of the scores ordered by points.
     */
     public static List<Score> findByPoints() {
-        List<Score> tulokset = new ArrayList<>();
-        
+        List<Score> tulokset = new ArrayList<>();        
         try{
             tulokset = scoreDao.findAllInOrderByPoints();
         } catch(Exception e) {
             System.out.println("Ei voitu etsiä tuloksia tai niitä ei ole.");
         }
-        
         return tulokset;
     }
     
@@ -455,8 +454,7 @@ public class PuyoPuyoUi extends Application {
         if (this.highscores.size() >= 3) {
             Score tulos3 = this.highscores.get(2);
             highScoresText += "3. "+tulos3+"\n";
-        }
-        
+        } 
     }
     
     @Override
@@ -482,23 +480,8 @@ public class PuyoPuyoUi extends Application {
                 
                 PreparedStatement stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Tulos("
                         + "id integer PRIMARY KEY, nimi varchar(200), tulos integer)");
-                stmt.execute();
-                
-                PreparedStatement stmt2 = conn.prepareStatement("INSERT INTO Tulos(nimi, tulos)"
-                        + " VALUES('Ville', 2000)");
-                PreparedStatement stmt3 = conn.prepareStatement("INSERT INTO Tulos(nimi, tulos)"
-                        + " VALUES('Pekka', 1500)");
-                PreparedStatement stmt4 = conn.prepareStatement("INSERT INTO Tulos(nimi, tulos)"
-                        + " VALUES('Anni', 1200)");
-                
-                stmt2.execute();
-                stmt3.execute();
-                stmt4.execute();
-                
+                stmt.execute();                
                 stmt.close();
-                stmt2.close();
-                stmt3.close();
-                stmt4.close();
                 conn.close();
             }
         } catch(SQLException e) {
