@@ -15,6 +15,7 @@ muodostamat ketjut katoavat, jolloin pelaaja saa pisteitä.
 
 ## Releaset
 [Viikko 5](https://github.com/villekov1/otm-harjoitustyo/releases/tag/Release1)
+
 [Viikko 6](https://github.com/villekov1/otm-harjoitustyo/releases/tag/viikko6)
 
 ## Huomioitavaa
