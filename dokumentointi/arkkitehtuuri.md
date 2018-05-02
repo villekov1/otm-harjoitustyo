@@ -44,8 +44,8 @@ sisältävät vähintään neljä samanväristä Puyoa, kyseinen ketju tuhoutuu
 destroyChain-metodin avulla. Tämän jälkeen update kutsuu 
 dropAll-metodia, joka tiputtaa kaikki mahdollisesti ilmaan jääneet Puyot 
 maan tasolle. Tällöin saattaa myös syntyä uusia ketjuja, jolloin myös ne 
-tuhotaan. Update-metodin toiminta päättyy, kun tippuvat Puyot ovat 
-maassa, jolloin asetetaan uudet tippuvat Puyot setPair- ja 
+tuhotaan. Update-metodin toiminta päättyy, kun kaikki Puyot ovat maassa eikä uusia ketjuja ole syntynyt, 
+jolloin asetetaan uudet tippuvat Puyot setPair- ja 
 randomPuyo-metodien avulla.
 
 PuyoPuyoUi vastaa graafisen käyttöliittymän piirtämisestä. Eri näkymiä 
@@ -54,15 +54,15 @@ näistä keskeisin. Jokaisen piirtosyklin aikana luokka kutsuu
 GameLogic-olion update-metodia, jolloin GameLogic sekä sen sisältämä 
 FilledMap päivittyvät. Ohjelma piirtää GameLogic-luokan sisältämän 
 puyos-listan sisällön ruudulle, jolloin kaikki pelin Puyot ovat 
-näkyvillä.
+näkyvillä. Huomionarvoista on, että PuyoPuyoUi ei vastaa ohjelmalogiikasta millään tavalla, mutta se kutsuu update-metodia tietyin väliajoin, jolloin pelitilanne muuttuu. Lisäksi UI:n kautta pelaajan syötteet käsitellään ja välitetään GameLogic-luokalle.
 
 Huipputulosnäkymän kannalta erityisen oleellista on sovelluksen 
 tietokantatoiminnallisuudet. Tietokantaan liittyviä luokkia ovat luokat 
-Database ja ScoreDao. Database sisältää tietokantaan liittyvän osoitteen 
+Database ja ScoreDao. Database sisältää tietokannan osoitteen 
 sekä mahdollisuuden yhteyden avaamiseen. Score-luokka sisältää tiedon 
 pelaajan nimestä sekä tuloksesta. ScoreDaon avulla on mahdollista 
 tallentaa tietokantaan pelaajan saavuttamat pisteet Score-luokan 
-välityksellä sekä etsiä tietokannasta tulokset ja tulkita ne 
+välityksellä sekä etsiä tietokannasta tulokset ja tulkita ne edelleen
 Score-alkioiksi. Huipputulosnäkymän kautta on mahdollista 
 tarkastella ja järjestää 
 tuloksia sekä poistaa niitä.
@@ -79,7 +79,7 @@ tulos (int).
 
 ScoreDaon avulla Score-luokan alkiot on mahdollista tallentaa 
 tietokantaan, ja vastaavasti tietokannan sisältö on mahdollista tulkita 
-Score-luokan alkioksi.
+Score-luokan alkioksi. Ainoastaan PuyoPuyoUi-luokka kutsuu ScoreDaon metodeja. GameLogic-luokka ei tee näillä tiedoilla mitään, mutta käyttöliittymän vastuulla on niiden tulostaminen sekä niiden poistaminen.
 
 ## Lisää sovelluksen toiminnasta
 
