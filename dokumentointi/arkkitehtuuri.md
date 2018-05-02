@@ -49,7 +49,7 @@ maassa, jolloin asetetaan uudet tippuvat Puyot setPair- ja
 randomPuyo-metodien avulla.
 
 PuyoPuyoUi vastaa graafisen käyttöliittymän piirtämisestä. Eri näkymiä 
-on kolme, aloitusnäkymä, pelinäkymä ja huipputulosnäkymä. Pelinäkymä on 
+on kolme: aloitusnäkymä, pelinäkymä ja huipputulosnäkymä. Pelinäkymä on 
 näistä keskeisin. Jokaisen piirtosyklin aikana luokka kutsuu 
 GameLogic-olion update-metodia, jolloin GameLogic sekä sen sisältämä 
 FilledMap päivittyvät. Ohjelma piirtää GameLogic-luokan sisältämän 
@@ -70,11 +70,11 @@ tuloksia sekä poistaa niitä.
 ## Tietojen tallennus
 Tietojen tallennus tapahtuu SQLiten avulla SQL-tietokantaan. Sovellus 
 luo käynnistyksen yhteydessä huipputulokset.db -tietokannan, jos 
-sellaista ei ole olemassa. Jos sellainen on olemassa, sovellus 
+sellaista ei vielä ole olemassa. Jos sellainen on olemassa, sovellus 
 tarkistaa, onko siellä tietokantataulu Tulos sekä tarvittaessa luo 
 sellaisen.
 
-Tulos-taulua sisältää seuraavat tiedot: id (pääavain), nimi (String) ja 
+Tulos-taulu sisältää seuraavat tiedot: id (pääavain), nimi (String) ja 
 tulos (int).
 
 ScoreDaon avulla Score-luokan alkiot on mahdollista tallentaa 

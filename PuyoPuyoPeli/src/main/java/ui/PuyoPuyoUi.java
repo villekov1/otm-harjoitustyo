@@ -65,10 +65,11 @@ public class PuyoPuyoUi extends Application {
     static File dbFile = new File("huipputulokset.db");
     static Database database = new Database("jdbc:sqlite:"+dbFile.getAbsolutePath());
     static ScoreDao scoreDao = new ScoreDao(database);
-    static List<Score> huipputulokset = findByPoints();
-    static String huipputulosteksti = "Huipputulokset:\n\n";
+    static List<Score> highscores = findByPoints();
+    static String highScoresText = "TOP-3: \n\n";
     
     public void start(Stage window) {
+        window.setTitle("Puyo Puyo -peli");
         //Alkuvalikko
         GridPane start = new GridPane();
         start.setHgap(5);
@@ -84,7 +85,7 @@ public class PuyoPuyoUi extends Application {
             + "Enterillä tai S-näppäimellä voit kääntää niitä myötäpäivään, ja Backspace- tai A-näppäimellä vastapäivään.\n"
             + "Ylös-näppäin tiputtaa Puyot nopeasti maahan.\n"
             + "Pysäytä-näppäin pysäyttää pelin, ja Aloita alusta -näppäin aloittaa pelin alusta.\n"
-            + "Voit aina palata aloitusruutuun Alkuvalikkoon-näppäimellä.\n"
+            + "Voit aina palata aloitusruutuun Alkuvalikkoon-näppäimellä. Huomaa, että tällöin edistymisesi katoaa!\n"
             + "\nHuipputulokset-näppäintä painamalla pääset huipputulosnäkymään. "
             + "Siellä voit tarkastella tuloksia joko pisteiden tai järjestyksen perusteella järjestettynä. "
             + "Voit poistaa tuloksen klikkaamalla ensin tulosta ja sen jälkeen poista-näppäintä.";
@@ -94,11 +95,11 @@ public class PuyoPuyoUi extends Application {
         ta.setWrapText(true);        
         
         this.updateHighScoreText();
-        Label kolmenkarki = new Label(huipputulosteksti);
+        Label kolmenkarki = new Label(highScoresText);
         
         TextField field = new TextField();
-        Button aloita = new Button("Aloita");
-        Button huipputuloksiin = new Button("Huipputulokset");
+        Button startButton = new Button("Aloita");
+        Button highScoreButton = new Button("Huipputulokset");
         
         VBox sliderbar = new VBox();
         Slider sliderX = new Slider();
@@ -121,15 +122,15 @@ public class PuyoPuyoUi extends Application {
         start.add(kolmenkarki, 1, 0);
         start.add(sliderbar, 2, 1);
         start.add(field, 1, 1);
-        start.add(aloita, 1, 2);
-        start.add(huipputuloksiin, 1, 3);
+        start.add(startButton, 1, 2);
+        start.add(highScoreButton, 1, 3);
         start.add(ta, 1, 4);
         
         
         //Gameview
-        GridPane komponentit = new GridPane();
+        GridPane components = new GridPane();
         Canvas ruutu = new Canvas(2*radius + 2*radius*width, 2*radius + 2*radius*height);
-        komponentit.setMinSize(2*radius + 2*radius*width + 100, 2*radius + 2*radius*height);
+        components.setMinSize(2*radius + 2*radius*width + 100, 2*radius + 2*radius*height);
         GraphicsContext piirturi = ruutu.getGraphicsContext2D();
         
         Button paluunappi = new Button("Alkuvalikkoon");
@@ -144,12 +145,12 @@ public class PuyoPuyoUi extends Application {
         ylapalkki.getChildren().add(reset);
         ylapalkki.getChildren().add(pysayta);
         
-        komponentit.setHgap(10);
-        komponentit.add(ylapalkki, 0, 0);
-        komponentit.add(ruutu, 0, 1);
-        komponentit.add(pisteteksti, 1, 0);
+        components.setHgap(10);
+        components.add(ylapalkki, 0, 0);
+        components.add(ruutu, 0, 1);
+        components.add(pisteteksti, 1, 0);
         
-        Scene pelinakyma = new Scene(komponentit);
+        Scene gameView = new Scene(components);
         
         //Highscore view
         Button delete = new Button("Poista");
@@ -185,24 +186,26 @@ public class PuyoPuyoUi extends Application {
         
         nappi1.setOnAction((event) -> {
             lista.clear();
+            int i = 0;
             findByPoints().stream().forEach(tulos -> { 
-                lista.add(tulos.toString());
+                lista.add((lista.size() + 1) + ". " + tulos.toString());
                 list.setItems(lista);
             });
         });
         nappi2.setOnAction((event) -> {
             lista.clear();
             findByName().stream().forEach(tulos -> { 
-                lista.add(tulos.toString());
+                lista.add((lista.size() + 1) + ". " + tulos.toString());
                 list.setItems(lista);
             });
         });
         
         delete.setOnAction((event) -> {
             String teksti = list.getSelectionModel().getSelectedItem();
+            int index0 = teksti.indexOf(".");
             int index = teksti.indexOf(":");
-            String nimi = teksti.substring(0, index);
-            int tulos = Integer.parseInt(teksti.substring(index+2));
+            String nimi = teksti.substring(index0 + 2, index);
+            int tulos = Integer.parseInt(teksti.substring(index + 2));
             Score score = new Score(-1, tulos, nimi);
             
             System.out.println("\nNimi: " + nimi + ", Pisteet: " + tulos);
@@ -215,10 +218,10 @@ public class PuyoPuyoUi extends Application {
                     System.out.println("Poisto onnistui!");
                 }    
             } catch(Exception e) {
-                System.out.println("Jotain meni pieleen poistamisessa! Virhe: "+e.getMessage());
+                System.out.println("Jotain meni pieleen poistamisessa! Virhe: " + e.getMessage());
             }
             
-            huipputuloksiin.fire();
+            highScoreButton.fire();
         });
         
         GridPane tulosruutu = new GridPane();
@@ -229,11 +232,11 @@ public class PuyoPuyoUi extends Application {
         tulosruutu.add(list, 1, 1);
         tulosruutu.add(nappijoukko, 0, 1);
         
-        Scene tulosnakyma = new Scene(tulosruutu);
+        Scene highScoreView = new Scene(tulosruutu);
         
         //Let's add the pressed buttons to the HashMap
         HashMap<KeyCode, Boolean> painetutNapit = new HashMap<>();
-        pelinakyma.setOnKeyPressed(event -> {
+        gameView.setOnKeyPressed(event -> {
             painetutNapit.put(event.getCode(), Boolean.TRUE);
             if (event.getCode().equals(KeyCode.LEFT)) {
                 situation.moveLeft();
@@ -264,30 +267,34 @@ public class PuyoPuyoUi extends Application {
 
         });
         
-        pelinakyma.setOnKeyReleased(event -> {
+        gameView.setOnKeyReleased(event -> {
             painetutNapit.put(event.getCode(), Boolean.FALSE);
         });
         
-        aloita.setOnAction((event) -> {
+        startButton.setOnAction((event) -> {
             if(!field.getText().isEmpty() && !field.getText().matches("( )*")){
                 this.name = field.getText();
                 situation = new GameLogic(width, height);
                 //2*(radius + 2)*width, 2*(radius + 2)*height
-                ruutu.setWidth(2*(radius + 2)*width);
-                ruutu.setHeight(2*(radius + 2)*height);
-                window.setScene(pelinakyma);
+                ruutu.setWidth(2 * (radius + 2) * width);
+                ruutu.setHeight(2 * (radius + 2) * height);
+                window.setScene(gameView);
+                window.setMinWidth(2 * (radius + 2) * width + 150);
+                window.setMinHeight(2 * (radius + 2) * height + 100);
                 pause = false;
             }
             
         });
         paluunappi.setOnAction((event) -> {
             window.setScene(startView);
+            window.setMinWidth(600);
             pause = true;
         });
         paluunappiTuloksissa.setOnAction((event) -> {
             updateHighScoreText();
-            kolmenkarki.setText(huipputulosteksti);
+            kolmenkarki.setText(highScoresText);
             window.setScene(startView);
+            window.setMinWidth(600);
             pause = true;
         });
         reset.setOnAction((event) -> {
@@ -302,20 +309,20 @@ public class PuyoPuyoUi extends Application {
             
         });
         
-        huipputuloksiin.setOnAction((event) -> {
+        highScoreButton.setOnAction((event) -> {
             lista.clear();
             if (nappi1.isSelected()) {
-                findByPoints().stream().forEach(tulos -> { 
-                    lista.add(tulos.toString());
+                findByPoints().stream().forEach(tulos -> {
+                    lista.add((lista.size() + 1) + ". " + tulos.toString());
                 });
             } else {
                 findByName().stream().forEach(tulos -> { 
-                    lista.add(tulos.toString());
+                    lista.add((lista.size() + 1) + ". " + tulos.toString());
                 });
             }
         
             list.setItems(lista);
-            window.setScene(tulosnakyma);
+            window.setScene(highScoreView);
         });
         
         
@@ -328,15 +335,18 @@ public class PuyoPuyoUi extends Application {
                 speed = (int)situation.getPoints()/1000;
                 piirturi.setFill(Color.FLORALWHITE);
                 //Canvas ruutu = new Canvas(2*radius + 2*radius*width, 2*radius + 2*radius*height);
-                piirturi.fillRect(0, 0, 2*(radius + 2)*width, 2*(radius + 2)*height);
+                piirturi.fillRect(0, 0, 2 * (radius + 2) * width, 2 * (radius + 2) * height);
                 
-                for (int i=0; i<situation.getPuyos().size(); i++) {
+                for (int i = 0; i < situation.getPuyos().size(); i++) {
                     Puyo puyo = situation.getPuyos().get(i);
-
+                    
+                    piirturi.setFill(Color.GRAY);
+                    piirturi.fillOval(0.5*radius + 2*radius*puyo.getPositionX(), radius+2*radius*puyo.getPositionY(), 2*radius, 2*radius);
+                    
                     if (puyo.getColour() == Colour.RED) {
                         piirturi.setFill(Color.TOMATO);
                     } else if (puyo.getColour() == Colour.YELLOW) {
-                        piirturi.setFill(Color.YELLOW);
+                        piirturi.setFill(Color.color(255 / 255, 255 / 255, 102 / 255));
                     } else if (puyo.getColour() == Colour.GREEN) {
                         piirturi.setFill(Color.LAWNGREEN);
                     } else if (puyo.getColour() == Colour.BLUE) {
@@ -344,8 +354,11 @@ public class PuyoPuyoUi extends Application {
                     } else if (puyo.getColour() == Colour.PURPLE) {
                         piirturi.setFill(Color.BLUEVIOLET);
                     }
-
-                    piirturi.fillOval(0.5*radius + 2*radius*puyo.getPositionX(), radius+2*radius*puyo.getPositionY(), 2*radius, 2*radius);
+                    
+                    
+                    
+                    piirturi.fillOval(0.5*radius + 2*radius*puyo.getPositionX() -1 , radius+2*radius*puyo.getPositionY() - 1, 2*radius - 1, 2*radius - 1);
+                    
                 }
                 
                 if (nykyhetki - edellinen < 1000000000 - speed*100000000) {
@@ -360,7 +373,7 @@ public class PuyoPuyoUi extends Application {
                         Score score = new Score(-1, situation.getPoints(), name);
                         
                         try {
-                            if(!name.matches("( )*") && situation.getPoints() != 0){
+                            if (!name.matches("( )*") && situation.getPoints() != 0) {
                                 scoreDao.saveIfNotInTheDatabase(score);
                             }
                             
@@ -368,7 +381,7 @@ public class PuyoPuyoUi extends Application {
                             System.out.println("Jotain meni vikaan tiedon tallentamisessa.");
                         }
                         updateHighScoreText();
-                        kolmenkarki.setText(huipputulosteksti);
+                        kolmenkarki.setText(highScoresText);
                         window.setScene(startView);
                         field.clear();
                         name = "";
@@ -429,19 +442,19 @@ public class PuyoPuyoUi extends Application {
     * The method updates the Highscoretext that is shown on the main menu.
     */
     public void updateHighScoreText(){
-        huipputulokset = findByPoints();
-        huipputulosteksti = "Huipputulokset:\n\n";
-        if (this.huipputulokset.size()>=1) {
-            Score tulos1 = this.huipputulokset.get(0);
-            huipputulosteksti += "1. "+tulos1+"\n";
+        highscores = findByPoints();
+        highScoresText = "TOP-3: \n\n";
+        if (this.highscores.size() >= 1) {
+            Score tulos1 = this.highscores.get(0);
+            highScoresText += "1. "+tulos1+"\n";
         }
-        if (this.huipputulokset.size()>=2) {
-            Score tulos2 = this.huipputulokset.get(1);
-            huipputulosteksti += "2. "+tulos2+"\n";
+        if (this.highscores.size() >= 2) {
+            Score tulos2 = this.highscores.get(1);
+            highScoresText += "2. "+tulos2+"\n";
         }
-        if (this.huipputulokset.size()>=3) {
-            Score tulos3 = this.huipputulokset.get(2);
-            huipputulosteksti += "3. "+tulos3+"\n";
+        if (this.highscores.size() >= 3) {
+            Score tulos3 = this.highscores.get(2);
+            highScoresText += "3. "+tulos3+"\n";
         }
         
     }
