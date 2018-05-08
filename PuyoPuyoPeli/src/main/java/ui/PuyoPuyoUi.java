@@ -15,8 +15,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Collectors;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -24,13 +22,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.BorderPane;
 import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Orientation;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ListView;
@@ -40,13 +36,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.scene.paint.Color;
 
 /**
@@ -61,7 +52,7 @@ public class PuyoPuyoUi extends Application {
     boolean pause = true;
     int speed = 0;
     String name = "";
-    
+    HashMap<KeyCode, Boolean> painetutNapit = new HashMap<>();
     static File dbFile = new File("huipputulokset.db");
     static Database database = new Database("jdbc:sqlite:"+dbFile.getAbsolutePath());
     static ScoreDao scoreDao = new ScoreDao(database);
@@ -83,7 +74,7 @@ public class PuyoPuyoUi extends Application {
             + "Yritä tehdä neljän samanvärisen Puyon sarjoja, jolloin ne katoavat ja antavat pisteitä!\n"
             + "Voit siirtää nuolinäppäimillä tippuvia Puyoja sivusuunnassa.\n"
             + "Enterillä tai S-näppäimellä voit kääntää niitä myötäpäivään, ja Backspace- tai A-näppäimellä vastapäivään.\n"
-            + "Ylös-näppäin tiputtaa Puyot nopeasti maahan.\n"
+            + "Alaspäin-näppäin tiputtaa Puyoja nopeampaan tahtiin alas. Ylös-näppäin puolestaan tiputtaa Puyot välittömästi maahan.\n"
             + "Pysäytä-näppäin pysäyttää pelin, ja Aloita alusta -näppäin aloittaa pelin alusta.\n"
             + "Voit aina palata aloitusruutuun Alkuvalikkoon-näppäimellä. Huomaa, että tällöin edistymisesi katoaa!\n"
             + "\nHuipputulokset-näppäintä painamalla pääset huipputulosnäkymään. "
@@ -235,7 +226,7 @@ public class PuyoPuyoUi extends Application {
         Scene highScoreView = new Scene(tulosruutu);
         
         //Let's add the pressed buttons to the HashMap
-        HashMap<KeyCode, Boolean> painetutNapit = new HashMap<>();
+        //painetutNapit = new HashMap<>();
         gameView.setOnKeyPressed(event -> {
             painetutNapit.put(event.getCode(), Boolean.TRUE);
             if (event.getCode().equals(KeyCode.LEFT)) {
@@ -256,6 +247,9 @@ public class PuyoPuyoUi extends Application {
             }
             if (event.getCode().equals(KeyCode.UP)) {
                 situation.hardDrop();
+            }
+            if (event.getCode().equals(KeyCode.DOWN)) {
+                this.speed = 8;
             }
             if (event.getCode().equals(KeyCode.P)) {
                 if (pause == true) {
@@ -304,8 +298,7 @@ public class PuyoPuyoUi extends Application {
                 this.pause = true;
             }else {
                 this.pause = false;
-            }
-            
+            }  
         });
         
         highScoreButton.setOnAction((event) -> {
@@ -329,7 +322,12 @@ public class PuyoPuyoUi extends Application {
             
             @Override
             public void handle(long nykyhetki) {
-                speed = (int)situation.getPoints()/1000;
+                if(painetutNapit.get(KeyCode.DOWN) == Boolean.TRUE){
+                    speed = 8;
+                } else {
+                    speed = (int)situation.getPoints()/1000;
+                }
+                
                 piirturi.setFill(Color.FLORALWHITE);
                 piirturi.fillRect(0, 0, 2 * radius + 2 * (radius + 2) * width, 2 * (radius + 2) * height);
                 

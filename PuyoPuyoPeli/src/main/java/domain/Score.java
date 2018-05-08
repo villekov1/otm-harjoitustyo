@@ -35,4 +35,24 @@ public class Score {
     public String toString() {
         return this.name + ": " + this.score;
     }
+    
+    @Override
+    public boolean equals(Object comparable) {
+        if (this == comparable) {
+            return true;
+        }
+
+        if (!(comparable instanceof Score)) {
+            return false;
+        }
+
+        Score comparedScore = (Score) comparable;
+
+        if (this.score == comparedScore.score &&
+                this.name.equals(comparedScore.name)) {
+            return true;
+        }
+
+        return false;
+    }
 }

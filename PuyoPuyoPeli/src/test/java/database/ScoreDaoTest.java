@@ -120,4 +120,96 @@ public class ScoreDaoTest {
         
         assertEquals(3, lista.size());
     }
+    @Test
+    public void saveIfNotInTheDatabaseDoesntSaveIfAlreadyInDatabase() {
+        Score score1 = new Score(1, 1000, "Pekka");
+        List<Score> lista = new ArrayList<>();
+        
+        try {
+            scoreDao.saveIfNotInTheDatabase(score1);
+            scoreDao.saveIfNotInTheDatabase(score1);
+        } catch (Exception e) {
+            System.out.println("Jokin meni vikaan tietokantaan tallentamisessa: " + e.getMessage());
+        }
+        
+        try {
+            lista = scoreDao.findAll();
+        } catch (Exception e) {
+            System.out.println("Jotain meni pieleen tiedon hakemisessa: " + e.getMessage());
+        }
+        
+        assertEquals(1, lista.size());
+    }
+    @Test
+    public void deleteWorksProperly() {
+        Score score1 = new Score(1, 1000, "Pekka");
+        List<Score> lista = new ArrayList<>();
+        
+        try {
+            scoreDao.save(score1);
+        } catch (Exception e) {
+            System.out.println("Jokin meni vikaan tietokantaan tallentamisessa: " + e.getMessage());
+        }
+        
+        try {
+            scoreDao.delete(1);
+        } catch (Exception e) {
+            System.out.println("Jokin meni vikaan tiedon poistamisessa: " + e.getMessage());
+        }
+        
+        try {
+            lista = scoreDao.findAll();
+        } catch (Exception e) {
+            System.out.println("Jotain meni pieleen tiedon hakemisessa: " + e.getMessage());
+        }
+        
+        assertEquals(0, lista.size());
+    }
+    
+    @Test
+    public void findIdReturnsCorrectId() {
+        Score score1 = new Score(1, 1000, "Pekka");
+        Score score2 = new Score(5, 2012, "Anni");
+        Score score3 = new Score(-1, 1921, "Matias");
+        
+        try {
+            scoreDao.save(score1);
+            scoreDao.save(score2);
+            scoreDao.save(score3);
+        } catch (Exception e) {
+            System.out.println("Jotain meni vikaan tiedon tallentamisessa.");
+        }
+        int id = 0;
+        try {
+            id = scoreDao.findId(score3);
+        } catch (Exception e) {
+            System.out.println("Ei voitu löytää id:tä.");
+        }
+        
+        assertEquals(3, id);
+    }
+    
+    @Test
+    public void findByIdWorksProperly() {
+        Score score1 = new Score(1, 1000, "Pekka");
+        Score score2 = new Score(5, 2012, "Anni");
+        Score score3 = new Score(-1, 1921, "Matias");
+        
+        try {
+            scoreDao.save(score1);
+            scoreDao.save(score2);
+            scoreDao.save(score3);
+        } catch (Exception e) {
+            System.out.println("Jotain meni vikaan tiedon tallentamisessa.");
+        }
+        Score found = new Score(-1,0,"");
+        
+        try {
+            found = scoreDao.findById(2);
+        } catch (Exception e) {
+            System.out.println("Ei voitu löytää id:tä.");
+        }
+        
+        assertEquals(score2, found);
+    }
 }

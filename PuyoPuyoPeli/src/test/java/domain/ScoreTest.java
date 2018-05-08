@@ -71,4 +71,37 @@ public class ScoreTest {
     public void getIdWorks() {
         assertEquals(2, tulos2.getId());
     }
+    
+    @Test
+    public void equalsWorksProperly1() {
+        Score score1 = new Score(5, 1000, "Ville");
+        Score score2 = new Score(-2, 1000, "Ville");
+        
+        assertEquals(true, score1.equals(score2));
+    }
+    
+    @Test
+    public void equalsWorksProperly2() {
+        Score score1 = new Score(5, 2000, "Ville");
+        Score score2 = new Score(-2, 1000, "Ville");
+        
+        assertEquals(false, score1.equals(score2));
+    }
+    
+    @Test
+    public void equalsWorksProperly3() {
+        // Not a score
+        Puyo score1 = new Puyo(5, 10, Colour.BLUE);
+        Score score2 = new Score(-2, 1000, "Ville");
+        
+        assertEquals(false, score2.equals(score1));
+    }
+    
+    @Test
+    public void equalsWorksProperly4() {
+        // Not a score
+        Score score1 = new Score(-2, 1000, "Ville");
+        
+        assertEquals(true, score1.equals(score1));
+    }
 }

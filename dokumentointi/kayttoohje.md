@@ -30,6 +30,10 @@ Voit siirtää tippuvia Puyoja sivusuunnassa nuolinäppäimillä. Voit
 kääntää Puyoa myötäpäivään joko Enter- tai S-näppäimellä, ja 
 vastapäivään joko BackSpace- tai A-näppäimellä.
 
+Lisäksi voit painaa alas-nuolinäppäintä, jolloin Puyot tippuvat 
+nopeammin alaspäin (ns. "soft drop"). Painamalla ylös-nuolinäppäintä 
+Puyot tippuvat välittömästi maahan (ns. "hard drop").
+
 Kun tippuva Puyo kohtaa alimman rivin tai sen alapuolella on Puyo, se 
 lukkiutuu paikalle. Tällöin et enää voi siirtää tai kääntää sitä. Jos 
 muodostuu vähintään neljän samanvärisen Puyon sarja, se katoaa ja saat 
