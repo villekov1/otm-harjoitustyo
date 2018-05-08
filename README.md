@@ -13,6 +13,8 @@ muodostamat ketjut katoavat, jolloin pelaaja saa pisteitä.
 
 [Käyttöohje](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kayttoohje.md)
 
+[Testausraportti](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/testaus.md)
+
 ## Releaset
 [Viikko 5](https://github.com/villekov1/otm-harjoitustyo/releases/tag/Release1)
 
