@@ -258,6 +258,15 @@ public class GameLogicTest {
     }
     
     @Test
+    public void gameOverWorksIfTheWidthIsUneven() {
+        GameLogic situation2 = new GameLogic(7, 13);
+        situation2.addPuyo(new Puyo(3, 0, Colour.RED));
+        situation2.updateFilled();
+        
+        assertEquals(true, situation2.gameOver());
+    }
+    
+    @Test
     public void gameOverReturnsFalseIfGameIsNotOver() {
         situation.addPuyo(new Puyo(1, 0, Colour.BLUE));
         situation.updateFilled();
@@ -278,6 +287,18 @@ public class GameLogicTest {
         
         boolean onTheGround = (situation.getFalling().getPositionY() == 11 && situation.getFallingAxis().getPositionY() == 12);
         assertEquals(true, onTheGround);
+    }
+    
+    @Test
+    public void dropFallingWorksAsIntendedWhenThePuyosAreUpsideDown() {
+        situation.turnLeft();
+        situation.turnLeft();
+        
+        situation.hardDrop();
+        situation.updateFilled();
+        
+        boolean fallingPuyosOnTheGround = (situation.getFalling().getPositionY() == 12 && situation.getFallingAxis().getPositionY() == 11);
+        assertEquals(true, fallingPuyosOnTheGround);
     }
     
     @Test
@@ -372,4 +393,67 @@ public class GameLogicTest {
         
         assertEquals(true, onTheOriginalPositions);
     }
+    
+    @Test
+    public void turnRightWorksProperlyAgainsTheWall() {
+        situation.getFalling().moveXY(3, 2);
+        situation.getFallingAxis().moveXY(3, 2);
+        
+        situation.turnRight();
+        situation.updateFilled();
+        
+        boolean puyosOnTheCorrectPlaces = situation.isTheSpaceFilled(5, 3) && situation.isTheSpaceFilled(4, 3);
+    }
+    @Test
+    public void turnRightWorksProperlyAgainsTheWall2() {
+        situation.getFalling().moveXY(-2, 2);
+        situation.getFallingAxis().moveXY(-2, 0);
+        
+        situation.turnRight();
+        situation.updateFilled();
+        
+        boolean puyosOnTheCorrectPlaces = situation.isTheSpaceFilled(0, 2) && situation.isTheSpaceFilled(1, 2);
+    }
+    
+    @Test
+    public void turnLeftWorksProperlyAgainsTheWall() {
+        situation.getFalling().moveXY(-2, 2);
+        situation.getFallingAxis().moveXY(-2, 2);
+        
+        situation.turnLeft();
+        situation.updateFilled();
+        
+        boolean puyosOnTheCorrectPlaces = situation.isTheSpaceFilled(0, 3) && situation.isTheSpaceFilled(1, 3);
+    }
+    @Test
+    public void turnLeftWorksProperlyAgainsTheWall2() {
+        situation.getFalling().moveXY(3, 2);
+        situation.getFallingAxis().moveXY(3, 0);
+        
+        situation.turnLeft();
+        situation.updateFilled();
+        
+        boolean puyosOnTheCorrectPlaces = situation.isTheSpaceFilled(5, 2) && situation.isTheSpaceFilled(4, 2);
+    }
+    
+    @Test
+    public void nextPuyosReturnsTwoPuyos() {
+        //Because the Puyos are randomised, we only check that the method returns two Puyos
+        ArrayList<Puyo> next = situation.nextPuyos();
+        
+        assertEquals(2, next.size());
+    }
+    
+    @Test
+    public void ifPuyosMeetTheGroundNewPuyosAreSet() {
+        Puyo falling = situation.getFalling();
+        Puyo axis = situation.getFallingAxis();
+        
+        situation.hardDrop();
+        situation.update();
+        
+        assertEquals(false, (falling == situation.getFalling() && axis == situation.getFallingAxis()));
+    }
+    
+
 }

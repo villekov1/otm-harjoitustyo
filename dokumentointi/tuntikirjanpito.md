@@ -25,5 +25,5 @@
 | 1.5   | 2    | Eriytin hard-dropin käyttöliittymästä osaksi pelilogiikkaa. Jatkoin testien kirjoittamista. Erityisesti sain tietokantaluokkien testit toimimaan.|
 | 2.5   | 3    | Lisäsin Puyoille harmaan, epäkeskitetyn reunan, joka antaa niille tyylikkään syvyysefektin ja parantaa erityisesti keltaisten Puyojen näkyvyyttä taustasta. Toiminnallisuuden puolesta lisäsin huipputulosnäkymään järjestysnumerot tuloksien kohdalle. Lisäksi muutin käyttöliittymää siten, että tietyissä tilanteissa ruudun kokoa ei voi pienentää liikaa. Lisäsin toiminnallisuuden, joka näyttää kentän reunalla seuraavana tulevat Puyot.| 
 | 7.5   | 1    | Jatkoin testien kirjoittamista. |
-| 8.5   | 1    | Tein alustavan testaus-dokumentin. Lisäsin ohjelmaan toiminnallisuuden, jossa alas-nuolinäppäintä painamalla Puyot tippuvat nopeammin alaspäin.|
-| summa | 51   |   |
+| 8.5   | 2    | Tein alustavan testaus-dokumentin ja jatkoin testien kirjoittamista. Lisäsin ohjelmaan toiminnallisuuden, jossa alas-nuolinäppäintä painamalla Puyot tippuvat nopeammin alaspäin.|
+| summa | 52   |   |
