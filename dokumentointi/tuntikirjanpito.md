@@ -26,4 +26,5 @@
 | 2.5   | 3    | Lisäsin Puyoille harmaan, epäkeskitetyn reunan, joka antaa niille tyylikkään syvyysefektin ja parantaa erityisesti keltaisten Puyojen näkyvyyttä taustasta. Toiminnallisuuden puolesta lisäsin huipputulosnäkymään järjestysnumerot tuloksien kohdalle. Lisäksi muutin käyttöliittymää siten, että tietyissä tilanteissa ruudun kokoa ei voi pienentää liikaa. Lisäsin toiminnallisuuden, joka näyttää kentän reunalla seuraavana tulevat Puyot.| 
 | 7.5   | 1    | Jatkoin testien kirjoittamista. |
 | 8.5   | 2    | Tein alustavan testaus-dokumentin ja jatkoin testien kirjoittamista. Lisäsin ohjelmaan toiminnallisuuden, jossa alas-nuolinäppäintä painamalla Puyot tippuvat nopeammin alaspäin.|
-| summa | 52   |   |
+| 9.5   | 2    | Refaḱtoroin PuyoPuyoUi:ta lisäämällä metodeja, jotka siistivät hieman start-metodia. Tämä näkyy luokan pituudessa, mutta se on nyt aikaisempaa siistimpi.
+| summa | 54   |   |
