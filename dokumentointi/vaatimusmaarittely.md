@@ -6,7 +6,7 @@ Sovellus on pulmapeli, joka mukailee Puyo Puyo -nimistä peliä. Pelissä ruuduk
 ## Käyttäjät
 Sovellus ei sisällä erilaisia käyttäjiä, mutta huipputulokset voi nimetä 
 käyttäjän nimen perusteella. Huipputulokset tallennetaan 
-SQL-tietokantaan.
+SQLite-tietokantaan.
 
 ## Käyttöliittymäluonnos
 ![alt text](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kayttoliittymaluonnos.jpg "Käyttöliittymän luonnos")
@@ -14,17 +14,20 @@ SQL-tietokantaan.
 # Perusversion tarjoama toiminnallisuus
 Pelissä kahden värikkään pallon (Puyon) muodostama kappale tippuu yksi 
 kerrallaan ruudukon katosta. Peli sisältää viisi eri väriä; vihreä, 
-punainen, keltainen, sininen ja violetti. Ilmassa olevaa palikkaa pystyy 
-kääntämään joko vasta- tai myötäpäivään, mutta palikan kohdattua maan 
-tai toisen maassa olevan palikan, se pysähtyy paikalleen. Ruudukko on 
-standardikooltaan 6x13, mutta sitä voi mahdollisesti säätää.
+punainen, keltainen, sininen ja violetti. Ilmassa olevia Puyoja pystyy 
+kääntämään joko vasta- tai myötäpäivään akselinsa ympäri, mutta Puyon 
+kohdattua maan tai toisen maassa olevan Puyon, se pysähtyy paikalleen. 
+Ruudukko on standardikooltaan 6x13, mutta sen kokoa voi halutessaan säätää.
 
-Mikäli pelaaja onnistuu muodostamaan vähintään neljän palikan sarjan, 
-kyseisen sarjan palikat katoavat. Sarjassa olevien palikoiden pitää olla 
-joko vierekkäin tai päällekkäin toisiinsa nähden.
+Mikäli pelaaja onnistuu muodostamaan vähintään neljän Puyon sarjan, 
+kyseisen sarjan Puyot katoavat. Sarjassa olevien kappaleiden pitää olla 
+joko vierekkäin tai päällekkäin toisiinsa nähden. Sarjan kadottua 
+kadonneiden Puyojen yläpuolella olevat Puyot tippuvat alas, jolloin voi 
+muodostua uusia sarjoja. Kaikki tämä tapahtuu saman ruudunpäivityksen 
+aikana.
 
-Peli päättyy, jos ylimmän rivin kolmas paikka täyttyy. Tällöin kentälle 
-ei nimittäin olisi mahdollista tulla uusia Puyoja, koska ne ilmestyvät 
+Peli päättyy, jos ylimmän rivin keskimmäinen paikka täyttyy. Tällöin 
+kentälle ei nimittäin olisi mahdollista tulla uusia Puyoja, koska ne ilmestyvät 
 aina kentän keskelle.
 
 Perustoiminnallisuuksiin kuuluvat:
@@ -44,4 +47,5 @@ ovat mahdollisia kehitysideoita:
 ketjuja tuhoaa sarjassa.
 * Moninpeli. Jos moninpelistä haluaa kiinnostavamman, ns. "roskapuyot" 
 voisivat olla hyvä lisäys. Nämä palikat syntyvät toisen pelaajan tuhotessa omia puyojaan.
-* Erikokoiset kentät.
+* Erikokoiset kentät (Huom. Tämän toteutin, mutta alkujaan se oli 
+jatkokehitysideana)

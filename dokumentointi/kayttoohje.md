@@ -5,8 +5,10 @@ GitHub-release.
 
 ## Ohjelman käynnistäminen
 
-Ohjelman käynnistäminen onnistuu komentorivikomennolla: 
-*java -jar PuyoPuyoPeli.jar*
+Ohjelman käynnistäminen onnistuu komentorivikomennolla: *java -jar 
+PuyoPuyoPeli.jar*. 
+Ainakin Windowsilla voit myös tuplaklikata Jar-tiedostoa, jolloin se 
+käynnistyy automaattisesti.
 
 ## Sovelluksen käyttö
 
@@ -14,11 +16,11 @@ Sovellus on pulmapeli, jossa katosta tippuvia kahden värillisen pallon
 ("Puyon") muodostamia kappaleita on järjestettävä sarjoiksi, jotka 
 sisältävät vähintään neljä samanväristä Puyoa.
 
-
 ### Alkuvalikko
 Pelin aloittamiseksi kirjoita nimesi tekstikenttään ja paina 
-"Aloita"-näppäintä. Tekstikentän vieressä olevilla slidereilla voit 
-säätää kentän leveyttä ja korkeutta. 
+"Aloita"-näppäintä. Tyhjät tai pelkästään välilyöntejä 
+sisältävät nimet eivät ole sallittuja. Tekstikentän vieressä olevilla 
+slidereilla voit säätää kentän leveyttä ja korkeutta. 
 
 Huipputulokset-näppäimellä pääset tarkastelemaan kaikkia huipputuloksia.
 
@@ -34,10 +36,10 @@ Lisäksi voit painaa alas-nuolinäppäintä, jolloin Puyot tippuvat
 nopeammin alaspäin (ns. "soft drop"). Painamalla ylös-nuolinäppäintä 
 Puyot tippuvat välittömästi maahan (ns. "hard drop").
 
-Kun tippuva Puyo kohtaa alimman rivin tai sen alapuolella on Puyo, se 
-lukkiutuu paikalle. Tällöin et enää voi siirtää tai kääntää sitä. Jos 
-muodostuu vähintään neljän samanvärisen Puyon sarja, se katoaa ja saat 
-pisteitä. Tämän jälkeen kadonneiden Puyojen yllä olevat Puyot tippuvat 
+Kun tippuva Puyo kohtaa alimman rivin tai sen alapuolella on toinen 
+Puyo, se lukkiutuu paikalleen. Tällöin et enää voi siirtää tai kääntää 
+sitä. Jos muodostuu vähintään neljän samanvärisen Puyon sarja, se 
+katoaa, jolloin saat pisteitä. Tämän jälkeen kadonneiden Puyojen yllä olevat Puyot tippuvat 
 alas, jolloin voi edelleen muodostua uusia ketjuja.
 
 Pelin tavoitteena on saada mahdollisimman paljon pisteitä. Pisteiden 
@@ -52,3 +54,6 @@ pisteiden perusteella vasemmalla sivulla olevista näppäimistä. Voit
 lisäksi poistaa tuloksen tietokannasta klikkaamalla tulosta ja sen 
 jälkeen "Poista"-näppäintä. Alkuvalikkoon palaaminen on helppoa 
 yläpalkin näppäimestä.
+
+Huomaa, että nimellä järjestettäessä isolla kirjaimella kirjoitetut 
+nimet ovat aina ensimmäisenä.
