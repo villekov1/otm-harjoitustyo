@@ -2,7 +2,7 @@
 
 ## Rakenne
 Sovellus noudattaa karkeasti seuraavanlaista pakkaushierarkiaa. Tarkempi kuvaaja löytyy alla olevasta pakkauskaaviosta.
-![pakkaushierarkia](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/Pakkaushierarkia.jpg "Pakkaushierarkia")
+![pakkaushierarkia](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kuvat/Pakkaushierarkia.jpg "Pakkaushierarkia")
 
 Pakkaus *PuyoPuyoPeli.ui* vastaa sovelluksen graafisesta käyttöliittymästä. Pakkaus *PuyoPuyoPeli.domain* puolestaan sisältää sovelluslogiikkaan ja sovelluksen toiminnan kannalta keskeisiin käsitteisiin liittyvät luokat. Pakkaus *PuyoPuyoPeli.database* sisältää tietokantatoiminnallisuuteen liittyvät luokat.
 
@@ -28,15 +28,15 @@ metodeja.
 Sovelluksen luokat ovat yhteydessä toisiinsa seuraavan luokkakaavion 
 mukaisesti:
 ### Sovelluksen luokkakaavio:
-![luokkakaavio](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/UML_luokkakaavio.jpg "Luokkakaavio")
+![luokkakaavio](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kuvat/UML_luokkakaavio.jpg "Luokkakaavio")
 
 ### Pakkauskaavio:
 Alla olevassa pakkauskaaviossa on esitetty ylläolevan luokkakaavion 
 luokat pakkauksien sisällä.
-![pakkauskaavio](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/Pakkauskaavio.jpg "Pakkauskaavio")
+![pakkauskaavio](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kuvat/Pakkauskaavio.jpg "Pakkauskaavio")
 
 ### Netbeansin kautta otettu kuva pakkausrakenteesta:
-![pakkauskuva](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/Pakkauskuva.JPG "Sovelluksen pakkausrakenne")
+![pakkauskuva](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kuvat/Pakkauskuva.JPG "Sovelluksen pakkausrakenne")
 
 ### Sovelluksen päätoiminnallisuudet
 Luokka GameLogic vastaa pelilogiikasta. GameLogic-luokan keskiössä on 
@@ -99,5 +99,5 @@ Score-luokan alkioksi. Ainoastaan PuyoPuyoUi-luokka kutsuu ScoreDaon metodeja. G
 
 ### Sekvenssikaavio tilanteesta, jossa käyttäjä siirtää tippuvia Puyoja oikealle
 Alla olevassa kuvassa luokan sisäiset metodikutsut on esitetty väliaikaisina palkkeina, jotka tuhotaan suorituksen jälkeen. Sekvenssikaavion tilanteessa oletetaan, että tippuvia Puyoja voidaan siirtää sivusuunnassa oikealle.
-![sekvenssikaavio](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/sekvenssikaavioMoveRight.png "Sekvenssikaavio")
+![sekvenssikaavio](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kuvat/sekvenssikaavioMoveRight.png "Sekvenssikaavio")
 
