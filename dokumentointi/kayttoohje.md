@@ -43,7 +43,9 @@ katoaa, jolloin saat pisteitä. Tämän jälkeen kadonneiden Puyojen yllä oleva
 alas, jolloin voi edelleen muodostua uusia ketjuja.
 
 Pelin tavoitteena on saada mahdollisimman paljon pisteitä. Pisteiden 
-kertyessä Puyot lisäksi tippuvat yhä nopeammin alas.
+kertyessä Puyot lisäksi tippuvat yhä nopeammin alas. Mikäli ylimmän 
+rivin keskimmäinen paikka täyttyy, peli päättyy, jolloin pelaaja 
+palautetaan alkuvalikkoon ja tulos tallennetaan tietokantaan.
 
 Pelinäkymän yläpalkin napeista voit joko pysäyttää pelin, aloittaa sen 
 alusta tai palata alkuvalikkoon.
