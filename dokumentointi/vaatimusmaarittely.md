@@ -9,7 +9,7 @@ käyttäjän nimen perusteella. Huipputulokset tallennetaan
 SQLite-tietokantaan.
 
 ## Käyttöliittymäluonnos
-![alt text](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kayttoliittymaluonnos.jpg "Käyttöliittymän luonnos")
+![alt text](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kuvat/kayttoliittymaluonnos.jpg "Käyttöliittymän luonnos")
 
 # Perusversion tarjoama toiminnallisuus
 Pelissä kahden värikkään pallon (Puyon) muodostama kappale tippuu yksi 
