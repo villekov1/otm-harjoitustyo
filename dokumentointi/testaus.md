@@ -9,7 +9,7 @@ enum-tyyppinen Colour-luokka on testaamatta.
 
 ### Testauskattavuus
 Sovelluksen testien kattavuutta on mitattu Jacocon avulla. Alla on kuva Jacoco-testikattavuusraportista. Kattavuusraportissa ei ole otettu käyttöliittymästä vastaavaa luokkaa huomioon.
-![alt text](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/jacocotestikattavuus.JPG "Jacoco-testikattavuusraportti")
+![alt text](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kuvat/jacocotestikattavuus.JPG "Jacoco-testikattavuusraportti")
 
 ## Järjestelmätestaus
 Sovellusta on testattu manuaalisesti sekä Windows 10- että 
