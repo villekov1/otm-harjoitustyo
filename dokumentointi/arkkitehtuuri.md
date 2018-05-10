@@ -99,5 +99,10 @@ Score-luokan alkioksi. Ainoastaan PuyoPuyoUi-luokka kutsuu ScoreDaon metodeja. G
 
 ### Sekvenssikaavio tilanteesta, jossa käyttäjä siirtää tippuvia Puyoja oikealle
 Alla olevassa kuvassa luokan sisäiset metodikutsut on esitetty väliaikaisina palkkeina, jotka tuhotaan suorituksen jälkeen. Sekvenssikaavion tilanteessa oletetaan, että tippuvia Puyoja voidaan siirtää sivusuunnassa oikealle.
-![sekvenssikaavio](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kuvat/sekvenssikaavioMoveRight.png "Sekvenssikaavio")
+![moveRight](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kuvat/sekvenssikaavioMoveRight.png "Sekvenssikaavio")
 
+### Sekvenssikaavio isTheSpaceFilled-metodin toiminnasta
+![isTheSpaceFilled](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kuvat/isTheSpaceFilled_sekvenssikaavio.png "Sekvenssikaavio")
+
+### Sekvenssikaavio update-metodin toiminnasta
+![update](https://github.com/villekov1/otm-harjoitustyo/blob/master/dokumentointi/kuvat/update_sekvenssikaavio.png "Sekvenssikaavio")
