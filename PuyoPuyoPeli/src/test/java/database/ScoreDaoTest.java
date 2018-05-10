@@ -190,6 +190,27 @@ public class ScoreDaoTest {
     }
     
     @Test
+    public void findIdReturnsMinusOneIfScoreIsNotInTheDatabase() {
+        Score score1 = new Score(1, 1000, "Pekka");
+        Score score2 = new Score(5, 2012, "Anni");
+        
+        try {
+            scoreDao.save(score1);
+            scoreDao.save(score2);
+        } catch (Exception e) {
+            System.out.println("Jotain meni vikaan tiedon tallentamisessa.");
+        }
+        int id = 0;
+        try {
+            id = scoreDao.findId(new Score(2, 1999, "Mikko"));
+        } catch (Exception e) {
+            System.out.println("Ei voitu löytää id:tä.");
+        }
+        
+        assertEquals(-1, id);
+    }
+    
+    @Test
     public void findByIdWorksProperly() {
         Score score1 = new Score(1, 1000, "Pekka");
         Score score2 = new Score(5, 2012, "Anni");
@@ -211,5 +232,68 @@ public class ScoreDaoTest {
         }
         
         assertEquals(score2, found);
+    }
+    @Test
+    public void findByIdReturnsNullIfThereIsNotSuchId() {
+        Score found = new Score(-1,0,"");
+        try {
+            found = scoreDao.findById(2);
+        } catch (Exception e) {
+            System.out.println("Ei voitu löytää id:tä.");
+        }
+        
+        assertEquals(null, found);
+    }
+    
+    @Test
+    public void findAllInOrderByPointsWorks() {
+        Score score1 = new Score(1, 1000, "Pekka");
+        Score score2 = new Score(5, 2012, "Anni");
+        Score score3 = new Score(-1, 1921, "Matias");
+        
+        try {
+            scoreDao.save(score1);
+            scoreDao.save(score2);
+            scoreDao.save(score3);
+        } catch (Exception e) {
+            System.out.println("Jotain meni vikaan tiedon tallentamisessa.");
+        }
+        List<Score> list = new ArrayList<>();
+        
+        try {
+            list = scoreDao.findAllInOrderByPoints();
+        } catch (Exception e) {
+            System.out.println("Ei voitu löytää id:tä.");
+        }
+        
+        boolean correctOrder = (list.get(0).equals(score2)) 
+                && (list.get(1).equals(score3)) && (list.get(2).equals(score1));
+        assertEquals(true, correctOrder);
+    }
+    
+    @Test
+    public void findAllInOrderByNameWorks() {
+        Score score1 = new Score(1, 1000, "Pekka");
+        Score score2 = new Score(5, 2012, "Matias");
+        Score score3 = new Score(-1, 1921, "Anni");
+        
+        try {
+            scoreDao.save(score1);
+            scoreDao.save(score2);
+            scoreDao.save(score3);
+        } catch (Exception e) {
+            System.out.println("Jotain meni vikaan tiedon tallentamisessa.");
+        }
+        List<Score> list = new ArrayList<>();
+        
+        try {
+            list = scoreDao.findAllInOrderByName();
+        } catch (Exception e) {
+            System.out.println("Ei voitu löytää id:tä.");
+        }
+        
+        boolean correctOrder = (list.get(0).equals(score3)) 
+                && (list.get(1).equals(score2)) && (list.get(2).equals(score1));
+        assertEquals(true, correctOrder);
     }
 }

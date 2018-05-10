@@ -27,5 +27,5 @@
 | 7.5   | 1    | Jatkoin testien kirjoittamista. |
 | 8.5   | 2    | Tein alustavan testaus-dokumentin ja jatkoin testien kirjoittamista. Lisäsin ohjelmaan toiminnallisuuden, jossa alas-nuolinäppäintä painamalla Puyot tippuvat nopeammin alaspäin.|
 | 9.5   | 2    | Refaktoroin PuyoPuyoUi:ta lisäämällä metodeja, jotka siistivät hieman start-metodia. Tämä näkyy luokan pituudessa, mutta se on nyt aikaisempaa siistimpi.
-| 10.5  | 2    | Jatkoin dokumentointia päivittämällä vaatimusmäärittelyä sekä arkkitehtuurikuvausta. Tein kaksi uutta sekvenssikaaviota.
+| 10.5  | 2    | Jatkoin dokumentointia päivittämällä vaatimusmäärittelyä sekä arkkitehtuurikuvausta. Tein kaksi uutta sekvenssikaaviota. Jatkoin lisäksi testaamista.
 | summa | 56   |   |
