@@ -47,7 +47,7 @@ kertyessä Puyot lisäksi tippuvat yhä nopeammin alas. Mikäli ylimmän
 rivin keskimmäinen paikka täyttyy, peli päättyy, jolloin pelaaja 
 palautetaan alkuvalikkoon ja tulos tallennetaan tietokantaan.
 
-Ruudun oikeassa yläkulmassa näkyvät seuraavan vuorossa olevat Puyot. Pelinäkymän yläpalkin napeista voit joko pysäyttää pelin, aloittaa sen alusta tai palata alkuvalikkoon. Voit pysäyttää pelin tai jatkaa sitä myös P-näppäintä painamalla.
+Ruudun oikeassa yläkulmassa näkyvät seuraavana vuorossa olevat Puyot. Pelinäkymän yläpalkin napeista voit joko pysäyttää pelin, aloittaa sen alusta tai palata alkuvalikkoon. Voit pysäyttää pelin tai jatkaa sitä myös P-näppäintä painamalla.
 
 ### Huipputulosnäkymä
 Huipputulosnäkymässä voit järjestää huipputulokset joko nimen tai 
