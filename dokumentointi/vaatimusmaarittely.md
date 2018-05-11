@@ -1,10 +1,10 @@
-# Vaatimusmäärittely
+# Vaatimusmäärittely (päivitetty vastaamaan lopullista versiota)
 
 ## Sovelluksen tarkoitus
 Sovellus on pulmapeli, joka mukailee Puyo Puyo -nimistä peliä. Pelissä ruudukon katosta tippuu kahden värillisen pallon muodostamia kappaleita. Vähintään neljän samanvärisen kappaleen muodostama sarja katoaa kentältä ja antaa pelaajalle pisteitä.
 
 ## Käyttäjät
-Sovellus ei sisällä erilaisia käyttäjiä, mutta huipputulokset voi nimetä 
+Sovellus ei sisällä erilaisia käyttäjiä, mutta huipputulokset nimetään 
 käyttäjän nimen perusteella. Huipputulokset tallennetaan 
 SQLite-tietokantaan.
 
@@ -37,15 +37,13 @@ Perustoiminnallisuuksiin kuuluvat:
 * Pisteiden antaminen tuhotuista Puyoista
 * Seuraavien Puyojen arpominen
 * Huipputuloslista, joka tallentaa tulokset SQL-tietokantaan SQLiteä käyttäen
-
+* Alkujaan jatkokehitysideana oli myös erikokoiset kentät, jotka myös toteutin
+* Alkuperäiseen vaatimusmäärittelyyn nähden lisäsin pelinäkymään myös ominaisuuden, joka näyttää seuraavana vuorossa olevat Puyot.
 
 # Jatkokehitysideoita
-Jos aikaa jää tai sovellusta haluaa jatkokehittää, ainakin seuraavat 
-ovat mahdollisia kehitysideoita:
+Jos sovellusta haluaa jatkokehittää, ainakin seuraavat ovat mahdollisia kehitysideoita:
 
 * Jonkinlainen combo-systeemi, joka antaa enemmän pisteitä, jos useita 
 ketjuja tuhoaa sarjassa.
 * Moninpeli. Jos moninpelistä haluaa kiinnostavamman, ns. "roskapuyot" 
 voisivat olla hyvä lisäys. Nämä palikat syntyvät toisen pelaajan tuhotessa omia puyojaan.
-* Erikokoiset kentät (Huom. Tämän toteutin, mutta alkujaan se oli 
-jatkokehitysideana)
