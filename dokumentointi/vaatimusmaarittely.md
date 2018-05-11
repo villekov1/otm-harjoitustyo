@@ -38,7 +38,7 @@ Perustoiminnallisuuksiin kuuluvat:
 * Seuraavien Puyojen arpominen
 * Huipputuloslista, joka tallentaa tulokset SQL-tietokantaan SQLiteä käyttäen
 * Alkujaan jatkokehitysideana oli myös erikokoiset kentät, jotka myös toteutin
-* Alkuperäiseen vaatimusmäärittelyyn nähden lisäsin pelinäkymään myös ominaisuuden, joka näyttää seuraavana vuorossa olevat Puyot.
+* Alkuperäiseen vaatimusmäärittelyyn nähden lisäsin pelinäkymään myös ominaisuuden, joka näyttää seuraavana vuorossa olevat Puyot. Tosin tämän olin piirtänyt myös käyttöliittymäluonnokseen.
 
 # Jatkokehitysideoita
 Jos sovellusta haluaa jatkokehittää, ainakin seuraavat ovat mahdollisia kehitysideoita:
