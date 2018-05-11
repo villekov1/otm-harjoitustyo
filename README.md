@@ -27,7 +27,7 @@ Sovellus hyödyntää SQLite-tietokantoja, joten SQLiten on oltava asennettuna t
 
 ## Komentorivitoiminnot:
 Ohjelma on kirjoitettu Java-kielellä, joten se hyödyntää Mavenia, 
-Jacocoa, checkstylea ja niiden komentoja.
+Jacocoa, Checkstylea ja niiden komentoja.
 
 ### Testaus
 Testit suoritetaan joko Netbeansin kautta tai komennolla: *mvn test* 
