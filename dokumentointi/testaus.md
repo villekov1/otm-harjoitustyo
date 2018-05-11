@@ -12,7 +12,7 @@ alla, koska integraatiotestaus ei tässä tapauksessa oikeastaan eroa
 yksikkötestauksesta. GameLogic-luokka sisältää FilledMap- ja 
 Puyo-luokkien olentoja, joten niiden tekemä yhteistyö tulee testattua 
 metodien toimintaa testaamalla. Vastaavasti Puyo-luokan oliot sisältävät 
-Colour-tyypin muuttujan.
+Colour-tyypin muuttujan, ja GameLogic on yhteydessä myös ScoreDao- ja Score -luokkiin.
 
 ScoreDaoTest-luokka hyödyntää testaamiseen tarkoitettua tietokantaa. 
 Tämä tietokanta tyhjennetään jokaisen testauksen lopuksi, ja se luodaan 
