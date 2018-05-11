@@ -1,14 +1,14 @@
 # Käyttöohje
 
 Sovelluksen suorittaminen on helpointa lataamalla sovelluksen 
-GitHub-release.
+GitHub-release, mutta voit myös generoida Jar-tiedoston komennolla *mvn package* sovelluksen juurikansiossa.
 
 ## Ohjelman käynnistäminen
 
 Ohjelman käynnistäminen onnistuu komentorivikomennolla: *java -jar 
 PuyoPuyoPeli.jar*. 
 Ainakin Windowsilla voit myös tuplaklikata Jar-tiedostoa, jolloin se 
-käynnistyy automaattisesti.
+käynnistyy automaattisesti. Käynnistyksen yhteydessä ohjelma luo tietokannan huipputulokset.db.
 
 ## Sovelluksen käyttö
 
@@ -47,8 +47,7 @@ kertyessä Puyot lisäksi tippuvat yhä nopeammin alas. Mikäli ylimmän
 rivin keskimmäinen paikka täyttyy, peli päättyy, jolloin pelaaja 
 palautetaan alkuvalikkoon ja tulos tallennetaan tietokantaan.
 
-Pelinäkymän yläpalkin napeista voit joko pysäyttää pelin, aloittaa sen 
-alusta tai palata alkuvalikkoon.
+Ruudun oikeassa yläkulmassa näkyvät seuraavan vuorossa olevat Puyot. Pelinäkymän yläpalkin napeista voit joko pysäyttää pelin, aloittaa sen alusta tai palata alkuvalikkoon. Voit pysäyttää pelin tai jatkaa sitä myös P-näppäintä painamalla.
 
 ### Huipputulosnäkymä
 Huipputulosnäkymässä voit järjestää huipputulokset joko nimen tai 
