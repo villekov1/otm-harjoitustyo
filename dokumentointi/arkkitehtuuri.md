@@ -48,13 +48,12 @@ niitä sivulle tai kääntämällä niitä myötä- tai vastapäivään.
 Lisäksi erityisen tärkeää pelilogiikan kannalta on 
 GameLogicin FilledMap-olio, joka sisältää tiedon siitä, mitkä 
 peliruudukon paikat ovat täynnä. Tippuvien Puyojen viemiä paikkoja ei 
-lasketa täysiksi, joten FilledMap sisältää myös tarvittavat tiedot sen 
-määrittämiseksi, ovatko tippuvat Puyot maassa. FilledMap-luokan 
+lasketa täysiksi. FilledMap-luokan 
 isTheSpaceFilled-metodin avulla on mahdollista selvittää, onko joku 
 tietty ruutu täynnä.
 
 Koko pelin toiminta perustuu GameLogic-luokan update-metodiin, joka 
-tiputtaa tippuvia Puyoja alaspäin. Tämän jälkeen metodi tarkistaa 
+tiputtaa tippuvia Puyoja alaspäin. Jos tippuvat Puyot ovat maassa tai toisten Puyojen päällä, metodi tarkistaa 
 findChain-metodin avulla, onko kentälle muodostunut samanväristen 
 Puyojen muodostamia ketjuja. Mikäli on muodostunut ketjuja, jotka 
 sisältävät vähintään neljä samanväristä Puyoa, kyseinen ketju tuhoutuu 
@@ -78,8 +77,8 @@ sekä mahdollisuuden yhteyden avaamiseen. Score-luokka sisältää tiedon
 pelaajan nimestä sekä tuloksesta. ScoreDaon avulla on mahdollista 
 tallentaa tietokantaan pelaajan saavuttamat pisteet Score-luokan 
 välityksellä sekä etsiä tietokannasta tulokset ja tulkita ne edelleen
-Score-alkioiksi. Huipputulosnäkymän kautta on mahdollista tarkastella ja järjestää 
-tuloksia sekä myös poistaa niitä.
+Score-olioiksi. Huipputulosnäkymän kautta on mahdollista tarkastella ja järjestää 
+tuloksia sekä myös poistaa niitä. Tuloksien listauksessa on hyödynnettu JavaFX:n ListViewia, joka piirtää ObservableListiin tallennetut tulokset näytölle.
 
 ## Tietojen tallennus
 Tietojen tallennus tapahtuu SQLiten avulla SQL-tietokantaan. Sovellus 
