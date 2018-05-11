@@ -25,6 +25,7 @@ public class ScoreDao {
     /**
     * The method finds all of the Scores that are stored in the database.
     * @return   List that contains all of the scores.
+    * @throws   SQLException   SQLException
     */
     public List<Score> findAll() throws SQLException {
         List<Score> tulokset = new ArrayList<>();
@@ -47,6 +48,7 @@ public class ScoreDao {
     /**
     * The method finds all of the Scores stored in the database ordered by the points.
     * @return   List that contains all of the scores ordered by points.
+    * @throws   SQLException   SQLException
     */
     public List<Score> findAllInOrderByPoints() throws SQLException {
         List<Score> tulokset = new ArrayList<>();
@@ -69,6 +71,7 @@ public class ScoreDao {
     /**
     * The method finds all of the Scores stored in the database ordered by name.
     * @return   List that contains all of the scores ordered by name.
+    * @throws   SQLException   SQLException
     */
     public List<Score> findAllInOrderByName() throws SQLException {
         List<Score> tulokset = new ArrayList<>();
@@ -93,6 +96,7 @@ public class ScoreDao {
     * It may return null if such an id is not found.
     * @param   id   The id of the Score
     * @return   Score that has the id given by the parameter.
+    * @throws   SQLException   SQLException
     */
     public Score findById(int id) throws SQLException {
         Connection conn = database.getConnection();
@@ -121,6 +125,7 @@ public class ScoreDao {
     /**
     * The method deletes a Score in the database that has the id given by the parameter.
     * @param   key   The id of the Score
+    * @throws   SQLException   SQLException
     */
     public void delete(Integer key) throws SQLException {
         Connection conn = database.getConnection();
@@ -138,6 +143,7 @@ public class ScoreDao {
     * It returns -1 if such a Score is not found on the database.
     * @param   score   The score whose id is looked for.
     * @return   The integer-valued id of the Score.
+    * @throws   SQLException   SQLException
     */
     public int findId(Score score) throws SQLException {
         Connection conn = database.getConnection();
@@ -166,6 +172,7 @@ public class ScoreDao {
     * The method saves the Score to the database if there isn't a score
     * with the same name and points as the Score given by the parameter.
     * @param   score   The Score that is saved to the database
+    * @throws   SQLException   SQLException
     */
     public void saveIfNotInTheDatabase(Score score) throws SQLException {
         Connection conn = database.getConnection();
@@ -186,8 +193,9 @@ public class ScoreDao {
     
     /**
     * The method saves the Score given by the parameter to the database.
-    * @param   Score   The Score that is saved to the database
+    * @param   score   The Score that is saved to the database
     * @return   The Score that is saved to the database
+    * @throws   SQLException   SQLException
     */
     public Score save(Score score) throws SQLException {
         Connection conn = database.getConnection();

@@ -31,6 +31,7 @@ public class Database {
     /**
     * The method returns a Connection using DriverManager class' getConnection() -method.
     * @return   Connection to the database given by the address.
+    * @throws   SQLException   SQLException
     */
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(databaseAddress);
