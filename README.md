@@ -20,6 +20,8 @@ muodostamat ketjut katoavat, jolloin pelaaja saa pisteitä.
 
 [Viikko 6](https://github.com/villekov1/otm-harjoitustyo/releases/tag/viikko6)
 
+[Loppupalautus](https://github.com/villekov1/otm-harjoitustyo/releases/tag/loppupalautus)
+
 ## Huomioitavaa
 Sovellus hyödyntää SQLite-tietokantoja, joten SQLiten on oltava asennettuna tietokoneelle.
 
@@ -39,7 +41,7 @@ Komento *mvn package* luo target-kansioon suoritettavan jar-tiedoston
 PuyoPuyoPeli-1.0-SNAPSHOT. Jar-tiedoston voi suorittaa komennolla *java 
 -jar PuyoPuyoPeli-1.0-SNAPSHOT.jar*.
 
-Jar-tiedosto on saatavilla myös viikon 5 ja 6 julkaisuissa nimellä *PuyoPuyoPeli.jar*.
+Jar-tiedosto on saatavilla myös viikon 5 ja 6 julkaisuissa nimellä *PuyoPuyoPeli.jar* sekä lopullisessa palautuksessa.
 
 ### Checkstyle
 Checkstyle-raportin voi luoda komennolla *mvn jxr:jxr 
