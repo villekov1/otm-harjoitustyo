@@ -10,12 +10,10 @@ import java.util.stream.Collectors;
  * This class is responsible for the game logic in Puyo Puyo -game.
  */
 public class GameLogic {
-    private HashMap<Integer, HashMap<Integer, Boolean>> filled;
     private FilledMap filledMap;
     private ArrayList<Puyo> puyos;
     
     private int points;
-    private int puyonumber;
     private int width;
     private int height;
     private Puyo falling;
@@ -32,7 +30,6 @@ public class GameLogic {
         this.width = width;
         this.height = height;
         this.points = 0;
-        this.puyonumber = 0;
         this.filledMap = new FilledMap(width, height);
         this.puyos = new ArrayList<>();  
         this.nextFalling = randomPuyo();
@@ -54,7 +51,7 @@ public class GameLogic {
             this.setPair();
             
             for (int j = 0; j < 3; j++) {
-                //Poistetaan ketjut vain silloin, kun molemmat tippuvat omat maassa
+                //The chains are destroyed once both Puyos are on the ground
                 for (int i = 0; i < this.puyos.size(); i++) {
                     Puyo puyo = this.puyos.get(i);
                     ArrayList<Puyo> ketju = this.findChain(puyo.getPositionX(), puyo.getPositionY());
@@ -94,6 +91,7 @@ public class GameLogic {
         this.updateFilled();
         this.addFallingPuyosToTheList();
     }
+    
     /**
      * The methods drops the falling Puyos until they meet the ground or other Puyos.
      */
@@ -103,6 +101,7 @@ public class GameLogic {
             this.dropFalling();
         }
     }
+    
     /**
     * The method adds falling Puyos called falling and fallingAxis to the list called puyos.
     * This is necessary after both Puyos are on the ground.
@@ -387,8 +386,6 @@ public class GameLogic {
     */
     public void destroyChain(ArrayList<Puyo> list) {
         if (list.size() >= 4) {
-            //It's convenient for testing if you can see the Puyos that were destroyed
-            System.out.println("Tuhotut: " + list);
             list.stream().distinct().forEach(puyo -> {
                 this.points += 10;
                 puyos.remove(puyo);
@@ -411,28 +408,6 @@ public class GameLogic {
         }      
     }
     
-    public int getWidth() {
-        return this.width;
-    }
-    
-    public int getHeight() {
-        return this.height;
-    }
-    
-    public Puyo getFalling() {
-        return this.falling;
-    }
-    
-    public Puyo getFallingAxis() {
-        return this.fallingAxis;
-    }
-    
-    public ArrayList<Puyo> getPuyos() {
-        return this.puyos;
-    }
-    public int getPoints() {
-        return this.points;
-    }
     /**
     * The method adds a Puyo to the list puyos. The main use of this method is in testing.
     * @param   puyo   The Puyo that is added to the list
@@ -458,5 +433,29 @@ public class GameLogic {
         next.add(nextFalling);
         next.add(nextAxis);
         return next;
+    }
+    
+    public int getWidth() {
+        return this.width;
+    }
+    
+    public int getHeight() {
+        return this.height;
+    }
+    
+    public Puyo getFalling() {
+        return this.falling;
+    }
+    
+    public Puyo getFallingAxis() {
+        return this.fallingAxis;
+    }
+    
+    public ArrayList<Puyo> getPuyos() {
+        return this.puyos;
+    }
+    
+    public int getPoints() {
+        return this.points;
     }
 }

@@ -51,8 +51,7 @@ public class PuyoPuyoUi extends Application {
     boolean pause = true;
     int speed = 0;
     String ohje = "Ohjeet:\nAnna nimesi tekstikenttään ja paina Aloita-näppäintä. "
-        + "Voit halutessasi säätää pelikentän kokoa, mutta suosituskoko on 6x13.\n"
-        + "\n"
+        + "Voit halutessasi säätää pelikentän kokoa, mutta suosituskoko on 6x13.\n \n"
         + "Yritä tehdä neljän samanvärisen Puyon sarjoja, jolloin ne katoavat ja antavat pisteitä!\n"
         + "Voit siirtää nuolinäppäimillä tippuvia Puyoja sivusuunnassa.\n"
         + "Enterillä tai S-näppäimellä voit kääntää niitä myötäpäivään, ja Backspace- tai A-näppäimellä vastapäivään.\n"
@@ -188,10 +187,6 @@ public class PuyoPuyoUi extends Application {
             if (event.getCode().equals(KeyCode.BACK_SPACE) || event.getCode().equals(KeyCode.A)) {
                 situation.turnLeft();
             }
-            if (event.getCode().equals(KeyCode.W)) {
-                //This is only for testing purposes
-                situation.addPoints(1000);
-            }
             if (event.getCode().equals(KeyCode.UP)) {
                 situation.hardDrop();
             }
@@ -215,7 +210,6 @@ public class PuyoPuyoUi extends Application {
             if(!field.getText().isEmpty() && !field.getText().matches("( )*")){
                 this.name = field.getText();
                 situation = new GameLogic(width, height);
-                //2*(radius + 2)*width, 2*(radius + 2)*height
                 ruutu.setWidth(2 * radius + 2 * (radius + 2) * width);
                 ruutu.setHeight(2 * radius + 2 * (radius + 2) * height);
                 window.setScene(gameView);

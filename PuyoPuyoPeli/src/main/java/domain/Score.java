@@ -24,9 +24,11 @@ public class Score {
     public String getName() {
         return this.name;
     }
+    
     public int getScore() {
         return this.score;
     }
+    
     public int getId() {
         return this.id;
     }

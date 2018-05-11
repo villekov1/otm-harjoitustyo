@@ -160,9 +160,6 @@ public class ScoreDao {
         rs.close();
         conn.close();
         return -1;
-        
-        
-        
     }
     
     /**
@@ -204,7 +201,7 @@ public class ScoreDao {
         stmt.setString(1, score.getName());
         stmt.setInt(2, score.getScore());        
         ResultSet rs = stmt.executeQuery();
-        rs.next(); // vain 1 tulos
+        rs.next(); // only one result
         Score t = new Score(rs.getInt("id"), rs.getInt("tulos"), rs.getString("nimi"));
 
         stmt.close();

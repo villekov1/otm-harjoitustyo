@@ -79,7 +79,6 @@ public class Puyo {
     }
 
     public void setColour(Colour colour) {
-        //Tälle ei pitäisi olla mitään tarvetta, mutta tehdään se kuitenkin varmuuden vuoksi
         this.colour = colour;
     }
     
@@ -87,6 +86,7 @@ public class Puyo {
     public String toString() {
         return "(" + this.getPositionX() + ", " + this.getPositionY() + "), " + this.getColour();
     }
+    
     @Override
     public boolean equals(Object comparable) {
         if (this == comparable) {
