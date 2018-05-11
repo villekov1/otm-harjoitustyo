@@ -5,7 +5,7 @@ lisäksi olen testannut sovelluksen toimintaa laajasti käytännön testein.
 ## Yksikkö- ja integraatiotestaus
 Sovelluslogiikkaa on testattu laajasti JUnit-testeillä, mutta 
 käyttöliittymästä vastaavaa luokkaa PuyoPuyoUi ei ole testattu. Lisäksi 
-enum-tyyppinen Colour-luokka on testaamatta.
+enum-tyyppinen Colour-luokka on testaamatta, koska siinä ei ole mitään testattavaa.
 
 Integraatiotestaus ja yksikkötestaus on toteutettu samojen luokkien
 alla, koska integraatiotestaus ei tässä tapauksessa oikeastaan eroa 
