@@ -33,11 +33,11 @@ Linux-ympäristössä. Huomionarvoista on, että koneella täytyy olla
 asennettuna Javan ohella myös SQLite.
 
 ## Sovellukseen jääneet ongelmat
-- Olen kohdannut muutaman kerran melko harvinaisen bugin, jossa tippuva 
+- Olen kohdannut muutaman kerran melko epätavallisen bugin, jossa tippuva 
 Puyo menee toisen Puyon läpi. En kuitenkaan löytänyt ongelman syytä. Toisaalta en ole 
 myöskään saanut sitä tuotettua keinotekoisesti, joten ongelma ei ole 
 suuri.
 - ScoreDao -luokassa on hieman toisteista koodia.
+- Ohjelmassa on kolme Checkstyle-virhettä, mutta ne ovat melko lieviä metodien pituuteen liittyviä virheitä. Kyseisten metodien jakaminen useaan osaan olisi mielestäni tehnyt niistä epäselvempiä.
 - Käyttöliittymä on kokonaisuudessaan yhden luokan alla, mikä näkyy 
-luokan pituutena. Olen hyödyntänyt myös käyttöliittymässä runsaasti 
-metodeja, mikä tekee luokasta pidemmän, mutta myös selvemmän.
+luokan pituudessa.
